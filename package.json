@@ -2,7 +2,11 @@
   "name": "iwalkamongstgods",
   "private": true,
   "version": "1.0.0",
-  "type": "module",
+  "type": "module","engines": {
+  "node": "20.x"
+},
+
+
   "scripts": {
     "dev": "vite",
     "build": "vite build",
