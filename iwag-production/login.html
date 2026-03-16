@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign In — I Walk Amongst Gods</title>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#c9a84c">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#c9a84c;--gold-dim:#7a5e28;--deep:#020408;--void:#050b12;--card:#0d1825;--text:#e8dcc8;--text-dim:#9b8e78;--text-muted:#4a4438;--red:#c94c4c;--green:#4caf82;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;}
+body{background:var(--deep);color:var(--text);font-family:'Cormorant Garamond',serif;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px;}
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.s{position:absolute;background:#fff;border-radius:50%;animation:tw var(--d) ease-in-out infinite var(--dl);}
+@keyframes tw{0%,100%{opacity:var(--a)}50%{opacity:var(--b)}}
+.aurora{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 80% 60% at 20% 20%,rgba(13,30,80,.5),transparent 65%),radial-gradient(ellipse 60% 70% at 80% 80%,rgba(50,10,70,.35),transparent 60%);}
+
+.auth-wrap{position:relative;z-index:1;width:100%;max-width:460px;}
+.auth-logo{text-align:center;margin-bottom:40px;}
+.auth-logo a{font-family:'Cinzel Decorative',serif;font-size:14px;color:var(--gold);letter-spacing:3px;text-decoration:none;}
+.auth-logo p{font-family:'Cinzel',serif;font-size:10px;letter-spacing:5px;color:var(--text-dim);text-transform:uppercase;margin-top:8px;}
+
+.auth-card{background:var(--card);border:1px solid rgba(201,168,76,.2);padding:48px 44px;}
+.auth-card::before{content:'✦';position:absolute;top:16px;left:20px;color:rgba(201,168,76,.25);font-size:16px;}
+
+.tab-wrap{display:flex;margin-bottom:36px;border-bottom:1px solid rgba(255,255,255,.06);}
+.tab{flex:1;padding:12px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;background:none;border:none;color:var(--text-muted);cursor:pointer;transition:all .3s;border-bottom:2px solid transparent;margin-bottom:-1px;}
+.tab.on{color:var(--gold);border-bottom-color:var(--gold);}
+
+.form-group{margin-bottom:20px;}
+.form-group label{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);display:block;margin-bottom:8px;}
+.form-group input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.15);color:var(--text);padding:13px 16px;font-family:'Cormorant Garamond',serif;font-size:16px;outline:none;transition:border-color .3s;}
+.form-group input:focus{border-color:var(--gold);}
+.form-group input::placeholder{color:var(--text-muted);}
+
+.auth-btn{width:100%;padding:15px;font-family:'Cinzel',serif;font-size:12px;letter-spacing:4px;text-transform:uppercase;background:linear-gradient(135deg,var(--gold-dim),var(--gold));color:var(--deep);border:none;cursor:pointer;transition:all .4s;margin-top:8px;}
+.auth-btn:hover{box-shadow:0 0 30px rgba(201,168,76,.4);}
+.auth-btn:disabled{opacity:.6;cursor:not-allowed;}
+
+.divider{display:flex;align-items:center;gap:16px;margin:24px 0;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.06);}
+.divider span{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:var(--text-muted);text-transform:uppercase;}
+
+.social-btn{width:100%;padding:13px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;background:none;border:1px solid rgba(201,168,76,.2);color:var(--text-dim);cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px;}
+.social-btn:hover{border-color:var(--gold);color:var(--text);}
+
+.auth-msg{padding:12px 16px;font-size:14px;margin-bottom:20px;display:none;}
+.auth-msg.error{background:rgba(201,76,76,.1);border:1px solid rgba(201,76,76,.3);color:#e88;display:block;}
+.auth-msg.success{background:rgba(76,175,130,.1);border:1px solid rgba(76,175,130,.3);color:#8e8;display:block;}
+
+.forgot{text-align:right;margin-top:-12px;margin-bottom:20px;}
+.forgot a{font-family:'Cinzel',serif;font-size:10px;letter-spacing:1px;color:var(--text-muted);text-decoration:none;cursor:pointer;transition:color .3s;}
+.forgot a:hover{color:var(--gold);}
+
+.terms{font-size:13px;color:var(--text-muted);text-align:center;margin-top:20px;line-height:1.6;}
+.terms a{color:var(--gold);text-decoration:none;}
+
+.back-home{text-align:center;margin-top:28px;}
+.back-home a{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;color:var(--text-muted);text-decoration:none;text-transform:uppercase;transition:color .3s;cursor:pointer;}
+.back-home a:hover{color:var(--gold);}
+
+.loading-spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(2,4,8,.4);border-top-color:var(--deep);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:8px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div id="stars"></div>
+<div class="aurora"></div>
+
+<div class="auth-wrap">
+  <div class="auth-logo">
+    <a href="index.html">I Walk Amongst Gods</a>
+    <p>Divine Wellness Portal</p>
+  </div>
+
+  <div class="auth-card" style="position:relative">
+    <div class="tab-wrap">
+      <button class="tab on" id="tabSignin" onclick="switchTab('signin')">Sign In</button>
+      <button class="tab" id="tabSignup" onclick="switchTab('signup')">Join Divine</button>
+    </div>
+
+    <div id="msgBox" class="auth-msg"></div>
+
+    <!-- SIGN IN -->
+    <div id="signinForm">
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="siEmail" placeholder="your@email.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="siPassword" placeholder="Your sacred password" autocomplete="current-password">
+      </div>
+      <div class="forgot"><a onclick="forgotPassword()">Forgot password?</a></div>
+      <button class="auth-btn" id="signinBtn" onclick="signIn()">✦ &nbsp; Enter the Portal</button>
+      <div class="divider"><span>or</span></div>
+      <button class="social-btn" onclick="signInWithGoogle()">🌐 &nbsp; Continue with Google</button>
+    </div>
+
+    <!-- SIGN UP -->
+    <div id="signupForm" style="display:none">
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" id="suName" placeholder="Sacred name or full name" autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="suEmail" placeholder="your@email.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="suPassword" placeholder="Min. 8 characters" autocomplete="new-password">
+      </div>
+      <button class="auth-btn" id="signupBtn" onclick="signUp()">✦ &nbsp; Begin My Journey</button>
+      <div class="divider"><span>or</span></div>
+      <button class="social-btn" onclick="signInWithGoogle()">🌐 &nbsp; Continue with Google</button>
+      <p class="terms">By joining you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. Your divine journey awaits.</p>
+    </div>
+  </div>
+
+  <div class="back-home">
+    <a href="index.html">← Return to the Portal</a>
+  </div>
+</div>
+
+<!-- Supabase CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script>
+// ── INIT ──
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Stars
+const sf=document.getElementById('stars');
+for(let i=0;i<120;i++){const s=document.createElement('div');s.className='s';const sz=Math.random()*2+.4;s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${(Math.random()*5+2).toFixed(1)}s;--dl:-${(Math.random()*6).toFixed(1)}s;--a:${(Math.random()*.1+.02).toFixed(2)};--b:${(Math.random()*.5+.3).toFixed(2)};`;sf.appendChild(s);}
+
+// Check if already logged in
+sb.auth.getSession().then(({ data }) => {
+  if (data.session) window.location.href = 'index.html';
+});
+
+// Tab switch
+function switchTab(tab) {
+  document.getElementById('signinForm').style.display = tab === 'signin' ? 'block' : 'none';
+  document.getElementById('signupForm').style.display = tab === 'signup' ? 'block' : 'none';
+  document.getElementById('tabSignin').classList.toggle('on', tab === 'signin');
+  document.getElementById('tabSignup').classList.toggle('on', tab === 'signup');
+  clearMsg();
+}
+
+function showMsg(msg, type='error') {
+  const el = document.getElementById('msgBox');
+  el.textContent = msg;
+  el.className = `auth-msg ${type}`;
+}
+function clearMsg() {
+  document.getElementById('msgBox').className = 'auth-msg';
+}
+
+function setLoading(btnId, loading) {
+  const btn = document.getElementById(btnId);
+  btn.disabled = loading;
+  btn.innerHTML = loading
+    ? '<span class="loading-spinner"></span> Please wait...'
+    : (btnId === 'signinBtn' ? '✦ &nbsp; Enter the Portal' : '✦ &nbsp; Begin My Journey');
+}
+
+// ── SIGN IN ──
+async function signIn() {
+  const email = document.getElementById('siEmail').value.trim();
+  const password = document.getElementById('siPassword').value;
+  if (!email || !password) { showMsg('Please enter your email and password'); return; }
+  setLoading('signinBtn', true);
+  const { error } = await sb.auth.signInWithPassword({ email, password });
+  if (error) { showMsg(error.message); setLoading('signinBtn', false); return; }
+  showMsg('Welcome back, divine one ✦', 'success');
+  setTimeout(() => window.location.href = 'index.html', 1000);
+}
+
+// ── SIGN UP ──
+async function signUp() {
+  const name = document.getElementById('suName').value.trim();
+  const email = document.getElementById('suEmail').value.trim();
+  const password = document.getElementById('suPassword').value;
+  if (!name || !email || !password) { showMsg('Please fill in all fields'); return; }
+  if (password.length < 8) { showMsg('Password must be at least 8 characters'); return; }
+  setLoading('signupBtn', true);
+  const { error } = await sb.auth.signUp({
+    email, password,
+    options: { data: { full_name: name } }
+  });
+  if (error) { showMsg(error.message); setLoading('signupBtn', false); return; }
+  showMsg('✦ Check your email to confirm your account, then return here to sign in.', 'success');
+  setLoading('signupBtn', false);
+}
+
+// ── GOOGLE ──
+async function signInWithGoogle() {
+  const { error } = await sb.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin + '/index.html' }
+  });
+  if (error) showMsg(error.message);
+}
+
+// ── FORGOT PASSWORD ──
+async function forgotPassword() {
+  const email = document.getElementById('siEmail').value.trim();
+  if (!email) { showMsg('Enter your email address above first'); return; }
+  const { error } = await sb.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/reset.html'
+  });
+  if (error) { showMsg(error.message); return; }
+  showMsg('✦ Password reset link sent to your email', 'success');
+}
+
+// Enter key support
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  if (document.getElementById('signinForm').style.display !== 'none') signIn();
+  else signUp();
+});
+</script>
+</body>
+</html>

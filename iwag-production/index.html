@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="I Walk Amongst Gods — Divine Wellness, AI Affirmations, Sacred Meditation & Healing Music">
+<title>I Walk Amongst Gods — Divine Wellness Portal</title>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="I Walk Amongst Gods">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#c9a84c">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#c9a84c;--gold-light:#e8c97e;--gold-dim:#7a5e28;--deep:#020408;--void:#050b12;--cosmic:#0a0f1e;--card:#0d1825;--card2:#080f1a;--text:#e8dcc8;--text-dim:#9b8e78;--text-muted:#4a4438;--green:#4caf82;--red:#c94c4c;--blue:#4c8fc9;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--deep);color:var(--text);font-family:'Cormorant Garamond',serif;overflow-x:hidden;}
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.s{position:absolute;background:#fff;border-radius:50%;animation:tw var(--d) ease-in-out infinite var(--dl);}
+@keyframes tw{0%,100%{opacity:var(--a)}50%{opacity:var(--b)}}
+.aurora{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 90% 60% at 15% 15%,rgba(13,30,80,.55),transparent 65%),radial-gradient(ellipse 70% 70% at 85% 85%,rgba(50,10,70,.4),transparent 60%),radial-gradient(ellipse 120% 40% at 50% 110%,rgba(90,45,5,.3),transparent 50%);animation:aur 25s ease-in-out infinite alternate;}
+@keyframes aur{0%{filter:hue-rotate(0deg) brightness(1)}100%{filter:hue-rotate(25deg) brightness(1.2)}}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:linear-gradient(to bottom,rgba(2,4,8,.97),transparent);backdrop-filter:blur(12px);}
+.logo{font-family:'Cinzel Decorative',serif;font-size:12px;color:var(--gold);letter-spacing:3px;text-decoration:none;cursor:pointer;}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{font-family:'Cinzel',serif;font-size:10px;color:var(--text-dim);text-decoration:none;letter-spacing:2px;text-transform:uppercase;transition:color .3s;cursor:pointer;}
+.nav-links a:hover{color:var(--gold);}
+.nav-right{display:flex;align-items:center;gap:16px;}
+.nav-cta{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:9px 22px;background:linear-gradient(135deg,var(--gold-dim),var(--gold));color:var(--deep);border:none;cursor:pointer;transition:all .3s;}
+.nav-cta:hover{box-shadow:0 0 20px rgba(201,168,76,.4);}
+.nav-user{display:none;align-items:center;gap:12px;}
+.nav-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--gold-dim),var(--gold));display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:13px;color:var(--deep);cursor:pointer;border:1px solid rgba(201,168,76,.4);}
+.nav-plan{font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);padding:3px 10px;}
+.nav-signout{font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--text-muted);text-transform:uppercase;background:none;border:none;cursor:pointer;transition:color .3s;}
+.nav-signout:hover{color:var(--red);}
+
+/* ── SECTIONS ── */
+section{position:relative;z-index:1;}
+.container{max-width:1100px;margin:0 auto;padding:0 40px;}
+.s-tag{font-family:'Cinzel',serif;font-size:10px;letter-spacing:6px;color:var(--gold);text-transform:uppercase;text-align:center;margin-bottom:10px;}
+.s-title{font-family:'Cinzel Decorative',serif;font-size:clamp(22px,4vw,46px);text-align:center;font-weight:400;margin-bottom:14px;line-height:1.2;}
+.s-desc{text-align:center;color:var(--text-dim);font-style:italic;font-size:18px;max-width:560px;margin:0 auto 64px;line-height:1.7;}
+.gold-line{width:90px;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin:0 auto 20px;}
+.btn{font-family:'Cinzel',serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:15px 40px;border:none;cursor:pointer;transition:all .4s;text-decoration:none;display:inline-block;}
+.btn-gold{background:linear-gradient(135deg,var(--gold-dim),var(--gold));color:var(--deep);}
+.btn-gold:hover{box-shadow:0 0 35px rgba(201,168,76,.5);transform:translateY(-2px);}
+.btn-ghost{background:transparent;color:var(--gold);border:1px solid rgba(201,168,76,.35);}
+.btn-ghost:hover{background:rgba(201,168,76,.08);border-color:var(--gold);}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 24px 80px;position:relative;}
+.hero-orbit{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;height:500px;pointer-events:none;}
+.orbit-ring{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(201,168,76,.07);animation:rot var(--rs) linear infinite;}
+.orbit-ring:nth-child(1){margin:20px;--rs:40s;}
+.orbit-ring:nth-child(2){margin:0;--rs:60s;animation-direction:reverse;}
+.orbit-ring:nth-child(3){margin:60px;--rs:30s;border-color:rgba(201,168,76,.04);}
+@keyframes rot{to{transform:rotate(360deg)}}
+.hero-pulse{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:200px;height:200px;pointer-events:none;}
+.hero-pulse::before,.hero-pulse::after{content:'';position:absolute;inset:0;border-radius:50%;border:1px solid rgba(201,168,76,.15);animation:pex 5s ease-out infinite;}
+.hero-pulse::after{animation-delay:2.5s;}
+@keyframes pex{0%{transform:scale(.3);opacity:.8}100%{transform:scale(4);opacity:0}}
+.hero-eyebrow{font-family:'Cinzel',serif;font-size:10px;letter-spacing:8px;color:var(--gold);text-transform:uppercase;margin-bottom:24px;animation:fup 1.2s ease both;}
+.hero-title{font-family:'Cinzel Decorative',serif;font-size:clamp(32px,8vw,100px);line-height:1.05;font-weight:700;background:linear-gradient(135deg,#fff5e0 0%,var(--gold-light) 35%,var(--gold) 65%,#7a5010 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:fup 1.4s ease .15s both;filter:drop-shadow(0 0 60px rgba(201,168,76,.25));}
+.hero-subtitle{font-family:'Cinzel',serif;font-size:clamp(10px,1.5vw,14px);letter-spacing:4px;color:var(--text-dim);text-transform:uppercase;margin:16px 0 0;animation:fup 1.6s ease .3s both;}
+.hero-desc{font-size:clamp(16px,2vw,21px);font-style:italic;color:var(--text-dim);max-width:580px;line-height:1.75;margin:24px auto 0;animation:fup 1.8s ease .45s both;}
+.hero-ornament{width:120px;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin:36px auto;animation:fup 2s ease .6s both;}
+.hero-btns{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;animation:fup 2.2s ease .75s both;}
+@keyframes fup{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
+.hero-stats{display:flex;gap:48px;justify-content:center;margin-top:56px;flex-wrap:wrap;animation:fup 2.4s ease .9s both;}
+.hstat{text-align:center;}
+.hstat-num{font-family:'Cinzel Decorative',serif;font-size:28px;color:var(--gold);}
+.hstat-label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;margin-top:4px;}
+
+/* ── MEMBER DASHBOARD BAR ── */
+.dash-bar{display:none;background:linear-gradient(135deg,rgba(201,168,76,.08),rgba(5,11,18,.95));border-bottom:1px solid rgba(201,168,76,.15);padding:20px 48px;position:relative;z-index:1;margin-top:70px;}
+.dash-bar-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:32px;flex-wrap:wrap;}
+.dash-welcome{font-family:'Cinzel',serif;font-size:12px;letter-spacing:2px;color:var(--gold);}
+.dash-stats{display:flex;gap:28px;flex:1;flex-wrap:wrap;}
+.dstat{text-align:center;}
+.dstat-num{font-family:'Cinzel Decorative',serif;font-size:22px;color:var(--text);}
+.dstat-label{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;color:var(--text-muted);text-transform:uppercase;margin-top:2px;}
+.dash-upgrade{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 20px;background:linear-gradient(135deg,var(--gold-dim),var(--gold));color:var(--deep);border:none;cursor:pointer;white-space:nowrap;}
+
+/* ── LOCK OVERLAY ── */
+.lock-overlay{position:absolute;inset:0;background:rgba(2,4,8,.88);z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;backdrop-filter:blur(4px);}
+.lock-icon{font-size:32px;}
+.lock-text{font-family:'Cinzel',serif;font-size:11px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;}
+.lock-btn{padding:10px 28px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;background:linear-gradient(135deg,var(--gold-dim),var(--gold));color:var(--deep);border:none;cursor:pointer;}
+
+/* ── AI ORACLE ── */
+#ai{background:var(--void);padding:110px 0;}
+.ai-wrap{max-width:860px;margin:0 auto;padding:0 40px;}
+.ai-box{background:linear-gradient(135deg,rgba(201,168,76,.06),rgba(5,11,18,.95));border:1px solid rgba(201,168,76,.2);padding:56px 52px;position:relative;}
+.ai-box::before,.ai-box::after{content:'✦';position:absolute;font-size:22px;color:rgba(201,168,76,.3);}
+.ai-box::before{top:24px;left:28px;}
+.ai-box::after{bottom:24px;right:28px;}
+.ai-intro{font-family:'Cinzel',serif;font-size:11px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:12px;text-align:center;}
+.ai-heading{font-family:'Cinzel Decorative',serif;font-size:clamp(20px,3vw,34px);text-align:center;margin-bottom:10px;}
+.ai-sub{text-align:center;color:var(--text-dim);font-style:italic;font-size:17px;margin-bottom:40px;line-height:1.6;}
+.ai-counter{text-align:center;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;color:var(--text-muted);margin-bottom:24px;}
+.ai-counter span{color:var(--gold);}
+.ai-fields{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.ai-field label{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;display:block;margin-bottom:8px;}
+.ai-field select{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.2);color:var(--text);padding:12px 16px;font-family:'Cormorant Garamond',serif;font-size:15px;outline:none;transition:border-color .3s;appearance:none;}
+.ai-field select:focus{border-color:var(--gold);}
+.ai-field select option{background:var(--void);}
+.ai-intention label{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;display:block;margin-bottom:8px;}
+.ai-intention textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.2);color:var(--text);padding:14px 16px;font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;outline:none;resize:none;height:80px;transition:border-color .3s;line-height:1.6;margin-bottom:28px;}
+.ai-intention textarea:focus{border-color:var(--gold);}
+.ai-intention textarea::placeholder{color:var(--text-muted);}
+.ai-generate{width:100%;padding:16px;font-family:'Cinzel',serif;font-size:12px;letter-spacing:4px;text-transform:uppercase;background:linear-gradient(135deg,var(--gold-dim),var(--gold));color:var(--deep);border:none;cursor:pointer;transition:all .4s;}
+.ai-generate:hover{box-shadow:0 0 40px rgba(201,168,76,.4);}
+.ai-generate:disabled{opacity:.6;cursor:not-allowed;}
+.ai-loading{text-align:center;padding:40px;display:none;}
+.ai-loading.show{display:block;}
+.ai-spinner{width:40px;height:40px;border:1px solid rgba(201,168,76,.2);border-top-color:var(--gold);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ai-loading p{font-family:'Cinzel',serif;font-size:11px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;}
+.ai-result{margin-top:36px;display:none;}
+.ai-result.show{display:block;}
+.ai-result-card{background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.15);padding:40px 44px;text-align:center;}
+.ai-affirmations{list-style:none;display:flex;flex-direction:column;gap:20px;}
+.ai-affirmations li{font-size:clamp(17px,2.2vw,24px);font-style:italic;line-height:1.55;color:var(--text);padding:20px 0;border-bottom:1px solid rgba(201,168,76,.08);}
+.ai-affirmations li:last-child{border-bottom:none;}
+.ai-affirmations li::before{content:'"';color:var(--gold);font-size:1.4em;line-height:0;vertical-align:-.3em;margin-right:4px;}
+.ai-affirmations li::after{content:'"';color:var(--gold);font-size:1.4em;line-height:0;vertical-align:-.3em;margin-left:4px;}
+.ai-result-actions{display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap;}
+.ai-action-btn{padding:10px 24px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;background:none;border:1px solid rgba(201,168,76,.3);color:var(--gold);cursor:pointer;transition:all .3s;}
+.ai-action-btn:hover{background:rgba(201,168,76,.1);}
+.ai-limit-msg{text-align:center;padding:40px;background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.15);}
+.ai-limit-msg p{font-style:italic;color:var(--text-dim);font-size:17px;margin-bottom:20px;}
+
+/* ── MEDITATION ── */
+#meditation{background:var(--void);padding:110px 0;}
+.med-center{max-width:700px;margin:0 auto;text-align:center;padding:0 40px;}
+.breath-scene{position:relative;width:280px;height:280px;margin:0 auto 52px;}
+.breath-outer{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(201,168,76,.06);}
+.breath-mid{position:absolute;inset:20px;border-radius:50%;border:1px solid rgba(201,168,76,.1);}
+.breath-circle{width:180px;height:180px;border-radius:50%;border:1px solid rgba(201,168,76,.3);background:radial-gradient(circle,rgba(201,168,76,.15),rgba(201,168,76,.03) 60%,transparent);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;transition:all 4s cubic-bezier(.4,0,.2,1);}
+.breath-circle.inhale{transform:translate(-50%,-50%) scale(1.42);border-color:var(--gold);background:radial-gradient(circle,rgba(201,168,76,.3),rgba(201,168,76,.08) 60%,transparent);box-shadow:0 0 70px rgba(201,168,76,.2),inset 0 0 50px rgba(201,168,76,.08);}
+.breath-word{font-family:'Cinzel',serif;font-size:12px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;}
+.med-timer{font-family:'Cinzel Decorative',serif;font-size:52px;color:var(--gold);margin-bottom:6px;}
+.med-label{font-family:'Cinzel',serif;font-size:10px;letter-spacing:5px;color:var(--text-dim);text-transform:uppercase;margin-bottom:40px;}
+.med-modes{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;}
+.mmode,.mdur{background:none;border:1px solid rgba(201,168,76,.2);color:var(--text-dim);padding:9px 20px;font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;}
+.mmode:hover,.mmode.on,.mdur:hover,.mdur.on{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.08);}
+.med-durations{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:44px;}
+.med-go{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--gold-dim),var(--gold));border:none;cursor:pointer;font-size:24px;display:flex;align-items:center;justify-content:center;margin:0 auto;transition:all .4s;box-shadow:0 0 30px rgba(201,168,76,.25);}
+.med-go:hover{box-shadow:0 0 55px rgba(201,168,76,.5);transform:scale(1.06);}
+.med-guidance{font-style:italic;color:var(--text-dim);font-size:16px;line-height:1.8;margin-top:36px;min-height:64px;transition:opacity .8s;padding:0 20px;}
+.med-saved{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;color:var(--green);text-transform:uppercase;margin-top:16px;min-height:20px;}
+
+/* ── MUSIC ── */
+#music{background:var(--cosmic);padding:110px 0;}
+.music-layout{display:grid;grid-template-columns:1fr 1fr;gap:40px;max-width:1000px;margin:0 auto;padding:0 40px;}
+.now-playing-panel{background:var(--card);border:1px solid rgba(201,168,76,.15);padding:44px 40px;text-align:center;}
+.vinyl-wrap{position:relative;width:160px;height:160px;margin:0 auto 32px;}
+.vinyl{width:160px;height:160px;border-radius:50%;background:conic-gradient(from 0deg,#111,#1e1e1e 45deg,#111 90deg,#1a1a1a 135deg,#0d0d0d 180deg,#1e1e1e 225deg,#111 270deg,#1a1a1a 315deg,#111);display:flex;align-items:center;justify-content:center;box-shadow:0 0 50px rgba(0,0,0,.7),0 0 25px rgba(201,168,76,.12);}
+.vinyl.spin{animation:vspin 5s linear infinite;}
+@keyframes vspin{to{transform:rotate(360deg)}}
+.vinyl-center{width:36px;height:36px;border-radius:50%;background:radial-gradient(circle,var(--gold-light),var(--gold-dim));position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 12px rgba(201,168,76,.4);}
+.vinyl-label{font-family:'Cinzel',serif;font-size:15px;color:var(--text);letter-spacing:2px;margin-bottom:6px;}
+.vinyl-sub{font-style:italic;color:var(--gold);font-size:14px;margin-bottom:28px;}
+.mbar-wrap{background:rgba(201,168,76,.08);height:3px;border-radius:2px;margin-bottom:10px;overflow:hidden;}
+.mbar-fill{height:100%;background:linear-gradient(to right,var(--gold-dim),var(--gold));border-radius:2px;transition:width .8s linear;}
+.mtimes{display:flex;justify-content:space-between;font-family:'Cinzel',serif;font-size:9px;color:var(--text-muted);margin-bottom:28px;}
+.mcontrols{display:flex;align-items:center;justify-content:center;gap:24px;}
+.mcbtn{background:none;border:none;color:var(--text-dim);font-size:20px;cursor:pointer;transition:all .3s;}
+.mcbtn:hover{color:var(--gold);}
+.mplaybtn{width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,var(--gold-dim),var(--gold));border:none;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;box-shadow:0 0 25px rgba(201,168,76,.3);}
+.mplaybtn:hover{box-shadow:0 0 45px rgba(201,168,76,.55);}
+.tracklist-panel{background:var(--card);border:1px solid rgba(201,168,76,.15);}
+.tracklist-head{padding:20px 24px;border-bottom:1px solid rgba(255,255,255,.05);font-family:'Cinzel',serif;font-size:11px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;}
+.tracklist{list-style:none;}
+.ttrack{display:flex;align-items:center;gap:16px;padding:14px 24px;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;transition:all .3s;border-left:2px solid transparent;}
+.ttrack:hover,.ttrack.on{background:rgba(201,168,76,.06);border-left-color:var(--gold);}
+.ttrack-num{font-family:'Cinzel',serif;font-size:10px;color:var(--text-muted);width:20px;text-align:center;}
+.ttrack.on .ttrack-num{color:var(--gold);}
+.ttrack-info{flex:1;min-width:0;}
+.ttrack-name{font-family:'Cinzel',serif;font-size:12px;color:var(--text);letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ttrack.on .ttrack-name{color:var(--gold);}
+.ttrack-sub{font-size:11px;color:var(--text-dim);font-style:italic;margin-top:2px;}
+.ttrack-dur{font-family:'Cinzel',serif;font-size:10px;color:var(--text-muted);}
+
+/* ── JOURNAL ── */
+#journal{background:var(--void);padding:110px 0;}
+.journal-wrap{max-width:800px;margin:0 auto;padding:0 40px;}
+.journal-card{background:var(--card);border:1px solid rgba(201,168,76,.15);padding:48px 52px;}
+.journal-prompt-label{font-family:'Cinzel',serif;font-size:11px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:16px;}
+.journal-question{font-size:clamp(18px,2.5vw,26px);font-style:italic;color:var(--text);line-height:1.5;margin-bottom:28px;}
+.journal-textarea{width:100%;background:rgba(255,255,255,.03);border:none;border-bottom:1px solid rgba(201,168,76,.2);color:var(--text);padding:16px 0;font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;outline:none;resize:none;height:160px;line-height:1.7;transition:border-color .3s;}
+.journal-textarea:focus{border-bottom-color:var(--gold);}
+.journal-textarea::placeholder{color:var(--text-muted);}
+.journal-actions{display:flex;align-items:center;justify-content:space-between;margin-top:24px;flex-wrap:wrap;gap:16px;}
+.journal-prompt-nav{display:flex;gap:12px;}
+.jpbtn,.journal-save{background:none;border:1px solid rgba(201,168,76,.2);color:var(--text-dim);padding:8px 18px;font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;}
+.jpbtn:hover,.journal-save:hover{border-color:var(--gold);color:var(--gold);}
+.journal-save{background:linear-gradient(135deg,var(--gold-dim),var(--gold));color:var(--deep);border:none;}
+.journal-save:hover{color:var(--deep);box-shadow:0 0 20px rgba(201,168,76,.3);}
+.journal-entries{margin-top:40px;display:flex;flex-direction:column;gap:16px;}
+.jentry{background:rgba(201,168,76,.03);border-left:2px solid rgba(201,168,76,.3);padding:20px 24px;}
+.jentry-date{font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;}
+.jentry-q{font-size:13px;color:var(--text-dim);font-style:italic;margin-bottom:6px;}
+.jentry-text{font-size:15px;color:var(--text);line-height:1.7;}
+.journal-login-prompt{text-align:center;padding:48px;background:rgba(201,168,76,.03);border:1px solid rgba(201,168,76,.1);}
+.journal-login-prompt p{font-style:italic;color:var(--text-dim);font-size:17px;margin-bottom:20px;}
+
+/* ── PRICING ── */
+#pricing{background:var(--cosmic);padding:110px 0;}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;max-width:920px;margin:0 auto;padding:0 40px;}
+.pplan{background:var(--card);border:1px solid rgba(255,255,255,.06);padding:44px 36px;text-align:center;position:relative;transition:all .4s;}
+.pplan:hover{transform:translateY(-4px);}
+.pplan.featured{border-color:rgba(201,168,76,.4);box-shadow:0 0 60px rgba(201,168,76,.08);}
+.pplan-badge{position:absolute;top:-1px;left:50%;transform:translateX(-50%);font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;padding:6px 20px;background:linear-gradient(135deg,var(--gold-dim),var(--gold));color:var(--deep);white-space:nowrap;}
+.pplan-name{font-family:'Cinzel',serif;font-size:12px;letter-spacing:4px;color:var(--text-dim);text-transform:uppercase;margin-bottom:16px;}
+.pplan-price{font-family:'Cinzel Decorative',serif;font-size:48px;color:var(--gold);line-height:1;}
+.pplan-period{font-size:13px;color:var(--text-muted);margin-top:6px;margin-bottom:28px;}
+.pplan-divider{width:50px;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin:0 auto 28px;}
+.pplan-features{list-style:none;text-align:left;margin-bottom:36px;}
+.pplan-features li{font-size:14px;color:var(--text-dim);padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;align-items:center;gap:10px;}
+.pplan-features li::before{content:'✦';color:var(--gold);font-size:9px;flex-shrink:0;}
+.pplan-features li.off{color:var(--text-muted);}
+.pplan-features li.off::before{color:var(--text-muted);}
+.pplan-btn{width:100%;padding:14px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:all .4s;border:none;}
+.pplan-btn-gold{background:linear-gradient(135deg,var(--gold-dim),var(--gold));color:var(--deep);}
+.pplan-btn-gold:hover{box-shadow:0 0 30px rgba(201,168,76,.4);}
+.pplan-btn-ghost{background:none;border:1px solid rgba(201,168,76,.3);color:var(--gold);}
+.pplan-btn-ghost:hover{background:rgba(201,168,76,.08);}
+
+/* ── FOOTER ── */
+footer{position:relative;z-index:1;background:var(--deep);padding:72px 40px 48px;border-top:1px solid rgba(201,168,76,.1);}
+.footer-inner{max-width:1100px;margin:0 auto;}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:56px;}
+.footer-logo{font-family:'Cinzel Decorative',serif;font-size:18px;color:var(--gold);letter-spacing:3px;margin-bottom:14px;}
+.footer-tagline{font-style:italic;color:var(--text-dim);font-size:15px;line-height:1.7;max-width:280px;}
+.footer-col-title{font-family:'Cinzel',serif;font-size:10px;letter-spacing:4px;color:var(--text-dim);text-transform:uppercase;margin-bottom:20px;}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.footer-links a{font-size:14px;color:var(--text-muted);text-decoration:none;transition:color .3s;cursor:pointer;}
+.footer-links a:hover{color:var(--gold);}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:32px;border-top:1px solid rgba(255,255,255,.05);flex-wrap:wrap;gap:16px;}
+.footer-copy{font-size:12px;color:var(--text-muted);}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid rgba(201,168,76,.3);padding:14px 28px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;z-index:999;transition:transform .4s,opacity .4s;opacity:0;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+
+/* ── LOADING SCREEN ── */
+#appLoading{position:fixed;inset:0;background:var(--deep);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;transition:opacity .6s;}
+#appLoading.hidden{opacity:0;pointer-events:none;}
+.app-loading-logo{font-family:'Cinzel Decorative',serif;font-size:clamp(16px,3vw,28px);color:var(--gold);letter-spacing:4px;}
+.app-loading-spinner{width:40px;height:40px;border:1px solid rgba(201,168,76,.2);border-top-color:var(--gold);border-radius:50%;animation:spin 1s linear infinite;}
+
+@media(max-width:900px){nav{padding:14px 24px;}.nav-links{display:none;}.music-layout{grid-template-columns:1fr;}.footer-top{grid-template-columns:1fr 1fr;}.ai-fields{grid-template-columns:1fr;}}
+@media(max-width:600px){.container,.ai-wrap,.med-center,.journal-wrap{padding:0 20px;}.pricing-grid{padding:0 20px;}.music-layout{padding:0 20px;}.ai-box{padding:36px 24px;}.journal-card{padding:32px 24px;}.footer-top{grid-template-columns:1fr;}.hero-orbit{width:280px;height:280px;}.dash-bar{padding:16px 20px;}}
+</style>
+</head>
+<body>
+
+<!-- Loading Screen -->
+<div id="appLoading">
+  <div class="app-loading-logo">I Walk Amongst Gods</div>
+  <div class="app-loading-spinner"></div>
+</div>
+
+<div id="stars"></div>
+<div class="aurora"></div>
+
+<!-- NAV -->
+<nav>
+  <span class="logo" onclick="scroll2('hero')">I Walk Amongst Gods</span>
+  <ul class="nav-links">
+    <li><a onclick="scroll2('ai')">AI Oracle</a></li>
+    <li><a onclick="scroll2('meditation')">Meditate</a></li>
+    <li><a onclick="scroll2('music')">Music</a></li>
+    <li><a onclick="scroll2('journal')">Journal</a></li>
+    <li><a onclick="scroll2('pricing')">Membership</a></li>
+  </ul>
+  <div class="nav-right">
+    <!-- Logged out state -->
+    <div id="navLoggedOut">
+      <button class="nav-cta" onclick="window.location.href='login.html'">Sign In ✦</button>
+    </div>
+    <!-- Logged in state -->
+    <div class="nav-user" id="navLoggedIn">
+      <span class="nav-plan" id="navPlan">Free</span>
+      <div class="nav-avatar" id="navAvatar" onclick="scroll2('pricing')">?</div>
+      <button class="nav-signout" onclick="signOut()">Sign Out</button>
+    </div>
+  </div>
+</nav>
+
+<!-- MEMBER DASHBOARD BAR -->
+<div class="dash-bar" id="dashBar">
+  <div class="dash-bar-inner">
+    <div class="dash-welcome" id="dashWelcome">✦ Welcome back</div>
+    <div class="dash-stats">
+      <div class="dstat"><div class="dstat-num" id="dStatMed">0</div><div class="dstat-label">Meditations</div></div>
+      <div class="dstat"><div class="dstat-num" id="dStatMin">0</div><div class="dstat-label">Minutes</div></div>
+      <div class="dstat"><div class="dstat-num" id="dStatAff">0</div><div class="dstat-label">Affirmations</div></div>
+      <div class="dstat"><div class="dstat-num" id="dStatJournal">0</div><div class="dstat-label">Journal Entries</div></div>
+    </div>
+    <button class="dash-upgrade" id="dashUpgradeBtn" onclick="window.open(STRIPE_MONTHLY,'_blank')" style="display:none">✦ Upgrade to Divine</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-orbit"><div class="orbit-ring"></div><div class="orbit-ring"></div><div class="orbit-ring"></div></div>
+  <div class="hero-pulse"></div>
+  <p class="hero-eyebrow">✦ &nbsp; The World's Most Sacred Wellness Experience &nbsp; ✦</p>
+  <h1 class="hero-title">I Walk Amongst Gods</h1>
+  <p class="hero-subtitle">Awakened by a Near-Death Experience &nbsp;·&nbsp; Built for Your Ascension</p>
+  <p class="hero-desc">Beyond the veil of life lies infinite wisdom. Step into the most immersive spiritual wellness platform ever created — powered by divine intention and artificial intelligence.</p>
+  <div class="hero-ornament"></div>
+  <div class="hero-btns" id="heroBtns">
+    <button class="btn btn-gold" onclick="scroll2('ai')">✦ &nbsp; Enter the Oracle</button>
+    <button class="btn btn-ghost" onclick="window.location.href='login.html'">Join Free Today</button>
+  </div>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-num">∞</div><div class="hstat-label">Affirmations</div></div>
+    <div class="hstat"><div class="hstat-num">24/7</div><div class="hstat-label">Guidance</div></div>
+    <div class="hstat"><div class="hstat-num">432</div><div class="hstat-label">Hz Healing</div></div>
+    <div class="hstat"><div class="hstat-num">AI</div><div class="hstat-label">Personalised</div></div>
+  </div>
+</section>
+
+<!-- AI ORACLE -->
+<section id="ai">
+  <div class="ai-wrap">
+    <p class="s-tag">✦ Sacred Intelligence ✦</p>
+    <div class="gold-line"></div>
+    <div class="ai-box">
+      <p class="ai-intro">The Divine Oracle</p>
+      <h2 class="ai-heading">AI-Powered Sacred Affirmations</h2>
+      <p class="ai-sub">Share your soul's current state. The Oracle channels personalised affirmations written specifically for you.</p>
+      <p class="ai-counter" id="aiCounter"></p>
+
+      <div id="aiForm">
+        <div class="ai-fields">
+          <div class="ai-field"><label>Your Current Energy</label>
+            <select id="aiMood">
+              <option value="seeking clarity">Seeking Clarity</option>
+              <option value="healing from pain">Healing from Pain</option>
+              <option value="ready to manifest">Ready to Manifest</option>
+              <option value="feeling disconnected">Feeling Disconnected</option>
+              <option value="in deep gratitude">In Deep Gratitude</option>
+              <option value="overcoming fear">Overcoming Fear</option>
+              <option value="awakening spiritually">Awakening Spiritually</option>
+              <option value="building abundance">Building Abundance</option>
+            </select>
+          </div>
+          <div class="ai-field"><label>Sacred Focus</label>
+            <select id="aiFocus">
+              <option value="divine self-worth and identity">Divine Self</option>
+              <option value="healing and restoration">Healing</option>
+              <option value="abundance and prosperity">Abundance</option>
+              <option value="love and relationships">Love</option>
+              <option value="spiritual awakening">Awakening</option>
+              <option value="manifestation and creation">Manifestation</option>
+              <option value="inner peace and stillness">Inner Peace</option>
+              <option value="purpose and divine mission">Life Purpose</option>
+            </select>
+          </div>
+        </div>
+        <div class="ai-intention">
+          <label>Your Sacred Intention (optional)</label>
+          <textarea id="aiIntention" placeholder="Share what is on your heart today..."></textarea>
+        </div>
+        <button class="ai-generate" id="aiBtn" onclick="generateAffirmations()">✦ &nbsp; Channel My Affirmations &nbsp; ✦</button>
+      </div>
+
+      <div id="aiLimitMsg" class="ai-limit-msg" style="display:none">
+        <p>"You have glimpsed the Oracle's wisdom. Join Divine to receive unlimited sacred affirmations whenever your soul calls."</p>
+        <button class="btn btn-gold" onclick="window.open(STRIPE_MONTHLY,'_blank')">✦ Unlock Unlimited Oracle</button>
+      </div>
+
+      <div class="ai-loading" id="aiLoading"><div class="ai-spinner"></div><p>The Oracle is channelling your truth...</p></div>
+      <div class="ai-result" id="aiResult">
+        <div class="ai-result-card">
+          <ul class="ai-affirmations" id="aiAffList"></ul>
+          <div class="ai-result-actions">
+            <button class="ai-action-btn" onclick="saveAffirmations()">✦ Save to Journal</button>
+            <button class="ai-action-btn" onclick="generateAffirmations()">↻ Generate New</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MEDITATION -->
+<section id="meditation">
+  <div class="med-center">
+    <p class="s-tag">✦ Sacred Stillness ✦</p>
+    <div class="gold-line"></div>
+    <h2 class="s-title">Divine Meditation</h2>
+    <p class="s-desc">Enter the space between worlds. Breathe with the gods.</p>
+    <div class="breath-scene">
+      <div class="breath-outer"></div>
+      <div class="breath-mid"></div>
+      <div class="breath-circle" id="bc"><span class="breath-word" id="bw">Begin</span></div>
+    </div>
+    <div class="med-timer" id="medTimer">10:00</div>
+    <div class="med-label" id="medLabel">Choose Your Session</div>
+    <div class="med-modes">
+      <button class="mmode on" onclick="setMode('breath',this)">Breath</button>
+      <button class="mmode" onclick="setMode('silence',this)">Silence</button>
+      <button class="mmode" onclick="setMode('guided',this)">Guided</button>
+    </div>
+    <div class="med-durations">
+      <button class="mdur" onclick="setDur(5,this)">5 min</button>
+      <button class="mdur on" onclick="setDur(10,this)">10 min</button>
+      <button class="mdur" onclick="setDur(20,this)">20 min</button>
+      <button class="mdur" onclick="setDur(30,this)">30 min</button>
+      <button class="mdur" onclick="setDur(60,this)">60 min</button>
+    </div>
+    <button class="med-go" id="medGo" onclick="toggleMed()">▶</button>
+    <p class="med-guidance" id="medGuidance">"You have touched the other side of the veil. Carry that knowing into this breath."</p>
+    <p class="med-saved" id="medSaved"></p>
+  </div>
+</section>
+
+<!-- MUSIC -->
+<section id="music">
+  <div class="music-layout">
+    <div class="now-playing-panel">
+      <div class="vinyl-wrap"><div class="vinyl" id="vinyl"><div class="vinyl-center"></div></div></div>
+      <div class="vinyl-label" id="mTrackName">Divine Passage</div>
+      <div class="vinyl-sub" id="mTrackType">432 Hz — Soul Restoration</div>
+      <div class="mbar-wrap"><div class="mbar-fill" id="mBarFill" style="width:0%"></div></div>
+      <div class="mtimes"><span id="mCurTime">0:00</span><span id="mTotalTime">6:48</span></div>
+      <div class="mcontrols">
+        <button class="mcbtn" onclick="mPrev()">⏮</button>
+        <button class="mcbtn" onclick="mPrev()">⏪</button>
+        <button class="mplaybtn" id="mPlayBtn" onclick="mTogglePlay()">▶</button>
+        <button class="mcbtn">⏩</button>
+        <button class="mcbtn" onclick="mNext()">⏭</button>
+      </div>
+    </div>
+    <div class="tracklist-panel">
+      <div class="tracklist-head">✦ &nbsp; Healing Frequencies</div>
+      <ul class="tracklist" id="mTrackList"></ul>
+    </div>
+  </div>
+</section>
+
+<!-- JOURNAL -->
+<section id="journal">
+  <div class="journal-wrap">
+    <p class="s-tag">✦ Sacred Writing ✦</p>
+    <div class="gold-line"></div>
+    <h2 class="s-title">Soul Journal</h2>
+    <p class="s-desc">Your thoughts are sacred. Write, reflect, and witness your divine unfolding.</p>
+
+    <div id="journalLoggedOut" class="journal-login-prompt" style="display:none">
+      <p>"Your soul has stories worth preserving. Sign in to keep your sacred journal entries safe across all your devices."</p>
+      <button class="btn btn-gold" onclick="window.location.href='login.html'">✦ Sign In to Journal</button>
+    </div>
+
+    <div id="journalLoggedIn">
+      <div class="journal-card">
+        <div class="journal-prompt-label">Today's Sacred Prompt</div>
+        <div class="journal-question" id="jQuestion">"What truth did your soul bring back from beyond the veil today?"</div>
+        <textarea class="journal-textarea" id="jTextarea" placeholder="Let your words flow freely and without judgement..."></textarea>
+        <div class="journal-actions">
+          <div class="journal-prompt-nav">
+            <button class="jpbtn" onclick="prevPrompt()">← Previous</button>
+            <button class="jpbtn" onclick="nextPrompt()">Next Prompt →</button>
+          </div>
+          <button class="journal-save" onclick="saveEntry()">✦ Save Entry</button>
+        </div>
+      </div>
+      <div class="journal-entries" id="jEntries"></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="container">
+    <p class="s-tag">✦ Join the Circle ✦</p>
+    <div class="gold-line"></div>
+    <h2 class="s-title">Sacred Membership</h2>
+    <p class="s-desc">Choose your level of divine access. Cancel anytime. Transform forever.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="pplan">
+      <div class="pplan-name">Seeker</div>
+      <div class="pplan-price">$0</div>
+      <div class="pplan-period">Free Forever</div>
+      <div class="pplan-divider"></div>
+      <ul class="pplan-features">
+        <li>3 AI Affirmations per day</li>
+        <li>1 guided meditation session</li>
+        <li>2 healing frequency tracks</li>
+        <li>Soul journal (synced to cloud)</li>
+        <li class="off">Full video library</li>
+        <li class="off">Unlimited AI Oracle</li>
+        <li class="off">All healing tracks</li>
+        <li class="off">All courses</li>
+      </ul>
+      <button class="pplan-btn pplan-btn-ghost" onclick="window.location.href='login.html'">Begin for Free</button>
+    </div>
+    <div class="pplan featured">
+      <div class="pplan-badge">Most Sacred</div>
+      <div class="pplan-name">Divine Member</div>
+      <div class="pplan-price">$9.99</div>
+      <div class="pplan-period">per month · cancel anytime</div>
+      <div class="pplan-divider"></div>
+      <ul class="pplan-features">
+        <li>Unlimited AI Affirmations</li>
+        <li>Full meditation library</li>
+        <li>All 8 healing frequencies</li>
+        <li>Unlimited soul journal</li>
+        <li>Full video session library</li>
+        <li>All courses included</li>
+        <li>Community access</li>
+        <li>Weekly new content</li>
+      </ul>
+      <button class="pplan-btn pplan-btn-gold" onclick="window.open(STRIPE_MONTHLY,'_blank')">✦ Join Divine</button>
+    </div>
+    <div class="pplan">
+      <div class="pplan-name">Annual Divine</div>
+      <div class="pplan-price">$79</div>
+      <div class="pplan-period">per year · save 34%</div>
+      <div class="pplan-divider"></div>
+      <ul class="pplan-features">
+        <li>Everything in Divine</li>
+        <li>Exclusive annual content</li>
+        <li>Early feature access</li>
+        <li>Priority Oracle responses</li>
+        <li>1:1 session per quarter</li>
+        <li>Founding member badge</li>
+        <li>Direct creator access</li>
+        <li>Annual sacred ceremony</li>
+      </ul>
+      <button class="pplan-btn pplan-btn-ghost" onclick="window.open(STRIPE_ANNUAL,'_blank')">Join Annual</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">I Walk Amongst Gods</div>
+        <p class="footer-tagline">A near-death experience that changed everything. Now it can change you. Built from beyond the veil, for your divine ascension.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Experience</div>
+        <ul class="footer-links">
+          <li><a onclick="scroll2('ai')">AI Oracle</a></li>
+          <li><a onclick="scroll2('meditation')">Meditation</a></li>
+          <li><a onclick="scroll2('music')">Healing Music</a></li>
+          <li><a onclick="scroll2('journal')">Soul Journal</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Membership</div>
+        <ul class="footer-links">
+          <li><a onclick="scroll2('pricing')">Pricing</a></li>
+          <li><a onclick="window.location.href='login.html'">Sign In</a></li>
+          <li><a onclick="window.open(STRIPE_MONTHLY,'_blank')">Join Divine</a></li>
+          <li><a onclick="window.open(STRIPE_ANNUAL,'_blank')">Annual Plan</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Sacred</div>
+        <ul class="footer-links">
+          <li><a>About the Creator</a></li>
+          <li><a>NDE Research</a></li>
+          <li><a>Privacy Policy</a></li>
+          <li><a>Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 I Walk Amongst Gods · All Rights Reserved · iwalkamongstgods.com</span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<!-- Supabase + Config -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+
+<script>
+// ═══════════════════════════════════════════
+// CORE SETUP
+// ═══════════════════════════════════════════
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let currentUser = null;
+let currentProfile = null;
+
+// Stars
+const sf=document.getElementById('stars');
+for(let i=0;i<200;i++){const s=document.createElement('div');s.className='s';const sz=Math.random()*2.5+.4;s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${(Math.random()*5+2).toFixed(1)}s;--dl:-${(Math.random()*7).toFixed(1)}s;--a:${(Math.random()*.12+.02).toFixed(2)};--b:${(Math.random()*.55+.3).toFixed(2)};`;sf.appendChild(s);}
+
+function scroll2(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'});}
+function showToast(msg,dur=3000){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
+
+// ═══════════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════════
+async function initAuth() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    currentUser = session.user;
+    await loadProfile();
+  }
+  updateUI();
+  hideLoader();
+
+  // Listen for auth changes
+  sb.auth.onAuthStateChange(async (event, session) => {
+    if (session) {
+      currentUser = session.user;
+      await loadProfile();
+    } else {
+      currentUser = null;
+      currentProfile = null;
+    }
+    updateUI();
+  });
+}
+
+async function loadProfile() {
+  if (!currentUser) return;
+  const { data } = await sb.auth.getUser();
+  if (!data?.user) return;
+  const { data: profile } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
+  currentProfile = profile;
+  if (profile) {
+    // Update dashboard stats
+    document.getElementById('dStatMed').textContent = profile.total_meditations || 0;
+    document.getElementById('dStatMin').textContent = profile.total_minutes || 0;
+    document.getElementById('dStatAff').textContent = profile.affirmations_generated || 0;
+  }
+  // Load journal count
+  const { count } = await sb.from('journal_entries').select('*', {count:'exact',head:true}).eq('user_id', currentUser.id);
+  document.getElementById('dStatJournal').textContent = count || 0;
+}
+
+function updateUI() {
+  const loggedIn = !!currentUser;
+  const plan = currentProfile?.plan || 'free';
+  const name = currentProfile?.full_name || currentUser?.email?.split('@')[0] || '?';
+  const initial = name.charAt(0).toUpperCase();
+
+  // Nav
+  document.getElementById('navLoggedOut').style.display = loggedIn ? 'none' : 'block';
+  document.getElementById('navLoggedIn').style.display = loggedIn ? 'flex' : 'none';
+  if (loggedIn) {
+    document.getElementById('navAvatar').textContent = initial;
+    document.getElementById('navPlan').textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
+  }
+
+  // Dashboard bar
+  const dashBar = document.getElementById('dashBar');
+  dashBar.style.display = loggedIn ? 'block' : 'none';
+  if (loggedIn) {
+    document.getElementById('dashWelcome').textContent = `✦ Welcome back, ${name}`;
+    document.getElementById('dashUpgradeBtn').style.display = plan === 'free' ? 'block' : 'none';
+    // Adjust hero margin
+    document.querySelector('.hero').style.paddingTop = '40px';
+  }
+
+  // Hero buttons
+  if (loggedIn) {
+    document.getElementById('heroBtns').innerHTML = `
+      <button class="btn btn-gold" onclick="scroll2('ai')">✦ Enter the Oracle</button>
+      <button class="btn btn-ghost" onclick="scroll2('meditation')">Begin Meditation</button>`;
+  }
+
+  // Journal visibility
+  document.getElementById('journalLoggedOut').style.display = loggedIn ? 'none' : 'block';
+  document.getElementById('journalLoggedIn').style.display = loggedIn ? 'block' : 'none';
+  if (loggedIn) loadJournalEntries();
+
+  // AI counter
+  updateAICounter();
+}
+
+async function signOut() {
+  await sb.auth.signOut();
+  currentUser = null;
+  currentProfile = null;
+  showToast('Until next time, divine one ✦');
+  updateUI();
+}
+
+function hideLoader() {
+  const loader = document.getElementById('appLoading');
+  loader.classList.add('hidden');
+  setTimeout(() => loader.style.display = 'none', 700);
+}
+
+function isPaid() {
+  return currentProfile?.plan === 'divine' || currentProfile?.plan === 'annual';
+}
+
+// ═══════════════════════════════════════════
+// AI ORACLE
+// ═══════════════════════════════════════════
+const FREE_AI_LIMIT = 3;
+
+function getDailyAICount() {
+  const key = 'iwag_ai_' + new Date().toDateString();
+  return parseInt(localStorage.getItem(key) || '0');
+}
+function incrementDailyAICount() {
+  const key = 'iwag_ai_' + new Date().toDateString();
+  localStorage.setItem(key, getDailyAICount() + 1);
+}
+
+function updateAICounter() {
+  const el = document.getElementById('aiCounter');
+  if (!el) return;
+  if (isPaid()) {
+    el.innerHTML = '✦ Unlimited Oracle access — Divine Member';
+    return;
+  }
+  const used = getDailyAICount();
+  const remaining = Math.max(0, FREE_AI_LIMIT - used);
+  if (remaining === 0) {
+    document.getElementById('aiForm').style.display = 'none';
+    document.getElementById('aiLimitMsg').style.display = 'block';
+    el.textContent = '';
+  } else {
+    el.innerHTML = `<span>${remaining}</span> of ${FREE_AI_LIMIT} free affirmations remaining today`;
+  }
+}
+
+async function generateAffirmations() {
+  if (!isPaid() && getDailyAICount() >= FREE_AI_LIMIT) {
+    document.getElementById('aiForm').style.display = 'none';
+    document.getElementById('aiLimitMsg').style.display = 'block';
+    return;
+  }
+  const mood = document.getElementById('aiMood').value;
+  const focus = document.getElementById('aiFocus').value;
+  const intention = document.getElementById('aiIntention').value.trim();
+  const btn = document.getElementById('aiBtn');
+  const loading = document.getElementById('aiLoading');
+  const result = document.getElementById('aiResult');
+  btn.disabled = true;
+  loading.classList.add('show');
+  result.classList.remove('show');
+
+  const prompt = `You are a deeply wise spiritual guide channelling divine wisdom, working within an app called "I Walk Amongst Gods" built by someone who had a transformative near-death experience. The person seeking guidance is currently feeling "${mood}" and wishes to focus on "${focus}".${intention ? ` Their personal intention: "${intention}"` : ''} Generate exactly 5 powerful, deeply personal sacred affirmations. Make them feel channelled specifically for this person's state. First person. Profound not generic. 15-30 words each. Return ONLY a JSON array of 5 strings. No other text.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, messages: [{ role: 'user', content: prompt }] })
+    });
+    const data = await res.json();
+    const raw = data.content[0].text.trim();
+    const affs = JSON.parse(raw.replace(/```json|```/g, '').trim());
+    document.getElementById('aiAffList').innerHTML = affs.map(a => `<li>${a}</li>`).join('');
+    window._lastAffs = affs;
+    window._lastAffMeta = { mood, focus, intention };
+    loading.classList.remove('show');
+    result.classList.add('show');
+    if (!isPaid()) {
+      incrementDailyAICount();
+      updateAICounter();
+    }
+    // Update profile count in DB
+    if (currentUser) {
+      await sb.from('profiles').update({ affirmations_generated: (currentProfile?.affirmations_generated || 0) + 5 }).eq('id', currentUser.id);
+      if (currentProfile) currentProfile.affirmations_generated = (currentProfile.affirmations_generated || 0) + 5;
+      document.getElementById('dStatAff').textContent = currentProfile.affirmations_generated;
+    }
+  } catch(e) {
+    const fallbacks = [
+      "I am a divine being of infinite light, exactly where I need to be on this sacred path.",
+      "The wisdom I carry from beyond the veil guides every step of my earthly journey.",
+      "I release all that dims my divine radiance and step fully into my cosmic truth.",
+      "I am held by forces greater than I can comprehend, loved beyond all measure.",
+      "My soul chose this experience — every challenge is sacred fuel for my ascension."
+    ];
+    document.getElementById('aiAffList').innerHTML = fallbacks.map(a => `<li>${a}</li>`).join('');
+    window._lastAffs = fallbacks;
+    loading.classList.remove('show');
+    result.classList.add('show');
+    if (!isPaid()) { incrementDailyAICount(); updateAICounter(); }
+  }
+  btn.disabled = false;
+}
+
+async function saveAffirmations() {
+  if (!currentUser) { showToast('Sign in to save affirmations ✦'); window.location.href = 'login.html'; return; }
+  if (!window._lastAffs) return;
+  const meta = window._lastAffMeta || {};
+  await sb.from('saved_affirmations').insert({
+    user_id: currentUser.id,
+    affirmations: window._lastAffs,
+    mood: meta.mood,
+    focus: meta.focus,
+    intention: meta.intention
+  });
+  showToast('✦ Affirmations saved to your journal');
+  // Also add to journal entries display
+  const entry = { date: new Date(), q: 'AI Oracle Affirmations', text: window._lastAffs.slice(0, 2).join('\n\n') };
+  prependJournalEntry(entry);
+}
+
+// ═══════════════════════════════════════════
+// MEDITATION
+// ═══════════════════════════════════════════
+let medDur = 10*60, medRem = 10*60, medOn = false, medInt = null, bTO = null, medMode = 'breath', medMins = 10;
+const guidance = ["You have touched the other side of the veil. Carry that knowing into this breath.","Still the mind. The divine speaks only in silence.","You are not your thoughts. You are the vast awareness behind them.","Breathe as the gods breathe — slowly, completely, with infinite purpose.","In this stillness, you meet yourself as you truly are: eternal and infinite.","Let every exhale dissolve all that does not serve your sacred ascension.","You have been shown the truth of existence. Rest completely in that knowing.","The same intelligence that sustains the cosmos sustains you in this moment.","You are loved beyond all measure by forces you cannot yet fully comprehend.","Every breath is a sacred act of communion with the divine."];
+let gIdx = 0, gInt = null;
+
+function setMode(m, el) { medMode = m; document.querySelectorAll('.mmode').forEach(b => b.classList.remove('on')); el.classList.add('on'); }
+function setDur(m, el) { if (medOn) return; medMins = m; medDur = m*60; medRem = medDur; updTimer(); document.querySelectorAll('.mdur').forEach(b => b.classList.remove('on')); el.classList.add('on'); document.getElementById('medLabel').textContent = `${m} Minute ${medMode} Session`; }
+function updTimer() { const m = Math.floor(medRem/60).toString().padStart(2,'0'); const s = (medRem%60).toString().padStart(2,'0'); document.getElementById('medTimer').textContent = `${m}:${s}`; }
+
+function toggleMed() {
+  if (!medOn) {
+    medOn = true; document.getElementById('medGo').textContent = '⏸';
+    if (medMode === 'breath') breathCycle();
+    medInt = setInterval(() => { medRem--; updTimer(); if (medRem <= 0) completeMed(); }, 1000);
+    rotGuidance(); gInt = setInterval(rotGuidance, 12000);
+  } else { stopMed(); }
+}
+
+async function completeMed() {
+  stopMed();
+  showToast('✦ Session complete — well done, divine one');
+  if (currentUser) {
+    const newMeds = (currentProfile?.total_meditations || 0) + 1;
+    const newMins = (currentProfile?.total_minutes || 0) + medMins;
+    await sb.from('profiles').update({ total_meditations: newMeds, total_minutes: newMins }).eq('id', currentUser.id);
+    await sb.from('meditation_sessions').insert({ user_id: currentUser.id, duration_minutes: medMins, mode: medMode });
+    if (currentProfile) { currentProfile.total_meditations = newMeds; currentProfile.total_minutes = newMins; }
+    document.getElementById('dStatMed').textContent = newMeds;
+    document.getElementById('dStatMin').textContent = newMins;
+    document.getElementById('medSaved').textContent = '✦ Session saved to your profile';
+    setTimeout(() => document.getElementById('medSaved').textContent = '', 4000);
+  }
+}
+
+function stopMed() {
+  medOn = false; clearInterval(medInt); clearInterval(gInt); clearTimeout(bTO);
+  document.getElementById('medGo').textContent = '▶';
+  document.getElementById('bc').classList.remove('inhale');
+  document.getElementById('bw').textContent = 'Begin';
+  medRem = medDur; updTimer();
+}
+
+function breathCycle() {
+  if (!medOn) return;
+  const c = document.getElementById('bc'), w = document.getElementById('bw');
+  c.classList.add('inhale'); w.textContent = 'Inhale';
+  bTO = setTimeout(() => { if (!medOn) return; w.textContent = 'Hold';
+    bTO = setTimeout(() => { if (!medOn) return; c.classList.remove('inhale'); w.textContent = 'Exhale';
+      bTO = setTimeout(() => { if (!medOn) return; w.textContent = 'Rest';
+        bTO = setTimeout(() => breathCycle(), 2000);
+      }, 4000);
+    }, 4000);
+  }, 4000);
+}
+
+function rotGuidance() {
+  const g = document.getElementById('medGuidance');
+  g.style.opacity = 0;
+  setTimeout(() => { g.textContent = `"${guidance[gIdx % guidance.length]}"`; g.style.opacity = 1; gIdx++; }, 800);
+}
+updTimer();
+
+// ═══════════════════════════════════════════
+// MUSIC PLAYER
+// ═══════════════════════════════════════════
+const tracks = [
+  {n:'Divine Passage',t:'432 Hz — Soul Restoration',d:'6:48',plan:'free'},
+  {n:'Threshold of Light',t:'528 Hz — DNA Healing',d:'8:12',plan:'free'},
+  {n:'Celestial Breath',t:'Binaural Theta — Deep Meditation',d:'12:00',plan:'divine'},
+  {n:'The Veil Lifts',t:'396 Hz — Liberation',d:'7:33',plan:'divine'},
+  {n:'Amongst the Stars',t:'Solfeggio 741 Hz — Awakening',d:'9:05',plan:'divine'},
+  {n:'Return from Beyond',t:'Alpha Waves — Gentle Emergence',d:'10:48',plan:'divine'},
+  {n:'Gods Walking',t:'Gamma 40 Hz — Heightened Awareness',d:'15:22',plan:'annual'},
+  {n:'Sacred Silence',t:'Delta Waves — Deepest Healing',d:'20:00',plan:'annual'},
+];
+let mCur = 0, mPlaying = false, mPInt = null, mPv = 0;
+
+function canPlay(track) {
+  if (track.plan === 'free') return true;
+  if (track.plan === 'divine' && (currentProfile?.plan === 'divine' || currentProfile?.plan === 'annual')) return true;
+  if (track.plan === 'annual' && currentProfile?.plan === 'annual') return true;
+  return false;
+}
+
+function mRenderList() {
+  document.getElementById('mTrackList').innerHTML = tracks.map((t,i) => `
+    <li class="ttrack ${i===mCur?'on':''}" onclick="mSelect(${i})">
+      <span class="ttrack-num">${String(i+1).padStart(2,'0')}</span>
+      <div class="ttrack-info">
+        <div class="ttrack-name">${t.n}</div>
+        <div class="ttrack-sub">${t.t}</div>
+      </div>
+      <span class="ttrack-dur">${t.d}</span>
+      <span style="font-size:11px">${canPlay(t)?'':'🔒'}</span>
+    </li>`).join('');
+}
+
+function mSelect(i) {
+  if (!canPlay(tracks[i])) { showToast('🔒 Unlock with Divine Membership'); window.open(STRIPE_MONTHLY,'_blank'); return; }
+  mCur = i; mPv = 0;
+  document.getElementById('mTrackName').textContent = tracks[i].n;
+  document.getElementById('mTrackType').textContent = tracks[i].t;
+  document.getElementById('mTotalTime').textContent = tracks[i].d;
+  document.getElementById('mBarFill').style.width = '0%';
+  document.getElementById('mCurTime').textContent = '0:00';
+  mRenderList();
+}
+
+function mTogglePlay() {
+  if (!canPlay(tracks[mCur])) { showToast('🔒 Unlock with Divine Membership'); return; }
+  mPlaying = !mPlaying;
+  const v = document.getElementById('vinyl');
+  if (mPlaying) {
+    document.getElementById('mPlayBtn').textContent = '⏸';
+    v.classList.add('spin');
+    mPInt = setInterval(() => {
+      mPv = Math.min(100, mPv + .08);
+      document.getElementById('mBarFill').style.width = mPv + '%';
+      const parts = tracks[mCur].d.split(':');
+      const total = parseInt(parts[0])*60 + parseInt(parts[1]);
+      const cur = Math.floor(total * mPv / 100);
+      document.getElementById('mCurTime').textContent = `${Math.floor(cur/60)}:${String(cur%60).padStart(2,'0')}`;
+      if (mPv >= 100) mNext();
+    }, 300);
+  } else {
+    document.getElementById('mPlayBtn').textContent = '▶';
+    v.classList.remove('spin');
+    clearInterval(mPInt);
+  }
+}
+
+function mNext() { mCur = (mCur+1) % tracks.length; mPv = 0; mSelect(mCur); if (mPlaying) { mPlaying = false; mTogglePlay(); } }
+function mPrev() { mCur = (mCur-1+tracks.length) % tracks.length; mPv = 0; mSelect(mCur); }
+mRenderList();
+
+// ═══════════════════════════════════════════
+// JOURNAL
+// ═══════════════════════════════════════════
+const prompts = [
+  "What truth did your soul bring back from beyond the veil today?",
+  "What fear are you ready to release into the cosmic fire?",
+  "Describe the version of yourself that walks fully amongst gods.",
+  "What would you do if you knew the universe was completely conspiring in your favour?",
+  "Where in your life are you dimming your divine light, and why?",
+  "Write a letter from your highest self to your present self.",
+  "What does abundance feel like in your body, your cells, your soul?",
+  "If you had one message from the other side, what would it be?",
+  "What ancient wisdom does your soul carry that the world needs now?",
+  "Describe your life as it will look when you are fully awakened."
+];
+let pIdx = 0;
+
+function nextPrompt() { pIdx = (pIdx+1) % prompts.length; document.getElementById('jQuestion').textContent = `"${prompts[pIdx]}"`; }
+function prevPrompt() { pIdx = (pIdx-1+prompts.length) % prompts.length; document.getElementById('jQuestion').textContent = `"${prompts[pIdx]}"`; }
+
+async function saveEntry() {
+  if (!currentUser) { showToast('Sign in to save your journal'); window.location.href = 'login.html'; return; }
+  const text = document.getElementById('jTextarea').value.trim();
+  if (!text) { showToast('Write something sacred first...'); return; }
+  const { data, error } = await sb.from('journal_entries').insert({
+    user_id: currentUser.id,
+    prompt: prompts[pIdx],
+    content: text
+  }).select().single();
+  if (error) { showToast('Error saving — please try again'); return; }
+  document.getElementById('jTextarea').value = '';
+  showToast('✦ Entry saved to your sacred journal');
+  prependJournalEntry({ date: new Date(), q: prompts[pIdx], text });
+  // Update count
+  const cur = parseInt(document.getElementById('dStatJournal').textContent) || 0;
+  document.getElementById('dStatJournal').textContent = cur + 1;
+}
+
+function prependJournalEntry(entry) {
+  const el = document.getElementById('jEntries');
+  const div = document.createElement('div');
+  div.className = 'jentry';
+  div.innerHTML = `<div class="jentry-date">${new Date(entry.date).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}</div><div class="jentry-q">${entry.q}</div><div class="jentry-text">${entry.text}</div>`;
+  el.prepend(div);
+}
+
+async function loadJournalEntries() {
+  if (!currentUser) return;
+  const { data } = await sb.from('journal_entries').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false }).limit(5);
+  if (!data) return;
+  const el = document.getElementById('jEntries');
+  el.innerHTML = data.map(e => `
+    <div class="jentry">
+      <div class="jentry-date">${new Date(e.created_at).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}</div>
+      <div class="jentry-q">${e.prompt}</div>
+      <div class="jentry-text">${e.content}</div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════
+// PWA SERVICE WORKER
+// ═══════════════════════════════════════════
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(e => console.warn('SW:', e));
+  });
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+initAuth();
+</script>
+</body>
+</html>
