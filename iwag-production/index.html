@@ -93,7 +93,7 @@ section{position:relative;z-index:1;}
 .lock-text{font-family:'Cinzel',serif;font-size:11px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;}
 .lock-btn{padding:10px 28px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;background:linear-gradient(135deg,var(--gold-dim),var(--gold));color:var(--deep);border:none;cursor:pointer;}
 
-/* ── AI ORACLE ── */
+/* ── Divine Oracle ── */
 #ai{background:var(--void);padding:110px 0;}
 .ai-wrap{max-width:860px;margin:0 auto;padding:0 40px;}
 .ai-box{background:linear-gradient(135deg,rgba(201,168,76,.06),rgba(5,11,18,.95));border:1px solid rgba(201,168,76,.2);padding:56px 52px;position:relative;}
@@ -275,7 +275,7 @@ footer{position:relative;z-index:1;background:var(--deep);padding:72px 40px 48px
 <nav>
   <span class="logo" onclick="scroll2('hero')">I Walk Amongst Gods</span>
   <ul class="nav-links">
-    <li><a onclick="scroll2('ai')">AI Oracle</a></li>
+    <li><a onclick="scroll2('ai')">Divine Oracle</a></li>
     <li><a onclick="scroll2('meditation')">Meditate</a></li>
     <li><a onclick="scroll2('music')">Music</a></li>
     <li><a onclick="scroll2('journal')">Journal</a></li>
@@ -316,7 +316,7 @@ footer{position:relative;z-index:1;background:var(--deep);padding:72px 40px 48px
   <p class="hero-eyebrow">✦ &nbsp; The World's Most Sacred Wellness Experience &nbsp; ✦</p>
   <h1 class="hero-title">I Walk Amongst Gods</h1>
   <p class="hero-subtitle">Awakened by a Near-Death Experience &nbsp;·&nbsp; Built for Your Ascension</p>
-  <p class="hero-desc">Beyond the veil of life lies infinite wisdom. Step into the most immersive spiritual wellness platform ever created — powered by divine intention and artificial intelligence.</p>
+  <p class="hero-desc">Beyond the veil of life lies infinite wisdom. Step into the most immersive spiritual wellness platform ever created — powered by divine intention and sacred wisdom.</p>
   <div class="hero-ornament"></div>
   <div class="hero-btns" id="heroBtns">
     <button class="btn btn-gold" onclick="scroll2('ai')">✦ &nbsp; Enter the Oracle</button>
@@ -330,16 +330,16 @@ footer{position:relative;z-index:1;background:var(--deep);padding:72px 40px 48px
   </div>
 </section>
 
-<!-- AI ORACLE -->
+<!-- Divine Oracle -->
 <section id="ai">
   <div class="ai-wrap">
     <p class="s-tag">✦ Sacred Intelligence ✦</p>
     <div class="gold-line"></div>
     <div class="ai-box">
       <p class="ai-intro">The Divine Oracle</p>
-      <h2 class="ai-heading">AI-Powered Sacred Affirmations</h2>
+      <h2 class="ai-heading">Sacred Affirmations</h2>
       <p class="ai-sub">Share your soul's current state. The Oracle channels personalised affirmations written specifically for you.</p>
-      <p class="ai-counter" id="aiCounter"></p>
+      <p class="ai-counter" id="AffirmationCounter"></p>
 
       <div id="aiForm">
         <div class="ai-fields">
@@ -496,12 +496,12 @@ footer{position:relative;z-index:1;background:var(--deep);padding:72px 40px 48px
       <div class="pplan-period">Free Forever</div>
       <div class="pplan-divider"></div>
       <ul class="pplan-features">
-        <li>3 AI Affirmations per day</li>
+        <li>3 Sacred Affirmations per day</li>
         <li>1 guided meditation session</li>
         <li>2 healing frequency tracks</li>
         <li>Soul journal (synced to cloud)</li>
         <li class="off">Full video library</li>
-        <li class="off">Unlimited AI Oracle</li>
+        <li class="off">Unlimited Divine Oracle</li>
         <li class="off">All healing tracks</li>
         <li class="off">All courses</li>
       </ul>
@@ -514,7 +514,7 @@ footer{position:relative;z-index:1;background:var(--deep);padding:72px 40px 48px
       <div class="pplan-period">per month · cancel anytime</div>
       <div class="pplan-divider"></div>
       <ul class="pplan-features">
-        <li>Unlimited AI Affirmations</li>
+        <li>Unlimited Sacred Affirmations</li>
         <li>Full meditation library</li>
         <li>All 8 healing frequencies</li>
         <li>Unlimited soul journal</li>
@@ -556,7 +556,7 @@ footer{position:relative;z-index:1;background:var(--deep);padding:72px 40px 48px
       <div>
         <div class="footer-col-title">Experience</div>
         <ul class="footer-links">
-          <li><a onclick="scroll2('ai')">AI Oracle</a></li>
+          <li><a onclick="scroll2('ai')">Divine Oracle</a></li>
           <li><a onclick="scroll2('meditation')">Meditation</a></li>
           <li><a onclick="scroll2('music')">Healing Music</a></li>
           <li><a onclick="scroll2('journal')">Soul Journal</a></li>
@@ -689,7 +689,7 @@ function updateUI() {
   if (loggedIn) loadJournalEntries();
 
   // AI counter
-  updateAICounter();
+  updateAffirmationCounter();
 }
 
 async function signOut() {
@@ -711,7 +711,7 @@ function isPaid() {
 }
 
 // ═══════════════════════════════════════════
-// AI ORACLE
+// Divine Oracle
 // ═══════════════════════════════════════════
 const FREE_AI_LIMIT = 3;
 
@@ -724,8 +724,8 @@ function incrementDailyAICount() {
   localStorage.setItem(key, getDailyAICount() + 1);
 }
 
-function updateAICounter() {
-  const el = document.getElementById('aiCounter');
+function updateAffirmationCounter() {
+  const el = document.getElementById('AffirmationCounter');
   if (!el) return;
   if (isPaid()) {
     el.innerHTML = '✦ Unlimited Oracle access — Divine Member';
@@ -776,7 +776,7 @@ async function generateAffirmations() {
     result.classList.add('show');
     if (!isPaid()) {
       incrementDailyAICount();
-      updateAICounter();
+      updateAffirmationCounter();
     }
     // Update profile count in DB
     if (currentUser) {
@@ -796,7 +796,7 @@ async function generateAffirmations() {
     window._lastAffs = fallbacks;
     loading.classList.remove('show');
     result.classList.add('show');
-    if (!isPaid()) { incrementDailyAICount(); updateAICounter(); }
+    if (!isPaid()) { incrementDailyAICount(); updateAffirmationCounter(); }
   }
   btn.disabled = false;
 }
@@ -814,7 +814,7 @@ async function saveAffirmations() {
   });
   showToast('✦ Affirmations saved to your journal');
   // Also add to journal entries display
-  const entry = { date: new Date(), q: 'AI Oracle Affirmations', text: window._lastAffs.slice(0, 2).join('\n\n') };
+  const entry = { date: new Date(), q: 'Divine Oracle Affirmations', text: window._lastAffs.slice(0, 2).join('\n\n') };
   prependJournalEntry(entry);
 }
 
