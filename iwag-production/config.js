@@ -7,11 +7,8 @@
 // STEP 4: Save this file — you're connected!
 // ═══════════════════════════════════════════════════
 
-const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL';
-// Example: 'https://abcdefghijk.supabase.co'
-
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
-// Example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+const SUPABASE_URL = 'https://nqdbnepxzzgagiebvesm.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_Gq8E1qiQoHzaT8h86lX0ow_j9vAb1pN';
 
 // ── Stripe Payment Links ──
 const STRIPE_MONTHLY = 'https://buy.stripe.com/9B6cN6d7v2aef3l43i9IQ03';
