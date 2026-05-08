@@ -886,15 +886,21 @@ updTimer();
 // MUSIC PLAYER
 // ═══════════════════════════════════════════
 const tracks = [
-  {n:'Divine Passage',t:'432 Hz — Soul Restoration',d:'6:48',plan:'free'},
-  {n:'Threshold of Light',t:'528 Hz — DNA Healing',d:'8:12',plan:'free'},
-  {n:'Celestial Breath',t:'Binaural Theta — Deep Meditation',d:'12:00',plan:'divine'},
-  {n:'The Veil Lifts',t:'396 Hz — Liberation',d:'7:33',plan:'divine'},
-  {n:'Amongst the Stars',t:'Solfeggio 741 Hz — Awakening',d:'9:05',plan:'divine'},
-  {n:'Return from Beyond',t:'Alpha Waves — Gentle Emergence',d:'10:48',plan:'divine'},
-  {n:'Gods Walking',t:'Gamma 40 Hz — Heightened Awareness',d:'15:22',plan:'annual'},
-  {n:'Sacred Silence',t:'Delta Waves — Deepest Healing',d:'20:00',plan:'annual'},
+  {n:'Deep Calm',t:'Meditation — Deep Relaxation',d:'1:42',plan:'free',src:'/Content/music-meditations/deep-calm/deep-calm-01.mp3'},
+  {n:'Focus Clarity I',t:'Meditation — Focus & Clarity',d:'1:42',plan:'free',src:'/Content/music-meditations/focus-clarity/focus-clarity-01.mp3'},
+  {n:'Focus Clarity II',t:'Meditation — Focus & Clarity',d:'1:42',plan:'free',src:'/Content/music-meditations/focus-clarity/focus-clarity-02.mp3'},
+  {n:'Morning Alignment',t:'Meditation — Morning Energy',d:'1:42',plan:'divine',src:'/Content/music-meditations/morning-alignment/morning-alignment-01.mp3'},
+  {n:'Sleep Restoration I',t:'Meditation — Deep Sleep',d:'1:42',plan:'divine',src:'/Content/music-meditations/sleep-restoration/sleep-restoration-01.mp3'},
+  {n:'Sleep Restoration II',t:'Meditation — Deep Sleep',d:'1:42',plan:'divine',src:'/Content/music-meditations/sleep-restoration/sleep-restoration-02.mp3'},
+  {n:'Stress Release',t:'Meditation — Stress Relief',d:'1:42',plan:'divine',src:'/Content/music-meditations/stress-release/stress-release-01.mp3'},
+  {n:'432Hz Healing',t:'Healing Frequency — 432Hz',d:'1:42',plan:'divine',src:'/Content/healing-frequencies/432hz/432hz-01.mp3'},
+  {n:'528Hz Healing',t:'Healing Frequency — 528Hz',d:'1:42',plan:'annual',src:'/Content/healing-frequencies/528hz/528hz-01.mp3'},
+  {n:'639Hz Harmony',t:'Healing Frequency — 639Hz',d:'1:42',plan:'annual',src:'/Content/healing-frequencies/639hz/639hz-01.mp3'},
+  {n:'Box Breathing',t:'Breathwork — Calm Rhythm',d:'1:42',plan:'free',src:'/Content/breathwork/box-breathing/box-breathing-01.mp3'},
+  {n:'Deep Breath',t:'Breathwork — Slow Breathing',d:'1:42',plan:'divine',src:'/Content/breathwork/deep-breath/deep-breath-01.mp3'},
+  {n:'Energy Reset',t:'Breathwork — Energy Reset',d:'1:42',plan:'annual',src:'/Content/breathwork/energy-reset/energy-reset-01.mp3'}
 ];
+
 let mCur = 0, mPlaying = false, mPInt = null, mPv = 0;
 
 function canPlay(track) {
