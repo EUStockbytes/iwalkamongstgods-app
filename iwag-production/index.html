@@ -439,7 +439,7 @@ footer{position:relative;z-index:1;background:var(--deep);padding:72px 40px 48px
         <button class="mcbtn" onclick="mPrev()">⏮</button>
         <button class="mcbtn" onclick="mPrev()">⏪</button>
         <button class="mplaybtn" id="mPlayBtn" onclick="mTogglePlay()">▶</button>
-        <button class="mcbtn">⏩</button>
+        <button class="mcbtn" onclick="mNext()">⏩</button>
         <button class="mcbtn" onclick="mNext()">⏭</button>
       </div>
     </div>
@@ -924,101 +924,86 @@ function mRenderList() {
     </li>`).join('');
 }
 
-function mSelect(i) {
-  if (!canPlay(tracks[i])) { showToast('🔒 Unlock with Divine Membership'); window.open(STRIPE_MONTHLY,'_blank'); return; }
-  mCur = i; mPv = 0;
+function mSelect(i, autoPlay = false) {
+  if (!canPlay(tracks[i])) {
+    showToast('🔒 Unlock with Divine Membership');
+    window.open(STRIPE_MONTHLY, '_blank');
+    return;
+  }
+
+  const wasPlaying = mPlaying;
+  mCur = i;
+  mPv = 0;
   document.getElementById('mTrackName').textContent = tracks[i].n;
   document.getElementById('mTrackType').textContent = tracks[i].t;
   document.getElementById('mTotalTime').textContent = tracks[i].d;
   document.getElementById('mBarFill').style.width = '0%';
   document.getElementById('mCurTime').textContent = '0:00';
   mRenderList();
+
+  if (!mAudio.src || !mAudio.src.includes(tracks[mCur].src)) {
+    mAudio.src = tracks[mCur].src;
+  }
+
+  if (autoPlay || wasPlaying) {
+    if (!mPlaying) mTogglePlay();
+  }
 }
+
+function updateMusicProgress() {
+  if (!mAudio.duration) return;
+  mPv = (mAudio.currentTime / mAudio.duration) * 100;
+  document.getElementById('mBarFill').style.width = mPv + '%';
+  const cur = Math.floor(mAudio.currentTime);
+  document.getElementById('mCurTime').textContent = `${Math.floor(cur/60)}:${String(cur%60).padStart(2,'0')}`;
+}
+
+mAudio.addEventListener('timeupdate', updateMusicProgress);
+mAudio.addEventListener('ended', () => {
+  mPlaying = false;
+  document.getElementById('mPlayBtn').textContent = '▶';
+  document.getElementById('vinyl').classList.remove('spin');
+  mNext();
+});
 
 function mTogglePlay() {
-  if (!canPlay(tracks[mCur])) { 
-    showToast('🔒 Unlock with Divine Membership'); 
-    return; 
+  if (!canPlay(tracks[mCur])) {
+    showToast('🔒 Unlock with Divine Membership');
+    return;
   }
 
   const v = document.getElementById('vinyl');
   const playBtn = document.getElementById('mPlayBtn');
 
   if (!mPlaying) {
-    mAudio.src = tracks[mCur].src;
-    mAudio.play();
+    if (!mAudio.src || !mAudio.src.includes(tracks[mCur].src)) {
+      mAudio.src = tracks[mCur].src;
+    }
 
+    mAudio.play().catch(() => {});
     mPlaying = true;
     playBtn.textContent = '⏸';
     v.classList.add('spin');
-
-    clearInterval(mPInt);
-    mPInt = setInterval(() => {
-      if (mAudio.duration) {
-        mPv = (mAudio.currentTime / mAudio.duration) * 100;
-        document.getElementById('mBarFill').style.width = mPv + '%';
-
-        const cur = Math.floor(mAudio.currentTime);
-        document.getElementById('mCurTime').textContent =
-          `${Math.floor(cur/60)}:${String(cur%60).padStart(2,'0')}`;
-
-        if (mAudio.ended) mNext();
-      }
-    }, 300);
-
   } else {
     mAudio.pause();
-
     mPlaying = false;
     playBtn.textContent = '▶';
     v.classList.remove('spin');
-    clearInterval(mPInt);
   }
 }
 
-
-  function mTogglePlay() {
-  if (!canPlay(tracks[mCur])) { 
-    showToast('🔒 Unlock with Divine Membership'); 
-    return; 
-  }
-
-  const v = document.getElementById('vinyl');
-  const playBtn = document.getElementById('mPlayBtn');
-
-  if (!mPlaying) {
-    mAudio.src = tracks[mCur].src;
-    mAudio.play();
-
-    mPlaying = true;
-    playBtn.textContent = '⏸';
-    v.classList.add('spin');
-
-    clearInterval(mPInt);
-    mPInt = setInterval(() => {
-      if (mAudio.duration) {
-        mPv = (mAudio.currentTime / mAudio.duration) * 100;
-        document.getElementById('mBarFill').style.width = mPv + '%';
-
-        const cur = Math.floor(mAudio.currentTime);
-        document.getElementById('mCurTime').textContent =
-          `${Math.floor(cur/60)}:${String(cur%60).padStart(2,'0')}`;
-
-        if (mAudio.ended) mNext();
-      }
-    }, 300);
-
-  } else {
-    mAudio.pause();
-
-    mPlaying = false;
-    playBtn.textContent = '▶';
-    v.classList.remove('spin');
-    clearInterval(mPInt);
-  }
+function mNext() {
+  const wasPlaying = mPlaying;
+  mCur = (mCur + 1) % tracks.length;
+  mSelect(mCur, wasPlaying);
 }
-  function mNext() { mCur = (mCur+1) % tracks.length; mPv = 0; mSelect(mCur); if (mPlaying) { mPlaying = false; mTogglePlay(); } }
-function mPrev() { mCur = (mCur-1+tracks.length) % tracks.length; mPv = 0; mSelect(mCur); }
+
+function mPrev() {
+  const wasPlaying = mPlaying;
+  mCur = (mCur - 1 + tracks.length) % tracks.length;
+  mSelect(mCur, wasPlaying);
+}
+
 mRenderList();
 
 // ═══════════════════════════════════════════
