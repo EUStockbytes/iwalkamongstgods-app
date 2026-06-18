@@ -256,6 +256,23 @@ footer{position:relative;z-index:1;background:var(--deep);padding:72px 40px 48px
 .app-loading-logo{font-family:'Cinzel Decorative',serif;font-size:clamp(16px,3vw,28px);color:var(--gold);letter-spacing:4px;}
 .app-loading-spinner{width:40px;height:40px;border:1px solid rgba(201,168,76,.2);border-top-color:var(--gold);border-radius:50%;animation:spin 1s linear infinite;}
 
+
+/* ── Daily Audio Affirmations ── */
+.aff-layout{max-width:980px;margin:0 auto;padding:0 24px;}
+.aff-box{background:rgba(8,14,18,.74);border:1px solid rgba(201,168,76,.18);padding:34px;border-radius:2px;}
+.aff-controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:22px 0;}
+.aff-batch{background:transparent;border:1px solid rgba(201,168,76,.28);color:var(--muted);padding:10px 14px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:1.5px;cursor:pointer;text-transform:uppercase;}
+.aff-batch.on{background:var(--gold);color:#06080b;}
+.aff-player{text-align:center;margin:20px 0 28px;}
+.aff-title{font-family:'Cinzel Decorative',serif;color:var(--gold);font-size:clamp(22px,4vw,38px);margin-bottom:8px;}
+.aff-sub{color:var(--muted);font-style:italic;}
+.aff-play{margin-top:18px;width:64px;height:64px;border-radius:50%;border:0;background:var(--gold);color:#05070a;font-size:24px;cursor:pointer;}
+.aff-list{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:24px;}
+.aff-day{border:1px solid rgba(201,168,76,.14);padding:12px;cursor:pointer;color:var(--text);background:rgba(255,255,255,.02);font-family:'Cinzel',serif;font-size:12px;letter-spacing:1px;}
+.aff-day.on{border-color:var(--gold);color:var(--gold);}
+.aff-day.locked{opacity:.45;}
+@media(max-width:700px){.aff-list{grid-template-columns:1fr 1fr;}.aff-box{padding:26px 18px;}}
+
 @media(max-width:900px){nav{padding:14px 24px;}.nav-links{display:none;}.music-layout{grid-template-columns:1fr;}.footer-top{grid-template-columns:1fr 1fr;}.ai-fields{grid-template-columns:1fr;}}
 @media(max-width:600px){.container,.ai-wrap,.med-center,.journal-wrap{padding:0 20px;}.pricing-grid{padding:0 20px;}.music-layout{padding:0 20px;}.ai-box{padding:36px 24px;}.journal-card{padding:32px 24px;}.footer-top{grid-template-columns:1fr;}.hero-orbit{width:280px;height:280px;}.dash-bar{padding:16px 20px;}}
 </style>
@@ -278,6 +295,7 @@ footer{position:relative;z-index:1;background:var(--deep);padding:72px 40px 48px
     <li><a onclick="scroll2('ai')">Divine Oracle</a></li>
     <li><a onclick="scroll2('meditation')">Meditate</a></li>
     <li><a onclick="scroll2('music')">Music</a></li>
+    <li><a onclick="scroll2('affirmations')">Daily Affirmations</a></li>
     <li><a onclick="scroll2('journal')">Journal</a></li>
     <li><a onclick="scroll2('pricing')">Membership</a></li>
   </ul>
@@ -450,6 +468,29 @@ footer{position:relative;z-index:1;background:var(--deep);padding:72px 40px 48px
   </div>
 </section>
 
+
+<!-- DAILY AUDIO AFFIRMATIONS -->
+<section id="affirmations">
+  <div class="aff-layout">
+    <p class="s-tag">✦ Sacred Daily Practice ✦</p>
+    <div class="gold-line"></div>
+    <h2 class="s-title">Daily Audio Affirmations</h2>
+    <p class="s-desc">A full year of spoken sacred affirmations. Choose your day and return whenever your soul calls.</p>
+
+    <div class="aff-box">
+      <div class="aff-controls" id="affBatchButtons"></div>
+
+      <div class="aff-player">
+        <div class="aff-title" id="affNowTitle">Day 001</div>
+        <div class="aff-sub" id="affNowSub">Daily Audio Affirmation</div>
+        <button class="aff-play" id="affPlayBtn" onclick="affTogglePlay()">▶</button>
+      </div>
+
+      <ul class="aff-list" id="affDayList"></ul>
+    </div>
+  </div>
+</section>
+
 <!-- JOURNAL -->
 <section id="journal">
   <div class="journal-wrap">
@@ -559,6 +600,7 @@ footer{position:relative;z-index:1;background:var(--deep);padding:72px 40px 48px
           <li><a onclick="scroll2('ai')">Divine Oracle</a></li>
           <li><a onclick="scroll2('meditation')">Meditation</a></li>
           <li><a onclick="scroll2('music')">Healing Music</a></li>
+          <li><a onclick="scroll2('affirmations')">Daily Affirmations</a></li>
           <li><a onclick="scroll2('journal')">Soul Journal</a></li>
         </ul>
       </div>
@@ -903,25 +945,81 @@ const tracks = [
   {n:'Box Breathing',t:'Breathwork — Calm Rhythm',d:'1:42',plan:'free',src:'/Content/breathwork/box-breathing/box-breathing-01.mp3'},
   {n:'Deep Breath',t:'Breathwork — Slow Breathing',d:'1:42',plan:'divine',src:'/Content/breathwork/deep-breath/deep-breath-01.mp3'},
   {n:'Energy Reset',t:'Breathwork — Energy Reset',d:'1:42',plan:'annual',src:'/Content/breathwork/energy-reset/energy-reset-01.mp3'}
-];// Daily Audio Affirmations — currently uploaded: 001–150
-const AFFIRMATIONS_UPLOADED_TO = 150;
-
-for (let day = 1; day <= AFFIRMATIONS_UPLOADED_TO; day++) {
-  const batch = Math.ceil(day / 30);
-  const batchName = `batch-${String(batch).padStart(2, '0')}`;
-  const dayName = String(day).padStart(3, '0');
-
-  tracks.push({
-    n: `Daily Affirmation ${dayName}`,
-    t: `Sacred Daily Audio Affirmation — Day ${dayName}`,
-    d: 'Audio',
-    plan: day <= 7 ? 'free' : 'divine',
-    src: `/Content/affirmations/${batchName}/affirmation-${dayName}.m4a`
-  });
-}
+];
 
 let mCur = 0, mPlaying = false, mPInt = null, mPv = 0;
 let mAudio = new Audio();
+
+let affAudio = new Audio();
+let affCurrentDay = 1;
+let affPlaying = false;
+const AFFIRMATIONS_UPLOADED_TO = 150;
+
+function affPad(n){ return String(n).padStart(3,'0'); }
+function affBatch(day){ return Math.ceil(day / 30); }
+function affSrc(day){
+  return `/Content/affirmations/batch-${String(affBatch(day)).padStart(2,'0')}/affirmation-${affPad(day)}.m4a`;
+}
+function affCanPlay(day){
+  return day <= 7 || currentProfile?.plan === 'divine' || currentProfile?.plan === 'annual';
+}
+function affRenderBatches(){
+  const el = document.getElementById('affBatchButtons');
+  if(!el) return;
+  const count = Math.ceil(AFFIRMATIONS_UPLOADED_TO / 30);
+  el.innerHTML = '';
+  for(let b=1;b<=count;b++){
+    const start=(b-1)*30+1;
+    const end=Math.min(b*30,AFFIRMATIONS_UPLOADED_TO);
+    el.innerHTML += `<button class="aff-batch ${b===affBatch(affCurrentDay)?'on':''}" onclick="affRenderDays(${b})">${affPad(start)}–${affPad(end)}</button>`;
+  }
+}
+function affRenderDays(batch=1){
+  const el = document.getElementById('affDayList');
+  if(!el) return;
+  const start=(batch-1)*30+1;
+  const end=Math.min(batch*30,AFFIRMATIONS_UPLOADED_TO);
+  el.innerHTML = '';
+  for(let day=start;day<=end;day++){
+    const locked = !affCanPlay(day);
+    el.innerHTML += `<li class="aff-day ${day===affCurrentDay?'on':''} ${locked?'locked':''}" onclick="affSelect(${day})">Day ${affPad(day)} ${locked?'🔒':''}</li>`;
+  }
+  affRenderBatches();
+}
+function affSelect(day){
+  if(!affCanPlay(day)){
+    showToast('Unlock Divine to play this affirmation ✦');
+    scroll2('pricing');
+    return;
+  }
+  affCurrentDay = day;
+  document.getElementById('affNowTitle').textContent = `Day ${affPad(day)}`;
+  document.getElementById('affNowSub').textContent = `Sacred Daily Audio Affirmation — Day ${affPad(day)}`;
+  affAudio.src = affSrc(day);
+  affPlaying = false;
+  document.getElementById('affPlayBtn').textContent = '▶';
+  affRenderDays(affBatch(day));
+}
+function affTogglePlay(){
+  if(!affCanPlay(affCurrentDay)){
+    showToast('Unlock Divine to play this affirmation ✦');
+    scroll2('pricing');
+    return;
+  }
+  if(!affAudio.src) affAudio.src = affSrc(affCurrentDay);
+  if(affPlaying){
+    affAudio.pause();
+    affPlaying = false;
+    document.getElementById('affPlayBtn').textContent = '▶';
+  } else {
+    mAudio.pause();
+    affAudio.play().catch(()=>showToast('Tap again to play ✦'));
+    affPlaying = true;
+    document.getElementById('affPlayBtn').textContent = '❚❚';
+  }
+}
+affAudio.addEventListener('ended',()=>{affPlaying=false;document.getElementById('affPlayBtn').textContent='▶';});
+
 
 function canPlay(track) {
   if (track.plan === 'free') return true;
