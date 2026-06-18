@@ -267,6 +267,7 @@ footer{position:relative;z-index:1;background:var(--deep);padding:72px 40px 48px
 .aff-title{font-family:'Cinzel Decorative',serif;color:var(--gold);font-size:clamp(22px,4vw,38px);margin-bottom:8px;}
 .aff-sub{color:var(--muted);font-style:italic;}
 .aff-play{margin-top:18px;width:64px;height:64px;border-radius:50%;border:0;background:var(--gold);color:#05070a;font-size:24px;cursor:pointer;}
+.aff-select{margin:12px auto 24px;display:block;width:min(320px,100%);background:#080e12;color:var(--gold);border:1px solid rgba(201,168,76,.35);padding:14px;font-family:'Cinzel',serif;font-size:14px;letter-spacing:1px;}
 .aff-list{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:24px;}
 .aff-day{border:1px solid rgba(201,168,76,.14);padding:12px;cursor:pointer;color:var(--text);background:rgba(255,255,255,.02);font-family:'Cinzel',serif;font-size:12px;letter-spacing:1px;}
 .aff-day.on{border-color:var(--gold);color:var(--gold);}
@@ -475,18 +476,17 @@ footer{position:relative;z-index:1;background:var(--deep);padding:72px 40px 48px
     <p class="s-tag">✦ Sacred Daily Practice ✦</p>
     <div class="gold-line"></div>
     <h2 class="s-title">Daily Audio Affirmations</h2>
-    <p class="s-desc">A full year of spoken sacred affirmations. Choose your day and return whenever your soul calls.</p>
+    <p class="s-desc">Choose any available day and listen to Jeff's spoken affirmation.</p>
 
     <div class="aff-box">
-      <div class="aff-controls" id="affBatchButtons"></div>
-
       <div class="aff-player">
+        <label class="aff-sub" for="affDaySelect">Choose Day</label>
+        <select id="affDaySelect" class="aff-select" onchange="affSelectFromDropdown()"></select>
+
         <div class="aff-title" id="affNowTitle">Day 001</div>
         <div class="aff-sub" id="affNowSub">Daily Audio Affirmation</div>
         <button class="aff-play" id="affPlayBtn" onclick="affTogglePlay()">▶</button>
       </div>
-
-      <ul class="aff-list" id="affDayList"></ul>
     </div>
   </div>
 </section>
@@ -963,33 +963,28 @@ function affSrc(day){
 function affCanPlay(day){
   return day <= 7 || currentProfile?.plan === 'divine' || currentProfile?.plan === 'annual';
 }
-function affRenderBatches(){
-  const el = document.getElementById('affBatchButtons');
-  if(!el) return;
-  const count = Math.ceil(AFFIRMATIONS_UPLOADED_TO / 30);
-  el.innerHTML = '';
-  for(let b=1;b<=count;b++){
-    const start=(b-1)*30+1;
-    const end=Math.min(b*30,AFFIRMATIONS_UPLOADED_TO);
-    el.innerHTML += `<button class="aff-batch ${b===affBatch(affCurrentDay)?'on':''}" onclick="affRenderDays(${b})">${affPad(start)}–${affPad(end)}</button>`;
-  }
-}
-function affRenderDays(batch=1){
-  const el = document.getElementById('affDayList');
-  if(!el) return;
-  const start=(batch-1)*30+1;
-  const end=Math.min(batch*30,AFFIRMATIONS_UPLOADED_TO);
-  el.innerHTML = '';
-  for(let day=start;day<=end;day++){
+function affPopulateDropdown(){
+  const sel = document.getElementById('affDaySelect');
+  if(!sel) return;
+  sel.innerHTML = '';
+  for(let day=1; day<=AFFIRMATIONS_UPLOADED_TO; day++){
     const locked = !affCanPlay(day);
-    el.innerHTML += `<li class="aff-day ${day===affCurrentDay?'on':''} ${locked?'locked':''}" onclick="affSelect(${day})">Day ${affPad(day)} ${locked?'🔒':''}</li>`;
+    const opt = document.createElement('option');
+    opt.value = day;
+    opt.textContent = `Day ${affPad(day)}${locked ? ' 🔒' : ''}`;
+    sel.appendChild(opt);
   }
-  affRenderBatches();
+  sel.value = affCurrentDay;
+}
+function affSelectFromDropdown(){
+  const sel = document.getElementById('affDaySelect');
+  affSelect(parseInt(sel.value,10));
 }
 function affSelect(day){
   if(!affCanPlay(day)){
     showToast('Unlock Divine to play this affirmation ✦');
     scroll2('pricing');
+    affPopulateDropdown();
     return;
   }
   affCurrentDay = day;
@@ -998,7 +993,7 @@ function affSelect(day){
   affAudio.src = affSrc(day);
   affPlaying = false;
   document.getElementById('affPlayBtn').textContent = '▶';
-  affRenderDays(affBatch(day));
+  affPopulateDropdown();
 }
 function affTogglePlay(){
   if(!affCanPlay(affCurrentDay)){
@@ -1018,7 +1013,13 @@ function affTogglePlay(){
     document.getElementById('affPlayBtn').textContent = '❚❚';
   }
 }
+function affInit(){
+  affPopulateDropdown();
+  affSelect(1);
+}
 affAudio.addEventListener('ended',()=>{affPlaying=false;document.getElementById('affPlayBtn').textContent='▶';});
+window.addEventListener('load', affInit);
+
 
 
 function canPlay(track) {
@@ -1057,7 +1058,7 @@ function mSelect(i, autoPlay = false) {
   document.getElementById('mBarFill').style.width = '0%';
   document.getElementById('mCurTime').textContent = '0:00';
   mRenderList();
-affRenderDays(1);
+
 
   if (!mAudio.src || !mAudio.src.includes(tracks[mCur].src)) {
     mAudio.src = tracks[mCur].src;
