@@ -903,7 +903,22 @@ const tracks = [
   {n:'Box Breathing',t:'Breathwork — Calm Rhythm',d:'1:42',plan:'free',src:'/Content/breathwork/box-breathing/box-breathing-01.mp3'},
   {n:'Deep Breath',t:'Breathwork — Slow Breathing',d:'1:42',plan:'divine',src:'/Content/breathwork/deep-breath/deep-breath-01.mp3'},
   {n:'Energy Reset',t:'Breathwork — Energy Reset',d:'1:42',plan:'annual',src:'/Content/breathwork/energy-reset/energy-reset-01.mp3'}
-];
+];// Daily Audio Affirmations — currently uploaded: 001–150
+const AFFIRMATIONS_UPLOADED_TO = 150;
+
+for (let day = 1; day <= AFFIRMATIONS_UPLOADED_TO; day++) {
+  const batch = Math.ceil(day / 30);
+  const batchName = `batch-${String(batch).padStart(2, '0')}`;
+  const dayName = String(day).padStart(3, '0');
+
+  tracks.push({
+    n: `Daily Affirmation ${dayName}`,
+    t: `Sacred Daily Audio Affirmation — Day ${dayName}`,
+    d: 'Audio',
+    plan: day <= 7 ? 'free' : 'divine',
+    src: `/Content/affirmations/${batchName}/affirmation-${dayName}.m4a`
+  });
+}
 
 let mCur = 0, mPlaying = false, mPInt = null, mPv = 0;
 let mAudio = new Audio();
