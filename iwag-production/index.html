@@ -474,11 +474,11 @@ label.aff-sub{display:block;font-family:'Cinzel',serif;font-style:normal;font-si
       <div class="mbar-wrap"><div class="mbar-fill" id="mBarFill" style="width:0%"></div></div>
       <div class="mtimes"><span id="mCurTime">0:00</span><span id="mTotalTime">6:48</span></div>
       <div class="mcontrols">
-        <button class="mcbtn" onclick="mPrev()">⏮</button>
-        <button class="mcbtn" onclick="mPrev()">⏪</button>
-        <button class="mplaybtn" id="mPlayBtn" onclick="mTogglePlay()">▶</button>
-        <button class="mcbtn" onclick="mNext()">⏩</button>
-        <button class="mcbtn" onclick="mNext()">⏭</button>
+        <button class="mcbtn" onclick="mPrev()" aria-label="Previous track">⏮</button>
+        <button class="mcbtn" onclick="mPrev()" aria-label="Rewind track">⏪</button>
+        <button class="mplaybtn" id="mPlayBtn" onclick="mTogglePlay()" aria-label="Play or pause music">▶</button>
+        <button class="mcbtn" onclick="mNext()" aria-label="Forward track">⏩</button>
+        <button class="mcbtn" onclick="mNext()" aria-label="Next track">⏭</button>
       </div>
     </div>
     <div class="tracklist-panel">
