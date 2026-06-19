@@ -233,6 +233,16 @@ section{position:relative;z-index:1;}
 .pplan-btn-ghost{background:none;border:1px solid rgba(201,168,76,.3);color:var(--gold);}
 .pplan-btn-ghost:hover{background:rgba(201,168,76,.08);}
 
+
+/* ── SACRED INFO SECTIONS ── */
+#about-creator,#nde-research,#privacy-policy{background:linear-gradient(180deg,var(--deep),var(--void));padding:96px 0;border-top:1px solid rgba(201,168,76,.08);}
+.sacred-info-wrap{max-width:820px;margin:0 auto;padding:0 32px;text-align:center;}
+.sacred-info-card{background:linear-gradient(135deg,rgba(201,168,76,.055),rgba(5,11,18,.92));border:1px solid rgba(201,168,76,.16);padding:46px 48px;box-shadow:0 28px 70px rgba(0,0,0,.24);}
+.sacred-info-card p{color:var(--text-dim);font-size:18px;line-height:1.8;font-style:italic;margin:0 auto;max-width:650px;}
+.sacred-info-list{list-style:none;text-align:left;max-width:650px;margin:0 auto;display:grid;gap:14px;}
+.sacred-info-list li{color:var(--text-dim);font-size:17px;line-height:1.7;padding-left:24px;position:relative;}
+.sacred-info-list li::before{content:'✦';position:absolute;left:0;top:2px;color:var(--gold);font-size:10px;}
+
 /* ── FOOTER ── */
 footer{position:relative;z-index:1;background:var(--deep);padding:72px 40px 48px;border-top:1px solid rgba(201,168,76,.1);}
 .footer-inner{max-width:1100px;margin:0 auto;}
@@ -597,6 +607,49 @@ Choose any day and return whenever your soul calls.</p>
   </div>
 </section>
 
+
+<!-- ABOUT THE CREATOR -->
+<section id="about-creator">
+  <div class="sacred-info-wrap">
+    <p class="s-tag">✦ Origin Story ✦</p>
+    <div class="gold-line"></div>
+    <h2 class="s-title">About the Creator</h2>
+    <div class="sacred-info-card">
+      <p>I Walk Amongst Gods was inspired by a transformative near-death experience and created as a place for reflection, meditation, and spiritual encouragement. It is offered as a quiet companion for those seeking meaning, steadiness, and a deeper connection with the sacred in everyday life.</p>
+    </div>
+  </div>
+</section>
+
+<!-- NDE RESEARCH -->
+<section id="nde-research">
+  <div class="sacred-info-wrap">
+    <p class="s-tag">✦ Shared Human Mystery ✦</p>
+    <div class="gold-line"></div>
+    <h2 class="s-title">NDE Research</h2>
+    <div class="sacred-info-card">
+      <p>Near-death experiences are widely reported across cultures, generations, and belief systems. Many accounts include themes of light, peace, life review, reunion, expanded awareness, and lasting personal transformation. This section is offered for reflection and education only, and is not medical advice.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRIVACY POLICY -->
+<section id="privacy-policy">
+  <div class="sacred-info-wrap">
+    <p class="s-tag">✦ Your Sacred Space ✦</p>
+    <div class="gold-line"></div>
+    <h2 class="s-title">Privacy Policy</h2>
+    <div class="sacred-info-card">
+      <ul class="sacred-info-list">
+        <li>Account details are used to help you sign in and keep your experience connected across visits.</li>
+        <li>Journal entries are treated as personal reflections and are used only to provide the journaling experience inside IWAG.</li>
+        <li>Payments are handled securely by Stripe. IWAG does not store your card details.</li>
+        <li>Support emails are used to respond to your message and help with your account or experience.</li>
+        <li>You can request deletion of your account details and journal entries by contacting support.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
@@ -627,9 +680,9 @@ Choose any day and return whenever your soul calls.</p>
       <div>
         <div class="footer-col-title">Sacred</div>
         <ul class="footer-links">
-          <li><a>About the Creator</a></li>
-          <li><a>NDE Research</a></li>
-          <li><a>Privacy Policy</a></li>
+          <li><a onclick="scroll2('about-creator')">About the Creator</a></li>
+          <li><a onclick="scroll2('nde-research')">NDE Research</a></li>
+          <li><a onclick="scroll2('privacy-policy')">Privacy Policy</a></li>
           <li>
   <a href="mailto:support@iwalkamongstgods.com?subject=IWAG%20Support%20Request">
     Contact: support@iwalkamongstgods.com
