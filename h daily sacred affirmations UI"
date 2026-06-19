@@ -1,0 +1,67 @@
+[1mdiff --git a/iwag-production/index.html b/iwag-production/index.html[m
+[1mindex 60bae34..df029ac 100644[m
+[1m--- a/iwag-production/index.html[m
+[1m+++ b/iwag-production/index.html[m
+[36m@@ -258,21 +258,30 @@[m [mfooter{position:relative;z-index:1;background:var(--deep);padding:72px 40px 48px[m
+ [m
+ [m
+ /* ── Daily Audio Affirmations ── */[m
+[31m-.aff-layout{max-width:980px;margin:0 auto;padding:0 24px;}[m
+[31m-.aff-box{background:rgba(8,14,18,.74);border:1px solid rgba(201,168,76,.18);padding:34px;border-radius:2px;}[m
+[32m+[m[32m#affirmations{background:radial-gradient(circle at 50% 0%,rgba(135,92,255,.32),transparent 34%),linear-gradient(160deg,#070817 0%,#151137 42%,#25124c 70%,#080914 100%);padding:118px 0 124px;overflow:hidden;}[m
+[32m+[m[32m#affirmations::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(221,205,255,.08),transparent);opacity:.7;pointer-events:none;}[m
+[32m+[m[32m#affirmations .s-tag{color:#d7c5ff;text-shadow:0 0 24px rgba(154,118,255,.5);margin-bottom:14px;}[m
+[32m+[m[32m#affirmations .gold-line{background:linear-gradient(to right,transparent,#b99cff,transparent);margin-bottom:24px;}[m
+[32m+[m[32m#affirmations .s-title{font-size:clamp(28px,4.5vw,54px);margin-bottom:18px;background:linear-gradient(135deg,#fff 0%,#e7dcff 38%,#b99cff 74%,#f0d984 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 34px rgba(142,103,255,.22));}[m
+[32m+[m[32m#affirmations .s-desc{white-space:pre-line;max-width:610px;margin-bottom:52px;color:#d9d3ee;font-size:clamp(18px,2.2vw,22px);line-height:1.75;}[m
+[32m+[m[32m.aff-layout{max-width:980px;margin:0 auto;padding:0 24px;position:relative;}[m
+[32m+[m[32m.aff-box{background:linear-gradient(145deg,rgba(12,14,35,.88),rgba(39,21,76,.7));border:1px solid rgba(190,163,255,.24);padding:46px 38px;border-radius:16px;box-shadow:0 28px 80px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.08);}[m
+[32m+[m[32m.aff-box::before{content:'';display:block;width:76px;height:1px;background:linear-gradient(to right,transparent,#d8c8ff,transparent);margin:0 auto 28px;}[m
+ .aff-controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:22px 0;}[m
+ .aff-batch{background:transparent;border:1px solid rgba(201,168,76,.28);color:var(--muted);padding:10px 14px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:1.5px;cursor:pointer;text-transform:uppercase;}[m
+ .aff-batch.on{background:var(--gold);color:#06080b;}[m
+[31m-.aff-player{text-align:center;margin:20px 0 28px;}[m
+[31m-.aff-title{font-family:'Cinzel Decorative',serif;color:var(--gold);font-size:clamp(22px,4vw,38px);margin-bottom:8px;}[m
+[31m-.aff-sub{color:var(--muted);font-style:italic;}[m
+[31m-.aff-play{margin-top:18px;width:64px;height:64px;border-radius:50%;border:0;background:var(--gold);color:#05070a;font-size:24px;cursor:pointer;}[m
+[31m-.aff-select{margin:18px auto 28px;display:block;width:min(360px,100%);background:#c9a84c;color:#05070a;border:2px solid #f3dc8a;padding:16px 18px;font-family:'Cinzel',serif;font-size:16px;letter-spacing:1px;text-align:center;min-height:56px;border-radius:2px;}[m
+[32m+[m[32m.aff-player{text-align:center;margin:0;}[m
+[32m+[m[32m.aff-title{font-family:'Cinzel Decorative',serif;color:#f2e9ff;font-size:clamp(26px,4vw,42px);margin:8px 0 10px;letter-spacing:.5px;}[m
+[32m+[m[32m.aff-sub{color:#c7b8ee;font-style:italic;font-size:17px;line-height:1.6;}[m
+[32m+[m[32mlabel.aff-sub{display:block;font-family:'Cinzel',serif;font-style:normal;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#d8c8ff;}[m
+[32m+[m[32m.aff-play{margin-top:24px;width:72px;height:72px;border-radius:50%;border:1px solid rgba(255,255,255,.45);background:linear-gradient(135deg,#f5e6a4,#b99cff 55%,#8f6dff);color:#070817;font-size:24px;cursor:pointer;box-shadow:0 18px 44px rgba(107,78,210,.38);transition:transform .25s,box-shadow .25s;}[m
+[32m+[m[32m.aff-play:hover{transform:translateY(-2px);box-shadow:0 22px 54px rgba(107,78,210,.48);}[m
+[32m+[m[32m.aff-select{margin:18px auto 34px;display:block;width:min(380px,100%);background:rgba(245,239,255,.96);color:#100a24;border:1px solid #d8c8ff;padding:17px 20px;font-family:'Cinzel',serif;font-size:16px;letter-spacing:1.4px;text-align:center;min-height:58px;border-radius:999px;box-shadow:0 14px 34px rgba(0,0,0,.22);}[m
+ .aff-list{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:24px;}[m
+ .aff-day{border:1px solid rgba(201,168,76,.14);padding:12px;cursor:pointer;color:var(--text);background:rgba(255,255,255,.02);font-family:'Cinzel',serif;font-size:12px;letter-spacing:1px;}[m
+ .aff-day.on{border-color:var(--gold);color:var(--gold);}[m
+ .aff-day.locked{opacity:.45;}[m
+[31m-@media(max-width:700px){.aff-list{grid-template-columns:1fr 1fr;}.aff-box{padding:26px 18px;}}[m
+[32m+[m[32m@media(max-width:700px){#affirmations{padding:92px 0 98px;}.aff-list{grid-template-columns:1fr 1fr;}.aff-box{padding:34px 20px;border-radius:12px;}}[m
+ [m
+ @media(max-width:900px){nav{padding:14px 24px;}.nav-links{display:none;}.music-layout{grid-template-columns:1fr;}.footer-top{grid-template-columns:1fr 1fr;}.ai-fields{grid-template-columns:1fr;}}[m
+ @media(max-width:600px){.container,.ai-wrap,.med-center,.journal-wrap{padding:0 20px;}.pricing-grid{padding:0 20px;}.music-layout{padding:0 20px;}.ai-box{padding:36px 24px;}.journal-card{padding:32px 24px;}.footer-top{grid-template-columns:1fr;}.hero-orbit{width:280px;height:280px;}.dash-bar{padding:16px 20px;}}[m
+[36m@@ -470,17 +479,19 @@[m [mfooter{position:relative;z-index:1;background:var(--deep);padding:72px 40px 48px[m
+ </section>[m
+ [m
+ [m
+[31m-<!-- DAILY AUDIO AFFIRMATIONS -->[m
+[32m+[m[32m<!-- DAILY SACRED AFFIRMATIONS -->[m
+ <section id="affirmations">[m
+   <div class="aff-layout">[m
+     <p class="s-tag">✦ Sacred Daily Practice ✦</p>[m
+     <div class="gold-line"></div>[m
+[31m-    <h2 class="s-title">Daily Audio Affirmations</h2>[m
+[31m-    <p class="s-desc">Choose any available day and listen to Jeff's spoken affirmation.</p>[m
+[32m+[m[32m    <h2 class="s-title">Daily Sacred Affirmations</h2>[m
+[32m+[m[32m    <p class="s-desc">A year's journey of spoken wisdom.[m
+[32m+[m
+[32m+[m[32mChoose any day and return whenever your soul calls.</p>[m
+ [m
+     <div class="aff-box">[m
+       <div class="aff-player">[m
+[31m-        <label class="aff-sub" for="affDaySelect">Choose Day</label>[m
+[32m+[m[32m        <label class="aff-sub" for="affDaySelect">Select Your Day</label>[m
+         <select id="affDaySelect" class="aff-select" onchange="affSelectFromDropdown()"></select>[m
+ [m
+         <div class="aff-title" id="affNowTitle">Day 001</div>[m
