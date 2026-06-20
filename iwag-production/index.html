@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="I Walk Amongst Gods — Divine Wellness, AI Affirmations, Sacred Meditation & Healing Music">
+<meta name="description" content="I Walk Amongst Gods — Divine Wellness, Sacred Affirmations, Sacred Meditation & Healing Music">
 <title>I Walk Amongst Gods — Divine Wellness Portal</title>
 <link rel="manifest" href="manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -94,7 +94,7 @@ section{position:relative;z-index:1;}
 .lock-btn{padding:10px 28px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;background:linear-gradient(135deg,var(--gold-dim),var(--gold));color:var(--deep);border:none;cursor:pointer;}
 
 /* ── Divine Oracle ── */
-#ai{background:var(--void);padding:110px 0;}
+#oracle{background:var(--void);padding:110px 0;}
 .ai-wrap{max-width:860px;margin:0 auto;padding:0 40px;}
 .ai-box{background:linear-gradient(135deg,rgba(201,168,76,.06),rgba(5,11,18,.95));border:1px solid rgba(201,168,76,.2);padding:56px 52px;position:relative;}
 .ai-box::before,.ai-box::after{content:'✦';position:absolute;font-size:22px;color:rgba(201,168,76,.3);}
@@ -312,7 +312,7 @@ label.aff-sub{display:block;font-family:'Cinzel',serif;font-style:normal;font-si
 <nav>
   <span class="logo" onclick="scroll2('hero')">I Walk Amongst Gods</span>
   <ul class="nav-links">
-    <li><a onclick="scroll2('ai')">Divine Oracle</a></li>
+    <li><a onclick="scroll2('oracle')">Divine Oracle</a></li>
     <li><a onclick="scroll2('meditation')">Meditate</a></li>
     <li><a onclick="scroll2('music')">Music</a></li>
     <li><a onclick="scroll2('affirmations')">Daily Affirmations</a></li>
@@ -357,7 +357,7 @@ label.aff-sub{display:block;font-family:'Cinzel',serif;font-style:normal;font-si
   <p class="hero-desc">Beyond the veil of life lies infinite wisdom. Step into the most immersive spiritual wellness platform ever created — powered by divine intention and sacred wisdom.</p>
   <div class="hero-ornament"></div>
   <div class="hero-btns" id="heroBtns">
-    <button class="btn btn-gold" onclick="scroll2('ai')">✦ &nbsp; Enter the Oracle</button>
+    <button class="btn btn-gold" onclick="scroll2('oracle')">✦ &nbsp; Enter the Oracle</button>
     <button class="btn btn-ghost" onclick="window.location.href='login.html'">Join Free Today</button>
   </div>
   <div class="hero-stats">
@@ -369,7 +369,7 @@ label.aff-sub{display:block;font-family:'Cinzel',serif;font-style:normal;font-si
 </section>
 
 <!-- Divine Oracle -->
-<section id="ai">
+<section id="oracle">
   <div class="ai-wrap">
     <p class="s-tag">✦ Sacred Intelligence ✦</p>
     <div class="gold-line"></div>
@@ -693,7 +693,7 @@ label.aff-sub{display:block;font-family:'Cinzel',serif;font-style:normal;font-si
       <div>
         <div class="footer-col-title">Experience</div>
         <ul class="footer-links">
-          <li><a onclick="scroll2('ai')">Divine Oracle</a></li>
+          <li><a onclick="scroll2('oracle')">Divine Oracle</a></li>
           <li><a onclick="scroll2('meditation')">Meditation</a></li>
           <li><a onclick="scroll2('music')">Healing Music</a></li>
           <li><a onclick="scroll2('affirmations')">Daily Affirmations</a></li>
@@ -821,7 +821,7 @@ function updateUI() {
   // Hero buttons
   if (loggedIn) {
     document.getElementById('heroBtns').innerHTML = `
-      <button class="btn btn-gold" onclick="scroll2('ai')">✦ Enter the Oracle</button>
+      <button class="btn btn-gold" onclick="scroll2('oracle')">✦ Enter the Oracle</button>
       <button class="btn btn-ghost" onclick="scroll2('meditation')">Begin Meditation</button>`;
   }
 

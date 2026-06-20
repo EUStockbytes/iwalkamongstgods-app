@@ -1,7 +1,7 @@
 {
   "name": "I Walk Amongst Gods",
   "short_name": "IWAG",
-  "description": "Divine Wellness · AI Affirmations · Sacred Meditation · Healing Music",
+  "description": "Divine Wellness · Sacred Affirmations · Sacred Meditation · Healing Music",
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#020408",
@@ -65,7 +65,7 @@
       "name": "Divine Oracle",
       "short_name": "Oracle",
       "description": "Get your personalised divine affirmations",
-      "url": "/index.html#ai",
+      "url": "/index.html#oracle",
       "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96" }]
     },
     {
