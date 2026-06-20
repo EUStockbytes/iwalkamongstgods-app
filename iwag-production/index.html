@@ -459,7 +459,7 @@ label.aff-sub{display:block;font-family:'Cinzel',serif;font-style:normal;font-si
       <button class="mdur" onclick="setDur(60,this)">60 min</button>
     </div>
     <button class="med-go" id="medGo" onclick="toggleMed()">▶</button>
-    <p class="med-guidance" id="medGuidance">"You have touched the other side of the veil. Carry that knowing into this breath."</p>
+    <p class="med-guidance" id="medGuidance">"Peace begins with a single breath."</p>
     <p class="med-saved" id="medSaved"></p>
   </div>
 </section>
@@ -945,7 +945,7 @@ async function saveAffirmations() {
 // MEDITATION
 // ═══════════════════════════════════════════
 let medDur = 10*60, medRem = 10*60, medOn = false, medInt = null, bTO = null, medMode = 'breath', medMins = 10;
-const guidance = ["You have touched the other side of the veil. Carry that knowing into this breath.","Still the mind. The divine speaks only in silence.","You are not your thoughts. You are the vast awareness behind them.","Breathe as the gods breathe — slowly, completely, with infinite purpose.","In this stillness, you meet yourself as you truly are: eternal and infinite.","Let every exhale dissolve all that does not serve your sacred ascension.","You have been shown the truth of existence. Rest completely in that knowing.","The same intelligence that sustains the cosmos sustains you in this moment.","You are loved beyond all measure by forces you cannot yet fully comprehend.","Every breath is a sacred act of communion with the divine."];
+const guidance = ["Peace begins with a single breath.","Still the mind. The divine speaks only in silence.","You are not your thoughts. You are the vast awareness behind them.","Breathe as the gods breathe — slowly, completely, with infinite purpose.","In this stillness, you meet yourself as you truly are: eternal and infinite.","Let every exhale dissolve all that does not serve your sacred ascension.","You have been shown the truth of existence. Rest completely in that knowing.","The same intelligence that sustains the cosmos sustains you in this moment.","You are loved beyond all measure by forces you cannot yet fully comprehend.","Every breath is a sacred act of communion with the divine."];
 let gIdx = 0, gInt = null;
 
 function setMode(m, el) { medMode = m; document.querySelectorAll('.mmode').forEach(b => b.classList.remove('on')); el.classList.add('on'); }
