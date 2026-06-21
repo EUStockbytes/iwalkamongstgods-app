@@ -508,10 +508,11 @@ label.aff-sub{display:block;font-family:'Cinzel',serif;font-style:normal;font-si
         <div class="aff-sub" id="affNowSub">Daily Audio Affirmation</div>
 
         <div class="aff-progress">
-          <div class="aff-progress-label">You have completed</div>
+          <div class="aff-progress-label">Your Sacred Journey</div>
           <div class="aff-progress-count" id="affProgressCount">0 / 365 Daily Affirmations</div>
           <div class="aff-progress-bar"><div class="aff-progress-fill" id="affProgressFill"></div></div>
           <div class="aff-progress-text" id="affProgressText">0%</div>
+          <div class="aff-progress-next" id="affProgressNext">Continue your journey with Day 001</div>
         </div>
 
         <button class="aff-play" id="affPlayBtn" onclick="affTogglePlay()">▶</button>
@@ -1067,10 +1068,15 @@ function updateAffirmationProgress(){
   const bar = document.getElementById('affProgressFill');
   const text = document.getElementById('affProgressText');
   const count = document.getElementById('affProgressCount');
+  const next = document.getElementById('affProgressNext');
 
   if(bar) bar.style.width = `${Math.min(pct,100)}%`;
   if(text) text.textContent = `${pct}%`;
   if(count) count.textContent = `${completed} / ${AFFIRMATION_JOURNEY_TOTAL} Daily Affirmations`;
+  if(next){
+    const nextDay = Math.min(completed + 1, AFFIRMATION_JOURNEY_TOTAL);
+    next.textContent = completed >= AFFIRMATION_JOURNEY_TOTAL ? 'Journey complete ✦' : `Continue your journey with Day ${String(nextDay).padStart(3,'0')}`;
+  }
 }
 
 
