@@ -343,7 +343,7 @@ label.aff-sub{display:block;font-family:'Cinzel',serif;font-style:normal;font-si
       <div class="dstat"><div class="dstat-num" id="dStatAff">0</div><div class="dstat-label">Affirmations</div></div>
       <div class="dstat"><div class="dstat-num" id="dStatJournal">0</div><div class="dstat-label">Journal Entries</div></div>
     </div>
-    <button class="dash-upgrade" id="dashUpgradeBtn" onclick="window.open(STRIPE_MONTHLY,'_blank')" style="display:none">✦ Upgrade to Divine</button>
+    <button class="dash-upgrade" id="dashUpgradeBtn" onclick="scroll2('pricing')" style="display:none">✦ View Membership Options</button>
   </div>
 </div>
 
@@ -415,7 +415,7 @@ label.aff-sub{display:block;font-family:'Cinzel',serif;font-style:normal;font-si
 
       <div id="aiLimitMsg" class="ai-limit-msg" style="display:none">
         <p>"You have glimpsed the Oracle's wisdom. Join Divine to receive unlimited sacred affirmations whenever your soul calls."</p>
-        <button class="btn btn-gold" onclick="window.open(STRIPE_MONTHLY,'_blank')">✦ Unlock Unlimited Oracle</button>
+        <button class="btn btn-gold" onclick="scroll2('pricing')">✦ View Membership Options</button>
       </div>
 
       <div class="ai-loading" id="aiLoading"><div class="ai-spinner"></div><p>Preparing your guidance...</p></div>
@@ -1185,7 +1185,7 @@ function mRenderList() {
 function mSelect(i, autoPlay = false) {
   if (!canPlay(tracks[i])) {
     showToast('🔒 Unlock with Divine Membership');
-    window.open(STRIPE_MONTHLY, '_blank');
+    scroll2('pricing');
     return;
   }
 
