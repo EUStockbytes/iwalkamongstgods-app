@@ -506,6 +506,14 @@ label.aff-sub{display:block;font-family:'Cinzel',serif;font-style:normal;font-si
 
         <div class="aff-title" id="affNowTitle">Day 001</div>
         <div class="aff-sub" id="affNowSub">Daily Audio Affirmation</div>
+
+        <div class="aff-progress">
+          <div class="aff-progress-label">You have completed</div>
+          <div class="aff-progress-count" id="affProgressCount">0 / 365 Daily Affirmations</div>
+          <div class="aff-progress-bar"><div class="aff-progress-fill" id="affProgressFill"></div></div>
+          <div class="aff-progress-text" id="affProgressText">0%</div>
+        </div>
+
         <button class="aff-play" id="affPlayBtn" onclick="affTogglePlay()">▶</button>
       </div>
     </div>
@@ -782,7 +790,7 @@ async function loadProfile() {
   const { data } = await sb.auth.getUser();
   if (!data?.user) return;
   const { data: profile } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
-  currentProfile = profile;
+  currentProfile = profile; updateAffirmationProgress();
   if (profile) {
     // Update dashboard stats
     document.getElementById('dStatMed').textContent = profile.total_meditations || 0;
@@ -1051,6 +1059,21 @@ let affCurrentDay = 1;
 let affPlaying = false;
 const AFFIRMATIONS_UPLOADED_TO = 210;
 
+const AFFIRMATION_JOURNEY_TOTAL = 365;
+
+function updateAffirmationProgress(){
+  const completed = currentProfile?.highest_affirmation_completed || 0;
+  const pct = Math.round((completed / AFFIRMATION_JOURNEY_TOTAL) * 100);
+  const bar = document.getElementById('affProgressFill');
+  const text = document.getElementById('affProgressText');
+  const count = document.getElementById('affProgressCount');
+
+  if(bar) bar.style.width = `${Math.min(pct,100)}%`;
+  if(text) text.textContent = `${pct}%`;
+  if(count) count.textContent = `${completed} / ${AFFIRMATION_JOURNEY_TOTAL} Daily Affirmations`;
+}
+
+
 function affPad(n){ return String(n).padStart(3,'0'); }
 function affBatch(day){ return Math.ceil(day / 30); }
 function affSrc(day){
@@ -1113,7 +1136,22 @@ function affInit(){
   affPopulateDropdown();
   affSelect(1);
 }
-affAudio.addEventListener('ended',()=>{affPlaying=false;document.getElementById('affPlayBtn').textContent='▶';});
+async function markAffirmationCompleted(day){
+  if(!currentUser) return;
+  const completed = Math.max(currentProfile?.highest_affirmation_completed || 0, day);
+  await sb.from('profiles').update({
+    highest_affirmation_completed: completed,
+    last_affirmation_completed_at: new Date().toISOString()
+  }).eq('id', currentUser.id);
+  currentProfile = { ...(currentProfile || {}), highest_affirmation_completed: completed };
+  updateAffirmationProgress();
+}
+
+affAudio.addEventListener('ended', async ()=>{
+  affPlaying=false;
+  document.getElementById('affPlayBtn').textContent='▶';
+  await markAffirmationCompleted(affCurrentDay);
+});
 window.addEventListener('load', affInit);
 
 
