@@ -1250,7 +1250,7 @@ async function saveEntry() {
     prompt: prompts[pIdx],
     content: text
   }).select().single();
-  if (error) { showToast('Error saving — please try again'); return; }
+  if (error) { console.error('Journal save error:', error); showToast('Error saving — ' + (error.message || 'please try again')); return; }
   document.getElementById('jTextarea').value = '';
   showToast('✦ Entry saved to your sacred journal');
   prependJournalEntry({ date: new Date(), q: prompts[pIdx], text });
