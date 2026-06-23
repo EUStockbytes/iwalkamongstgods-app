@@ -594,7 +594,7 @@ label.aff-sub{display:block;font-family:'Cinzel',serif;font-style:normal;font-si
         <li>Community access</li>
         <li>Weekly new content</li>
       </ul>
-      <button class="pplan-btn pplan-btn-gold" onclick="window.open(STRIPE_MONTHLY,'_blank')">✦ Join Divine</button>
+      <button class="pplan-btn pplan-btn-gold" onclick="startCheckout('monthly')">✦ Join Divine</button>
     </div>
     <div class="pplan">
       <div class="pplan-name">Annual Divine</div>
@@ -611,7 +611,7 @@ label.aff-sub{display:block;font-family:'Cinzel',serif;font-style:normal;font-si
         <li>Direct creator access</li>
         <li>Annual sacred ceremony</li>
       </ul>
-      <button class="pplan-btn pplan-btn-ghost" onclick="window.open(STRIPE_ANNUAL,'_blank')">Join Annual</button>
+      <button class="pplan-btn pplan-btn-ghost" onclick="startCheckout('annual')">Join Annual</button>
     </div>
   </div>
 </section>
@@ -714,8 +714,8 @@ label.aff-sub{display:block;font-family:'Cinzel',serif;font-style:normal;font-si
         <ul class="footer-links">
           <li><a onclick="scroll2('pricing')">Pricing</a></li>
           <li><a onclick="window.location.href='login.html'">Sign In</a></li>
-          <li><a onclick="window.open(STRIPE_MONTHLY,'_blank')">Join Divine</a></li>
-          <li><a onclick="window.open(STRIPE_ANNUAL,'_blank')">Annual Plan</a></li>
+          <li><a onclick="startCheckout('monthly')">Join Divine</a></li>
+          <li><a onclick="startCheckout('annual')">Annual Plan</a></li>
         </ul>
       </div>
       <div>
@@ -757,6 +757,38 @@ let currentProfile = null;
 // Stars
 const sf=document.getElementById('stars');
 for(let i=0;i<200;i++){const s=document.createElement('div');s.className='s';const sz=Math.random()*2.5+.4;s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${(Math.random()*5+2).toFixed(1)}s;--dl:-${(Math.random()*7).toFixed(1)}s;--a:${(Math.random()*.12+.02).toFixed(2)};--b:${(Math.random()*.55+.3).toFixed(2)};`;sf.appendChild(s);}
+
+
+async function startCheckout(plan){
+  if (!currentUser || !currentProfile) {
+    showToast('Please sign in first ✦');
+    location.href = '/login.html';
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/create-checkout-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        plan,
+        email: currentProfile.email || currentUser.email,
+        userId: currentUser.id
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || !data.url) {
+      throw new Error(data.error || 'Checkout failed');
+    }
+
+    window.location.href = data.url;
+  } catch (err) {
+    console.error('Checkout failed:', err);
+    showToast('Checkout could not start. Please try again.');
+  }
+}
 
 function scroll2(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'});}
 function showToast(msg,dur=3000){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
