@@ -1,17 +1,11 @@
-import Stripe from 'stripe';
-import { createClient } from '@supabase/supabase-js';
+const Stripe = require('stripe');
+const { createClient } = require('@supabase/supabase-js');
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
 
 async function buffer(readable) {
   const chunks = [];
@@ -32,18 +26,13 @@ async function updateProfileFromSubscription(subscription) {
   const subscriptionId = subscription.id;
   const status = subscription.status;
   const priceId = subscription.items?.data?.[0]?.price?.id;
-
   const plan = status === 'active' || status === 'trialing'
     ? planFromPriceId(priceId)
     : 'free';
 
   const customer = await stripe.customers.retrieve(customerId);
   const email = customer.email;
-
-  if (!email) {
-    console.warn('Stripe customer has no email', customerId);
-    return;
-  }
+  if (!email) return;
 
   const currentPeriodEnd = subscription.current_period_end
     ? new Date(subscription.current_period_end * 1000).toISOString()
@@ -60,13 +49,10 @@ async function updateProfileFromSubscription(subscription) {
     })
     .eq('email', email);
 
-  if (error) {
-    console.error('Supabase profile update failed:', error);
-    throw error;
-  }
+  if (error) throw error;
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).send('Method not allowed');
   }
@@ -75,7 +61,6 @@ export default async function handler(req, res) {
   const rawBody = await buffer(req);
 
   let event;
-
   try {
     event = stripe.webhooks.constructEvent(
       rawBody,
@@ -83,7 +68,6 @@ export default async function handler(req, res) {
       process.env.STRIPE_WEBHOOK_SECRET
     );
   } catch (err) {
-    console.error('Webhook signature verification failed:', err.message);
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
@@ -103,9 +87,6 @@ export default async function handler(req, res) {
         }
         break;
       }
-
-      default:
-        console.log(`Unhandled Stripe event: ${event.type}`);
     }
 
     return res.status(200).json({ received: true });
@@ -113,4 +94,4 @@ export default async function handler(req, res) {
     console.error('Webhook handler failed:', err);
     return res.status(500).send('Webhook handler failed');
   }
-}
+};
