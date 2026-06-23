@@ -767,7 +767,11 @@ async function startCheckout(plan){
   }
 
   try {
-    const res = await fetch('/api/create-checkout-session', {
+    const checkoutEndpoint = new URLSearchParams(location.search).get('stripe') === 'test'
+      ? '/api/create-checkout-session-test'
+      : '/api/create-checkout-session';
+
+    const res = await fetch(checkoutEndpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
