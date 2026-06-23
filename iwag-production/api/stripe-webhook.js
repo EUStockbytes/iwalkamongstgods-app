@@ -1,5 +1,5 @@
-const Stripe = require('stripe');
-const { createClient } = require('@supabase/supabase-js');
+import Stripe from 'stripe';
+import { createClient } from '@supabase/supabase-js';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const supabase = createClient(
@@ -7,7 +7,7 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-module.exports.config = {
+export const config = {
   api: {
     bodyParser: false,
   },
@@ -32,6 +32,7 @@ async function updateProfileFromSubscription(subscription) {
   const subscriptionId = subscription.id;
   const status = subscription.status;
   const priceId = subscription.items?.data?.[0]?.price?.id;
+
   const plan = status === 'active' || status === 'trialing'
     ? planFromPriceId(priceId)
     : 'free';
@@ -65,7 +66,7 @@ async function updateProfileFromSubscription(subscription) {
   }
 }
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).send('Method not allowed');
   }
@@ -112,4 +113,4 @@ module.exports = async function handler(req, res) {
     console.error('Webhook handler failed:', err);
     return res.status(500).send('Webhook handler failed');
   }
-};
+}
