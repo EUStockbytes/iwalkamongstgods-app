@@ -1,20 +1,24 @@
 {
   "routes": [
     {
-      "src": "/login.html",
-      "dest": "/login.html"
+      "src": "/api/create-checkout-session-test",
+      "dest": "/api/create-checkout-session-test.js"
     },
     {
-      "src": "/config.js",
-      "dest": "/config.js"
+      "src": "/api/create-checkout-session",
+      "dest": "/api/create-checkout-session.js"
+    },
+    {
+      "src": "/api/stripe-webhook-test",
+      "dest": "/api/stripe-webhook-test.js"
     },
     {
       "src": "/api/stripe-webhook",
       "dest": "/api/stripe-webhook.js"
     },
     {
-      "src": "/api/stripe-webhook-test",
-      "dest": "/api/stripe-webhook-test.js"
+      "src": "/login.html",
+      "dest": "/login.html"
     },
     {
       "src": "/(.*)",
