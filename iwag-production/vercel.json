@@ -1,12 +1,24 @@
 {
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/stripe-webhook",
-      "destination": "/api/stripe-webhook.js"
+      "src": "/login.html",
+      "dest": "/login.html"
     },
     {
-      "source": "/api/stripe-webhook-test",
-      "destination": "/api/stripe-webhook-test.js"
+      "src": "/config.js",
+      "dest": "/config.js"
+    },
+    {
+      "src": "/api/stripe-webhook",
+      "dest": "/api/stripe-webhook.js"
+    },
+    {
+      "src": "/api/stripe-webhook-test",
+      "dest": "/api/stripe-webhook-test.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }
