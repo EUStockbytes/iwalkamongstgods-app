@@ -1,20 +1,63 @@
 {
-  "rewrites": [
+  "version": 2,
+  "builds": [
     {
-      "source": "/api/create-checkout-session-test",
-      "destination": "/api/create-checkout-session-test.js"
+      "src": "index.html",
+      "use": "@vercel/static"
     },
     {
-      "source": "/api/create-checkout-session",
-      "destination": "/api/create-checkout-session.js"
+      "src": "login.html",
+      "use": "@vercel/static"
     },
     {
-      "source": "/api/stripe-webhook-test",
-      "destination": "/api/stripe-webhook-test.js"
+      "src": "config.js",
+      "use": "@vercel/static"
     },
     {
-      "source": "/api/stripe-webhook",
-      "destination": "/api/stripe-webhook.js"
+      "src": "manifest.json",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "sw.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "Content/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "icons/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "api/*.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/create-checkout-session-test",
+      "dest": "/api/create-checkout-session-test.js"
+    },
+    {
+      "src": "/api/create-checkout-session",
+      "dest": "/api/create-checkout-session.js"
+    },
+    {
+      "src": "/api/stripe-webhook-test",
+      "dest": "/api/stripe-webhook-test.js"
+    },
+    {
+      "src": "/api/stripe-webhook",
+      "dest": "/api/stripe-webhook.js"
+    },
+    {
+      "src": "/login.html",
+      "dest": "/login.html"
+    },
+    {
+      "src": "/",
+      "dest": "/index.html"
     }
   ]
 }
