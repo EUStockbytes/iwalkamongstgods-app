@@ -66,6 +66,11 @@ body{background:var(--deep);color:var(--text);font-family:'Cormorant Garamond',s
 .loading-spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(2,4,8,.4);border-top-color:var(--deep);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:8px;}
 @keyframes spin{to{transform:rotate(360deg)}}
 </style>
+<script>
+window.SUPABASE_URL = "https://nqdbnepxzzgagiebvesm.supabase.co";
+window.SUPABASE_ANON_KEY = "sb_publishable_Gq8E1qiQoHzaT8h86lX0ow_j9vAb1pN";
+</script>
+
 </head>
 <body>
 <div id="stars"></div>
@@ -129,7 +134,6 @@ body{background:var(--deep);color:var(--text);font-family:'Cormorant Garamond',s
 
 <!-- Supabase CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="config.js"></script>
 <script>
 // ── INIT ──
 const { createClient } = supabase;
