@@ -295,6 +295,55 @@ label.aff-sub{display:block;font-family:'Cinzel',serif;font-style:normal;font-si
 
 @media(max-width:900px){nav{padding:14px 24px;}.nav-links{display:none;}.music-layout{grid-template-columns:1fr;}.footer-top{grid-template-columns:1fr 1fr;}.ai-fields{grid-template-columns:1fr;}}
 @media(max-width:600px){.container,.ai-wrap,.med-center,.journal-wrap{padding:0 24px;}.pricing-grid{padding:0 24px;}.music-layout{padding:0 24px;}.hero{padding:96px 22px 72px;}.hero-btns{gap:14px;}.btn{width:100%;max-width:320px;text-align:center;padding:15px 28px;}.ai-box{padding:38px 24px;}.journal-card{padding:34px 24px;}.now-playing-panel,.tracklist-panel{padding:36px 24px;}.pplan{padding:40px 28px;}.sacred-info-card{padding:38px 24px;}.footer-top{grid-template-columns:1fr;}.hero-orbit{width:280px;height:280px;}.dash-bar{padding:16px 20px;}}
+
+.oracle-card {
+  text-align: center;
+}
+.oracle-kicker {
+  color: var(--gold);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  font-size: 12px;
+  margin-bottom: 26px;
+}
+.oracle-message {
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 20px;
+  line-height: 1.9;
+  color: var(--cream);
+  max-width: 760px;
+  margin: 0 auto 34px;
+}
+.oracle-meta {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  max-width: 760px;
+  margin: 0 auto;
+  border-top: 1px solid rgba(201,165,75,.18);
+  padding-top: 24px;
+}
+.oracle-meta div {
+  background: rgba(255,255,255,.025);
+  border: 1px solid rgba(201,165,75,.12);
+  padding: 16px 18px;
+}
+.oracle-meta span {
+  display: block;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 10px;
+  margin-bottom: 8px;
+}
+.oracle-meta strong {
+  display: block;
+  color: var(--cream);
+  font-weight: 400;
+  line-height: 1.6;
+}
+
 </style>
   <script>
 window.SUPABASE_URL = "https://nqdbnepxzzgagiebvesm.supabase.co";
@@ -414,21 +463,27 @@ window.SUPABASE_ANON_KEY = "sb_publishable_Gq8E1qiQoHzaT8h86lX0ow_j9vAb1pN";
           <label>Your Sacred Intention (optional)</label>
           <textarea id="aiIntention" placeholder="Share what is on your heart today..."></textarea>
         </div>
-        <button class="ai-generate" id="aiBtn" onclick="generateAffirmations()">✦ &nbsp; Channel My Affirmations &nbsp; ✦</button>
+        <button class="ai-generate" id="aiBtn" onclick="generateAffirmations()">✦ &nbsp; Receive Divine Guidance &nbsp; ✦</button>
       </div>
 
       <div id="aiLimitMsg" class="ai-limit-msg" style="display:none">
-        <p>"You have glimpsed the Oracle's wisdom. Join Divine to receive unlimited sacred affirmations whenever your soul calls."</p>
+        <p>"You have glimpsed the Oracle's wisdom. Join Divine to receive unlimited divine guidance whenever your soul calls."</p>
         <button class="btn btn-gold" onclick="scroll2('pricing')">✦ View Membership Options</button>
       </div>
 
       <div class="ai-loading" id="aiLoading"><div class="ai-spinner"></div><p>Preparing your guidance...</p></div>
       <div class="ai-result" id="aiResult">
-        <div class="ai-result-card">
-          <ul class="ai-affirmations" id="aiAffList"></ul>
+        <div class="ai-result-card oracle-card">
+          <div class="oracle-kicker">✦ Your Divine Oracle Message ✦</div>
+          <div class="oracle-message" id="aiOracleMessage"></div>
+          <div class="oracle-meta">
+            <div><span>Theme</span><strong id="aiOracleTheme">—</strong></div>
+            <div><span>Reflection</span><strong id="aiOracleReflection">—</strong></div>
+            <div><span>Sacred Action</span><strong id="aiOracleAction">—</strong></div>
+          </div>
           <div class="ai-result-actions">
-            <button class="ai-action-btn" onclick="saveAffirmations()">✦ Save to Journal</button>
-            <button class="ai-action-btn" onclick="generateAffirmations()">↻ Generate New</button>
+            <button class="ai-action-btn" onclick="saveAffirmations()">✦ Save Oracle Message</button>
+            <button class="ai-action-btn" onclick="generateAffirmations()">↻ Receive Another Message</button>
           </div>
         </div>
       </div>
@@ -926,7 +981,7 @@ function updateAffirmationCounter() {
     document.getElementById('aiLimitMsg').style.display = 'block';
     el.textContent = '';
   } else {
-    el.innerHTML = `<span>${remaining}</span> of ${FREE_AI_LIMIT} free affirmations remaining today`;
+    el.innerHTML = `<span>${remaining}</span> of ${FREE_AI_LIMIT} free guidance readings remaining today`;
   }
 }
 
@@ -963,16 +1018,48 @@ async function generateAffirmations() {
       hash |= 0;
     }
 
-    const start = Math.abs(hash) % pool.length;
-    const selected = [];
-    for (let i = 0; i < 5; i++) {
-      selected.push(pool[(start + i * 17) % pool.length].response);
-    }
+    const selected = pool[Math.abs(hash) % pool.length];
 
-    const affs = selected;
-    document.getElementById('aiAffList').innerHTML = affs.map(a => `<li>${a}</li>`).join('');
-    window._lastAffs = affs;
-    window._lastAffMeta = { mood, focus, intention };
+    const message = selected.response;
+    const theme = selected.theme || 'Grace';
+    const situation = selected.situation || 'Spiritual Growth';
+
+    const reflections = {
+      Light: 'Where have you been hiding your light when your soul is asking to be seen?',
+      Stillness: 'What would become clearer if you allowed yourself ten minutes of silence today?',
+      Resilience: 'What part of you has endured quietly and now deserves honour?',
+      Surrender: 'What are you ready to stop forcing so grace can enter?',
+      Faith: 'Where are you being asked to trust before the full path is visible?',
+      Boundaries: 'Where does your peace need protection rather than explanation?',
+      Renewal: 'What old version of you is ready to be released with gratitude?',
+      Wisdom: 'What do you already know beneath the noise of fear or urgency?',
+      Courage: 'What choice would you make today if fear was not allowed to lead?',
+      Grace: 'Where can you soften toward yourself instead of demanding perfection?'
+    };
+
+    const actions = {
+      'Life Direction': 'Write down one next step that feels honest, even if it feels small.',
+      Relationship: 'Notice whether this connection brings peace, confusion, expansion, or contraction.',
+      Health: 'Give your body one act of care today without criticism or impatience.',
+      Family: 'Choose one boundary or blessing that honours both your roots and your growth.',
+      Work: 'Take one practical step that protects your energy while honouring your purpose.',
+      Money: 'Review one financial decision from calm awareness rather than fear.',
+      Grief: 'Light a candle, say the name, or give love somewhere safe to land.',
+      Change: 'Name what is ending and what might be quietly beginning.',
+      Conflict: 'Do not rush to react; let your first response be breath and your second be truth.',
+      'Spiritual Growth': 'Spend five minutes in stillness and ask what your soul is trying to teach you.'
+    };
+
+    const reflection = reflections[theme] || `Reflect on ${theme.toLowerCase()} today and notice where it is already present.`;
+    const action = actions[situation] || 'Take three quiet breaths, place one hand on your heart, and choose one peaceful next step.';
+
+    document.getElementById('aiOracleMessage').textContent = message;
+    document.getElementById('aiOracleTheme').textContent = theme;
+    document.getElementById('aiOracleReflection').textContent = reflection;
+    document.getElementById('aiOracleAction').textContent = action;
+
+    window._lastAffs = [message];
+    window._lastAffMeta = { mood, focus, intention, theme, reflection, action };
     loading.classList.remove('show');
     result.classList.add('show');
     if (!isPaid()) {
@@ -993,8 +1080,12 @@ async function generateAffirmations() {
       "I am held by forces greater than I can comprehend, loved beyond all measure.",
       "My soul chose this experience — every challenge is sacred fuel for my ascension."
     ];
-    document.getElementById('aiAffList').innerHTML = fallbacks.map(a => `<li>${a}</li>`).join('');
-    window._lastAffs = fallbacks;
+    const fallback = fallbacks[0];
+    document.getElementById('aiOracleMessage').textContent = fallback;
+    document.getElementById('aiOracleTheme').textContent = 'Light';
+    document.getElementById('aiOracleReflection').textContent = 'Reflect on the light that remains within you.';
+    document.getElementById('aiOracleAction').textContent = 'Pause, breathe, and choose one gentle act of self-trust.';
+    window._lastAffs = [fallback];
     loading.classList.remove('show');
     result.classList.add('show');
     if (!isPaid()) { incrementDailyAICount(); updateAffirmationCounter(); }
@@ -1015,7 +1106,7 @@ async function saveAffirmations() {
   });
   showToast('✦ Affirmations saved to your journal');
   // Also add to journal entries display
-  const entry = { date: new Date(), q: 'Divine Oracle Affirmations', text: window._lastAffs.slice(0, 2).join('\n\n') };
+  const entry = { date: new Date(), q: 'Divine Oracle Message', text: window._lastAffs[0] };
   prependJournalEntry(entry);
 }
 
