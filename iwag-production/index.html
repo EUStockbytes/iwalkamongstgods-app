@@ -949,10 +949,10 @@ async function generateAffirmations() {
   const prompt = `You are a deeply wise spiritual guide channelling divine wisdom, working within an app called "I Walk Amongst Gods" built by someone who had a transformative near-death experience. The person seeking guidance is currently feeling "${mood}" and wishes to focus on "${focus}".${intention ? ` Their personal intention: "${intention}"` : ''} Generate exactly 5 powerful, deeply personal sacred affirmations. Make them feel channelled specifically for this person's state. First person. Profound not generic. 15-30 words each. Return ONLY a JSON array of 5 strings. No other text.`;
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('/api/oracle', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, messages: [{ role: 'user', content: prompt }] })
+      body: JSON.stringify({ prompt })
     });
     const data = await res.json();
     const raw = data.content[0].text.trim();

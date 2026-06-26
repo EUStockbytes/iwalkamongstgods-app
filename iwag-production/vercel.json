@@ -36,6 +36,10 @@
   ],
   "routes": [
     {
+      "src": "/api/oracle",
+      "dest": "/api/oracle.js"
+    },
+    {
       "src": "/api/create-checkout-session-test",
       "dest": "/api/create-checkout-session-test.js"
     },
