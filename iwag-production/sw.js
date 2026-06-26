@@ -52,10 +52,10 @@ self.addEventListener('fetch', event => {
   // Skip non-GET requests
   if (request.method !== 'GET') return;
 
-  // Skip Stripe and Anthropic API calls — always go to network
+  // Skip Stripe and OpenAI API calls — always go to network
   if (
     url.hostname.includes('stripe.com') ||
-    url.hostname.includes('anthropic.com') ||
+    url.hostname.includes('openai.com') ||
     url.hostname.includes('buy.stripe.com')
   ) {
     return;

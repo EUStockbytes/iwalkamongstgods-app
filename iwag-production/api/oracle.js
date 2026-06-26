@@ -4,9 +4,9 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const key = process.env.ANTHROPIC_API_KEY;
+    const key = process.env.OPENAI_API_KEY;
     if (!key) {
-      throw new Error('ANTHROPIC_API_KEY is missing');
+      throw new Error('OPENAI_API_KEY is missing');
     }
 
     const { prompt } = req.body || {};
@@ -14,30 +14,47 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: 'Missing prompt' });
     }
 
-    const upstream = await fetch('https://api.anthropic.com/v1/messages', {
+    const upstream = await fetch('https://api.openai.com/v1/responses', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': key,
-        'anthropic-version': '2023-06-01'
+        'Authorization': `Bearer ${key}`
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
+        model: 'gpt-5.5',
+        input: prompt,
+        max_output_tokens: 1000
       })
     });
 
     const data = await upstream.json();
 
     if (!upstream.ok) {
-      console.error('IWAG ORACLE ANTHROPIC ERROR:', data);
+      console.error('IWAG ORACLE OPENAI ERROR:', data);
       return res.status(upstream.status).json({
         error: data?.error?.message || 'Oracle request failed'
       });
     }
 
-    return res.status(200).json(data);
+    const text =
+      data.output_text ||
+      data.output?.flatMap(o => o.content || [])
+        ?.map(c => c.text || '')
+        ?.join('')
+        ?.trim();
+
+    if (!text) {
+      console.error('IWAG ORACLE EMPTY OPENAI RESPONSE:', data);
+      return res.status(500).json({ error: 'Oracle returned an empty response' });
+    }
+
+    return res.status(200).json({
+      content: [
+        {
+          text
+        }
+      ]
+    });
   } catch (err) {
     console.error('IWAG ORACLE FAILED:', err);
     return res.status(500).json({ error: err.message || 'Oracle failed' });
