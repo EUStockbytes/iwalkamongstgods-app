@@ -1139,11 +1139,22 @@ async function saveAffirmations() {
 // ═══════════════════════════════════════════
 let medDur = 10*60, medRem = 10*60, medOn = false, medInt = null, bTO = null, medMode = 'breath', medMins = 10;
 let medAudio = new Audio();
+const medAmbientPool = [
+  '/Content/meditation/ambient/iwag-signature-ambient-01.mp3'
+];
+
 const medAudioMap = {
-  breath: '/Content/meditation/ambient/iwag-signature-ambient-01.mp3',
+  breath: 'ambient',
   silence: '',
   guided: '/Content/meditation/guided/jeff-guided-meditation-01.mp3'
 };
+
+function getMeditationAudioSrc() {
+  if (medMode === 'breath') {
+    return medAmbientPool[Math.floor(Math.random() * medAmbientPool.length)];
+  }
+  return medAudioMap[medMode];
+}
 const guidance = ["Peace begins with a single breath.","Still the mind. The divine speaks only in silence.","You are not your thoughts. You are the vast awareness behind them.","Breathe as the gods breathe — slowly, completely, with infinite purpose.","In this stillness, you meet yourself as you truly are: eternal and infinite.","Let every exhale dissolve all that does not serve your sacred ascension.","You have been shown the truth of existence. Rest completely in that knowing.","The same intelligence that sustains the cosmos sustains you in this moment.","You are loved beyond all measure by forces you cannot yet fully comprehend.","Every breath is a sacred act of communion with the divine."];
 let gIdx = 0, gInt = null;
 
@@ -1166,7 +1177,7 @@ function toggleMed() {
   if (!medOn) {
     medOn = true; document.getElementById('medGo').textContent = '⏸';
 
-    const audioSrc = medAudioMap[medMode];
+    const audioSrc = getMeditationAudioSrc();
     if (audioSrc) {
       medAudio.pause();
       medAudio.src = audioSrc;
