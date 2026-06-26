@@ -1020,7 +1020,18 @@ async function generateAffirmations(forceNew = false) {
       hash |= 0;
     }
 
-    const selected = pool[Math.abs(hash) % pool.length];
+    const historyKey = `iwag_oracle_recent_${mood}_${focus}`;
+    const recent = JSON.parse(localStorage.getItem(historyKey) || '[]');
+    let available = pool.filter(r => !recent.includes(r.id));
+
+    if (!available.length) {
+      available = pool;
+      localStorage.removeItem(historyKey);
+    }
+
+    const selected = available[Math.abs(hash) % available.length];
+    const updatedRecent = [selected.id, ...recent.filter(id => id !== selected.id)].slice(0, 10);
+    localStorage.setItem(historyKey, JSON.stringify(updatedRecent));
 
     const message = selected.response;
     const theme = selected.theme || 'Grace';
