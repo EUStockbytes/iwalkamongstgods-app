@@ -946,17 +946,30 @@ async function generateAffirmations() {
   loading.classList.add('show');
   result.classList.remove('show');
 
-  const prompt = `You are a deeply wise spiritual guide channelling divine wisdom, working within an app called "I Walk Amongst Gods" built by someone who had a transformative near-death experience. The person seeking guidance is currently feeling "${mood}" and wishes to focus on "${focus}".${intention ? ` Their personal intention: "${intention}"` : ''} Generate exactly 5 powerful, deeply personal sacred affirmations. Make them feel channelled specifically for this person's state. First person. Profound not generic. 15-30 words each. Return ONLY a JSON array of 5 strings. No other text.`;
-
   try {
-    const res = await fetch('/api/oracle', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt })
-    });
-    const data = await res.json();
-    const raw = data.content[0].text.trim();
-    const affs = JSON.parse(raw.replace(/```json|```/g, '').trim());
+    const res = await fetch('/Content/oracle/oracle-responses.json');
+    const oracleResponses = await res.json();
+
+    const matching = oracleResponses.filter(r =>
+      (!mood || r.mood === mood) &&
+      (!focus || r.focus === focus)
+    );
+
+    const pool = matching.length ? matching : oracleResponses;
+    const seed = `${mood}|${focus}|${intention}|${new Date().toISOString().slice(0,10)}`;
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++) {
+      hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+      hash |= 0;
+    }
+
+    const start = Math.abs(hash) % pool.length;
+    const selected = [];
+    for (let i = 0; i < 5; i++) {
+      selected.push(pool[(start + i * 17) % pool.length].response);
+    }
+
+    const affs = selected;
     document.getElementById('aiAffList').innerHTML = affs.map(a => `<li>${a}</li>`).join('');
     window._lastAffs = affs;
     window._lastAffMeta = { mood, focus, intention };
