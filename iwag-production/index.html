@@ -344,6 +344,16 @@ label.aff-sub{display:block;font-family:'Cinzel',serif;font-style:normal;font-si
   line-height: 1.6;
 }
 
+
+.med-audio-status {
+  margin: 14px auto 0;
+  max-width: 620px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: center;
+}
+
 </style>
   <script>
 window.SUPABASE_URL = "https://nqdbnepxzzgagiebvesm.supabase.co";
@@ -510,6 +520,7 @@ window.SUPABASE_ANON_KEY = "sb_publishable_Gq8E1qiQoHzaT8h86lX0ow_j9vAb1pN";
       <button class="mmode" onclick="setMode('silence',this)">Silence</button>
       <button class="mmode" onclick="setMode('guided',this)">Guided</button>
     </div>
+    <p class="med-audio-status" id="medAudioStatus">Breath mode selected — sit in stillness and follow the rhythm.</p>
     <div class="med-durations">
       <button class="mdur" onclick="setDur(5,this)">5 min</button>
       <button class="mdur on" onclick="setDur(10,this)">10 min</button>
@@ -1127,16 +1138,48 @@ async function saveAffirmations() {
 // MEDITATION
 // ═══════════════════════════════════════════
 let medDur = 10*60, medRem = 10*60, medOn = false, medInt = null, bTO = null, medMode = 'breath', medMins = 10;
+let medAudio = new Audio();
+const medAudioMap = {
+  breath: '/Content/meditation/ambient/breath-bells-01.mp3',
+  silence: '',
+  guided: '/Content/meditation/guided/jeff-guided-meditation-01.mp3'
+};
 const guidance = ["Peace begins with a single breath.","Still the mind. The divine speaks only in silence.","You are not your thoughts. You are the vast awareness behind them.","Breathe as the gods breathe — slowly, completely, with infinite purpose.","In this stillness, you meet yourself as you truly are: eternal and infinite.","Let every exhale dissolve all that does not serve your sacred ascension.","You have been shown the truth of existence. Rest completely in that knowing.","The same intelligence that sustains the cosmos sustains you in this moment.","You are loved beyond all measure by forces you cannot yet fully comprehend.","Every breath is a sacred act of communion with the divine."];
 let gIdx = 0, gInt = null;
 
-function setMode(m, el) { medMode = m; document.querySelectorAll('.mmode').forEach(b => b.classList.remove('on')); el.classList.add('on'); }
+function setMode(m, el) {
+  if (medOn) return;
+  medMode = m;
+  document.querySelectorAll('.mmode').forEach(b => b.classList.remove('on'));
+  el.classList.add('on');
+
+  const status = document.getElementById('medAudioStatus');
+  if (m === 'breath') status.textContent = 'Breath mode selected — sit in stillness and follow the rhythm.';
+  if (m === 'silence') status.textContent = 'Silence mode selected — no music, no voice, just presence.';
+  if (m === 'guided') status.textContent = 'Guided mode selected — Jeff’s guided meditation will play when uploaded.';
+  document.getElementById('medLabel').textContent = `${medMins} Minute ${m} Session`;
+}
 function setDur(m, el) { if (medOn) return; medMins = m; medDur = m*60; medRem = medDur; updTimer(); document.querySelectorAll('.mdur').forEach(b => b.classList.remove('on')); el.classList.add('on'); document.getElementById('medLabel').textContent = `${m} Minute ${medMode} Session`; }
 function updTimer() { const m = Math.floor(medRem/60).toString().padStart(2,'0'); const s = (medRem%60).toString().padStart(2,'0'); document.getElementById('medTimer').textContent = `${m}:${s}`; }
 
 function toggleMed() {
   if (!medOn) {
     medOn = true; document.getElementById('medGo').textContent = '⏸';
+
+    const audioSrc = medAudioMap[medMode];
+    if (audioSrc) {
+      medAudio.pause();
+      medAudio.src = audioSrc;
+      medAudio.currentTime = 0;
+      medAudio.loop = true;
+      medAudio.play().catch(() => {
+        const status = document.getElementById('medAudioStatus');
+        if (status) status.textContent = medMode === 'guided'
+          ? 'Guided audio file not uploaded yet — silent timer continues.'
+          : 'Meditation audio not available yet — silent timer continues.';
+      });
+    }
+
     if (medMode === 'breath') breathCycle();
     medInt = setInterval(() => { medRem--; updTimer(); if (medRem <= 0) completeMed(); }, 1000);
     rotGuidance(); gInt = setInterval(rotGuidance, 12000);
@@ -1161,6 +1204,8 @@ async function completeMed() {
 
 function stopMed() {
   medOn = false; clearInterval(medInt); clearInterval(gInt); clearTimeout(bTO);
+  medAudio.pause();
+  medAudio.currentTime = 0;
   document.getElementById('medGo').textContent = '▶';
   document.getElementById('bc').classList.remove('inhale');
   document.getElementById('bw').textContent = 'Begin';
