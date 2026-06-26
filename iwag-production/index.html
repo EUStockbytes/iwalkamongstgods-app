@@ -483,7 +483,7 @@ window.SUPABASE_ANON_KEY = "sb_publishable_Gq8E1qiQoHzaT8h86lX0ow_j9vAb1pN";
           </div>
           <div class="ai-result-actions">
             <button class="ai-action-btn" onclick="saveAffirmations()">✦ Save Oracle Message</button>
-            <button class="ai-action-btn" onclick="generateAffirmations()">↻ Receive Another Message</button>
+            <button class="ai-action-btn" onclick="generateAffirmations(true)">↻ Receive Another Message</button>
           </div>
         </div>
       </div>
@@ -985,7 +985,7 @@ function updateAffirmationCounter() {
   }
 }
 
-async function generateAffirmations() {
+async function generateAffirmations(forceNew = false) {
   if (!isPaid() && getDailyAICount() >= FREE_AI_LIMIT) {
     document.getElementById('aiForm').style.display = 'none';
     document.getElementById('aiLimitMsg').style.display = 'block';
@@ -1011,7 +1011,9 @@ async function generateAffirmations() {
     );
 
     const pool = matching.length ? matching : oracleResponses;
-    const seed = `${mood}|${focus}|${intention}|${new Date().toISOString().slice(0,10)}`;
+    const seed = forceNew
+      ? `${mood}|${focus}|${intention}|${Date.now()}|${Math.random()}`
+      : `${mood}|${focus}|${intention}|${new Date().toISOString().slice(0,10)}`;
     let hash = 0;
     for (let i = 0; i < seed.length; i++) {
       hash = ((hash << 5) - hash) + seed.charCodeAt(i);
