@@ -433,6 +433,23 @@ label.aff-sub{display:block;font-family:'Cinzel',serif;font-style:normal;font-si
   .nature-clean-grid { grid-template-columns: 1fr; padding: 0 24px; }
 }
 
+
+.nature-listen {
+  margin-top: 14px;
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(201,168,76,.28);
+  background: rgba(201,168,76,.06);
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.nature-available {
+  cursor: pointer;
+}
+
 </style>
   <script>
 window.SUPABASE_URL = "https://nqdbnepxzzgagiebvesm.supabase.co";
@@ -677,7 +694,12 @@ window.SUPABASE_ANON_KEY = "sb_publishable_Gq8E1qiQoHzaT8h86lX0ow_j9vAb1pN";
   <p class="s-desc">Immersive natural sound environments for relaxation, meditation, mindfulness, concentration and sleep support.</p>
 
   <div class="nature-clean-grid">
-    <article class="nature-clean-card"><h3>Ocean Waves</h3><p>Rolling coastal ambience for deep calm and sleep support.</p><span>Coming Soon</span></article>
+    <article class="nature-clean-card nature-available" onclick="playNatureSound('Ocean Waves','Rolling coastal ambience for deep calm and sleep support.','/Content/nature/ocean-waves/ocean-waves-10.mp3')">
+      <h3>Ocean Waves</h3>
+      <p>Rolling coastal ambience for deep calm and sleep support.</p>
+      <span>10 Min</span>
+      <button class="nature-listen" type="button">▶ Listen</button>
+    </article>
     <article class="nature-clean-card"><h3>Gentle Rain</h3><p>Soft rainfall for relaxation, focus and evening reflection.</p><span>Coming Soon</span></article>
     <article class="nature-clean-card"><h3>Mountain River</h3><p>Flowing water and fresh mountain stillness.</p><span>Coming Soon</span></article>
     <article class="nature-clean-card"><h3>Forest Birds</h3><p>Morning forest atmosphere with peaceful natural life.</p><span>Coming Soon</span></article>
@@ -1490,6 +1512,27 @@ function canPlay(track) {
   if (track.plan === 'divine' && (currentProfile?.plan === 'divine' || currentProfile?.plan === 'annual')) return true;
   if (track.plan === 'annual' && currentProfile?.plan === 'annual') return true;
   return false;
+}
+
+
+function playNatureSound(name, subtitle, src) {
+  const idx = tracks.findIndex(t => t.src === src);
+
+  if (idx === -1) {
+    tracks.push({
+      n: name,
+      t: `Nature Soundscapes — ${subtitle}`,
+      d: '10:00',
+      plan: 'divine',
+      src
+    });
+    mCur = tracks.length - 1;
+  } else {
+    mCur = idx;
+  }
+
+  scroll2('music');
+  setTimeout(() => mSelect(mCur, true), 350);
 }
 
 function mRenderList() {
