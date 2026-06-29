@@ -354,6 +354,85 @@ label.aff-sub{display:block;font-family:'Cinzel',serif;font-style:normal;font-si
   text-align: center;
 }
 
+
+.nature-section {
+  background: var(--void);
+  padding: 110px 0;
+}
+.nature-clean-grid {
+  max-width: 1100px;
+  margin: 46px auto 0;
+  padding: 0 40px;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 18px;
+}
+.nature-clean-card {
+  background: var(--card);
+  border: 1px solid rgba(201,168,76,.16);
+  padding: 28px 22px;
+  min-height: 210px;
+  text-align: center;
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.nature-clean-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(201,168,76,.42);
+  box-shadow: 0 22px 70px rgba(0,0,0,.35), 0 0 24px rgba(201,168,76,.12);
+}
+.nature-clean-card h3 {
+  font-family: 'Cinzel', serif;
+  color: var(--gold);
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.nature-clean-card p {
+  color: var(--text-dim);
+  font-size: 13px;
+  line-height: 1.65;
+  margin-bottom: 18px;
+}
+.nature-clean-card span {
+  font-family: 'Cinzel', serif;
+  color: var(--text-muted);
+  border: 1px solid rgba(201,168,76,.18);
+  padding: 7px 10px;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.nature-mask-box {
+  max-width: 860px;
+  margin: 56px auto 0;
+  padding: 42px 36px;
+  background: rgba(201,168,76,.05);
+  border: 1px solid rgba(201,168,76,.18);
+  text-align: center;
+}
+.nature-mask-box h3 {
+  font-family: 'Cinzel Decorative', serif;
+  color: var(--gold);
+  font-size: 26px;
+  margin-bottom: 18px;
+}
+.nature-mask-box p {
+  color: var(--text-dim);
+  line-height: 1.8;
+}
+.tiny-note {
+  font-size: 12px;
+  color: var(--text-muted) !important;
+  margin-top: 18px;
+}
+@media(max-width:900px){
+  .nature-clean-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media(max-width:600px){
+  .nature-clean-grid { grid-template-columns: 1fr; padding: 0 24px; }
+}
+
 </style>
   <script>
 window.SUPABASE_URL = "https://nqdbnepxzzgagiebvesm.supabase.co";
@@ -591,6 +670,33 @@ window.SUPABASE_ANON_KEY = "sb_publishable_Gq8E1qiQoHzaT8h86lX0ow_j9vAb1pN";
 </section>
 
 <!-- JOURNAL -->
+
+<!-- NATURE SOUNDSCAPES -->
+<section id="nature" class="nature-section">
+  <h2 class="s-title">Nature Soundscapes</h2>
+  <p class="s-desc">Immersive natural sound environments for relaxation, meditation, mindfulness, concentration and sleep support.</p>
+
+  <div class="nature-clean-grid">
+    <article class="nature-clean-card"><h3>Ocean Waves</h3><p>Rolling coastal ambience for deep calm and sleep support.</p><span>Coming Soon</span></article>
+    <article class="nature-clean-card"><h3>Gentle Rain</h3><p>Soft rainfall for relaxation, focus and evening reflection.</p><span>Coming Soon</span></article>
+    <article class="nature-clean-card"><h3>Mountain River</h3><p>Flowing water and fresh mountain stillness.</p><span>Coming Soon</span></article>
+    <article class="nature-clean-card"><h3>Forest Birds</h3><p>Morning forest atmosphere with peaceful natural life.</p><span>Coming Soon</span></article>
+    <article class="nature-clean-card"><h3>Wind Through Trees</h3><p>Gentle wind textures for mindful breathing and rest.</p><span>Coming Soon</span></article>
+    <article class="nature-clean-card"><h3>Gentle Thunderstorm</h3><p>Distant thunder and soft rain for grounding and sleep.</p><span>Coming Soon</span></article>
+    <article class="nature-clean-card"><h3>Fireplace & Rain</h3><p>Warm fire ambience blended with calming rainfall.</p><span>Coming Soon</span></article>
+    <article class="nature-clean-card"><h3>Meadow Breeze</h3><p>Open air, soft movement and quiet natural space.</p><span>Coming Soon</span></article>
+    <article class="nature-clean-card"><h3>Waterfall</h3><p>Constant flowing water for peaceful sound masking.</p><span>Coming Soon</span></article>
+    <article class="nature-clean-card"><h3>Summer Night Forest</h3><p>Night insects, soft air and peaceful darkness.</p><span>Coming Soon</span></article>
+  </div>
+
+  <div class="nature-mask-box">
+    <p class="s-tag">✦ Tinnitus Masking Sounds ✦</p>
+    <h3>Calming Sound Masking</h3>
+    <p>Selected nature soundscapes can help reduce awareness of unwanted background ringing by providing a peaceful background sound for relaxation, concentration and sleep support.</p>
+    <p class="tiny-note">Not a medical treatment. No cure or guaranteed relief is implied.</p>
+  </div>
+</section>
+
 <section id="journal">
   <div class="journal-wrap">
     <p class="s-tag">✦ Sacred Writing ✦</p>
