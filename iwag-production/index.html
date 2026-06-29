@@ -1277,7 +1277,8 @@ function setMode(m, el) {
   if (m === 'silence') status.textContent = 'Silence mode selected — no music, no voice, just presence.';
   if (m === 'guided') {
     status.textContent = 'Guided mode selected — Jeff’s 30-minute guided meditation.';
-    setDur(30, document.querySelector('.mdur[onclick*="setDur(30"]'));
+    const btn30 = [...document.querySelectorAll('.mdur')].find(btn => btn.textContent.includes('30'));
+    if (btn30) setDur(30, btn30);
     return;
   }
   document.getElementById('medLabel').textContent = `${medMins} Minute ${m} Session`;
