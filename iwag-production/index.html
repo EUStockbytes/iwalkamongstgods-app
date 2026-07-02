@@ -1531,8 +1531,7 @@ function playNatureSound(name, subtitle, src) {
     mCur = idx;
   }
 
-  scroll2('music');
-  setTimeout(() => mSelect(mCur, true), 350);
+  mSelect(mCur, true);
 }
 
 function mRenderList() {
