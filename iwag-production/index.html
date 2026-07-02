@@ -694,11 +694,16 @@ window.SUPABASE_ANON_KEY = "sb_publishable_Gq8E1qiQoHzaT8h86lX0ow_j9vAb1pN";
   <p class="s-desc">Immersive natural sound environments for relaxation, meditation, mindfulness, concentration and sleep support.</p>
 
   <div class="nature-clean-grid">
-    <article class="nature-clean-card nature-available" onclick="playNatureSound('Ocean Waves','Rolling coastal ambience for deep calm and sleep support.','/Content/nature/ocean-waves/ocean-waves-01.mp3')">
+    <article class="nature-clean-card nature-available" id="nature-ocean-waves">
       <h3>Ocean Waves</h3>
       <p>Rolling coastal ambience for deep calm and sleep support.</p>
-      <span>10 Min</span>
-      <button class="nature-listen" type="button">▶ Listen</button>
+      <div class="nature-duration-row">
+        <button type="button" class="nature-duration on" onclick="setNatureDuration(this,10)">10 Min</button>
+        <button type="button" class="nature-duration" onclick="setNatureDuration(this,20)">20 Min</button>
+        <button type="button" class="nature-duration" onclick="setNatureDuration(this,30)">30 Min</button>
+      </div>
+      <button class="nature-listen" type="button" onclick="playNatureSession('Ocean Waves','Rolling coastal ambience for deep calm and sleep support.','/Content/nature/ocean-waves/ocean-waves-01.mp3', this)">▶ Play</button>
+      <div class="nature-status">Ready</div>
     </article>
     <article class="nature-clean-card nature-available" onclick="playNatureSound('Gentle Rain','Soft rainfall for relaxation, focus and evening reflection.','/Content/nature/gentle-rain/gentle-rain-01.mp3')"><h3>Gentle Rain</h3><p>Soft rainfall for relaxation, focus and evening reflection.</p><span>10 Min</span><button class="nature-listen" type="button">▶ Listen</button></article>
     <article class="nature-clean-card nature-available" onclick="playNatureSound('Mountain River','Flowing water and fresh mountain stillness.','/Content/nature/mountain-river/mountain-river-01.mp3')"><h3>Mountain River</h3><p>Flowing water and fresh mountain stillness.</p><span>10 Min</span><button class="nature-listen" type="button">▶ Listen</button></article>
@@ -1514,6 +1519,75 @@ function canPlay(track) {
   return false;
 }
 
+
+
+let natureAudio = new Audio();
+let natureTimer = null;
+let natureRemaining = 0;
+let natureSelectedMinutes = 10;
+let natureActiveButton = null;
+
+function setNatureDuration(btn, minutes) {
+  const card = btn.closest('.nature-clean-card');
+  card.dataset.natureMinutes = minutes;
+  card.querySelectorAll('.nature-duration').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  natureSelectedMinutes = minutes;
+  const status = card.querySelector('.nature-status');
+  if (status) status.textContent = `${minutes} minute session selected`;
+}
+
+function playNatureSession(name, subtitle, src, btn) {
+  const card = btn.closest('.nature-clean-card');
+  const status = card.querySelector('.nature-status');
+
+  if (natureActiveButton === btn && !natureAudio.paused) {
+    natureAudio.pause();
+    clearInterval(natureTimer);
+    btn.textContent = '▶ Play';
+    if (status) status.textContent = 'Paused';
+    return;
+  }
+
+  clearInterval(natureTimer);
+  natureAudio.pause();
+
+  natureAudio = new Audio(src);
+  natureAudio.loop = true;
+  const selectedMinutes = Number(card.dataset.natureMinutes || natureSelectedMinutes || 10);
+  natureRemaining = selectedMinutes * 60;
+  natureActiveButton = btn;
+
+  document.querySelectorAll('.nature-status').forEach(s => s.textContent = 'Ready');
+  document.querySelectorAll('.nature-listen').forEach(b => b.textContent = '▶ Play');
+
+  btn.textContent = '⏸ Pause';
+
+  const update = () => {
+    const mins = Math.floor(natureRemaining / 60);
+    const secs = String(natureRemaining % 60).padStart(2, '0');
+    if (status) status.textContent = `${name} playing — ${mins}:${secs} remaining`;
+  };
+
+  update();
+
+  natureAudio.play().catch(() => {
+    btn.textContent = '▶ Play';
+    if (status) status.textContent = 'Tap play again if audio does not start.';
+  });
+
+  natureTimer = setInterval(() => {
+    natureRemaining--;
+    update();
+    if (natureRemaining <= 0) {
+      clearInterval(natureTimer);
+      natureAudio.pause();
+      natureAudio.currentTime = 0;
+      btn.textContent = '▶ Play';
+      if (status) status.textContent = 'Session complete';
+    }
+  }, 1000);
+}
 
 function playNatureSound(name, subtitle, src) {
   const idx = tracks.findIndex(t => t.src === src);
