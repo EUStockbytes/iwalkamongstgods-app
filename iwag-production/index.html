@@ -1133,6 +1133,7 @@ async function startCheckout(plan){
 function scroll2(id){
   const el=document.getElementById(id);
   if(el)el.scrollIntoView({behavior:'smooth'});
+  document.querySelector('.nav-links')?.classList.remove('open');
 }
 
 function toggleMobileNav(){
