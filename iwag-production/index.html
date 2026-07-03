@@ -39,6 +39,15 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 .nav-plan{font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);padding:3px 10px;}
 .nav-signout{font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;background:none;border:none;cursor:pointer;transition:color .3s;}
 .nav-signout:hover{color:var(--red);}
+.nav-toggle{
+  display:none;
+  font-size:24px;
+  color:var(--gold);
+  background:none;
+  border:none;
+  cursor:pointer;
+}
+
 
 /* ── SECTIONS ── */
 section{position:relative;z-index:1;}
@@ -293,7 +302,7 @@ label.aff-sub{display:block;font-family:'Cinzel',serif;font-style:normal;font-si
 .aff-day.locked{opacity:.45;}
 @media(max-width:700px){#affirmations{padding:92px 0 98px;}.aff-list{grid-template-columns:1fr 1fr;}.aff-box{padding:34px 20px;border-radius:12px;}}
 
-@media(max-width:900px){nav{padding:14px 24px;}.nav-links{display:none;}.music-layout{grid-template-columns:1fr;}.footer-top{grid-template-columns:1fr 1fr;}.ai-fields{grid-template-columns:1fr;}}
+@media(max-width:900px){nav{padding:14px 24px;}.nav-links{display:none;}.nav-links.open{display:flex;position:absolute;top:62px;left:24px;right:24px;flex-direction:column;gap:18px;padding:22px;background:rgba(2,4,8,.96);border:1px solid rgba(201,168,76,.22);}.nav-toggle{display:block;}.music-layout{grid-template-columns:1fr;}.footer-top{grid-template-columns:1fr 1fr;}.ai-fields{grid-template-columns:1fr;}}
 @media(max-width:600px){.container,.ai-wrap,.med-center,.journal-wrap{padding:0 24px;}.pricing-grid{padding:0 24px;}.music-layout{padding:0 24px;}.hero{padding:96px 22px 72px;}.hero-btns{gap:14px;}.btn{width:100%;max-width:320px;text-align:center;padding:15px 28px;}.ai-box{padding:38px 24px;}.journal-card{padding:34px 24px;}.now-playing-panel,.tracklist-panel{padding:36px 24px;}.pplan{padding:40px 28px;}.sacred-info-card{padding:38px 24px;}.footer-top{grid-template-columns:1fr;}.hero-orbit{width:280px;height:280px;}.dash-bar{padding:16px 20px;}}
 
 .oracle-card {
@@ -513,6 +522,7 @@ window.SUPABASE_ANON_KEY = "sb_publishable_Gq8E1qiQoHzaT8h86lX0ow_j9vAb1pN";
     <li><a onclick="scroll2('journal')">Journal</a></li>
     <li><a onclick="scroll2('pricing')">Membership</a></li>
   </ul>
+  <button class="nav-toggle" type="button" onclick="toggleMobileNav()" aria-label="Open navigation">☰</button>
   <div class="nav-right">
     <!-- Logged out state -->
     <div id="navLoggedOut">
@@ -1120,7 +1130,15 @@ async function startCheckout(plan){
   }
 }
 
-function scroll2(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'});}
+function scroll2(id){
+  const el=document.getElementById(id);
+  if(el)el.scrollIntoView({behavior:'smooth'});
+}
+
+function toggleMobileNav(){
+  document.querySelector('.nav-links').classList.toggle('open');
+}
+
 function showToast(msg,dur=3000){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
 
 // ═══════════════════════════════════════════
