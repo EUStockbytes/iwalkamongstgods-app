@@ -1576,7 +1576,11 @@ function updateAffirmationProgress(){
 function affPad(n){ return String(n).padStart(3,'0'); }
 function affBatch(day){ return Math.ceil(day / 30); }
 function affSrc(day){
-  return `/Content/affirmations/batch-${String(affBatch(day)).padStart(2,'0')}/affirmation-${affPad(day)}.m4a`;
+  const batch = String(affBatch(day)).padStart(2,'0');
+  const filename = day <= 30
+    ? `affirmation-day-${affPad(day)}.mp3`
+    : `affirmation-${affPad(day)}.m4a`;
+  return `/Content/affirmations/batch-${batch}/${filename}`;
 }
 function affCanPlay(day){
   return day <= 7 || currentProfile?.plan === 'divine' || currentProfile?.plan === 'annual';
