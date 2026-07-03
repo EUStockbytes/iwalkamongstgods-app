@@ -1732,25 +1732,6 @@ function playNatureSession(name, subtitle, src, btn) {
   }, 1000);
 }
 
-function playNatureSound(name, subtitle, src) {
-  const idx = tracks.findIndex(t => t.src === src);
-
-  if (idx === -1) {
-    tracks.push({
-      n: name,
-      t: `Nature Soundscapes — ${subtitle}`,
-      d: '10:00',
-      plan: 'divine',
-      src
-    });
-    mCur = tracks.length - 1;
-  } else {
-    mCur = idx;
-  }
-
-  mSelect(mCur, true);
-}
-
 function mRenderList() {
   document.getElementById('mTrackList').innerHTML = tracks.map((t,i) => `
     <li class="ttrack ${i===mCur?'on':''}" onclick="mSelect(${i})">
