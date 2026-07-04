@@ -1463,9 +1463,11 @@ function toggleMed() {
 
     const audioSrc = getMeditationAudioSrc();
     if (audioSrc) {
-      medAudio.pause();
-      medAudio.src = audioSrc;
-      medAudio.currentTime = 0;
+      if (!medAudio.src || !medAudio.src.includes(audioSrc)) {
+        medAudio.pause();
+        medAudio.src = audioSrc;
+        medAudio.currentTime = 0;
+      }
       medAudio.loop = true;
       medAudio.play().catch(() => {
         const status = document.getElementById('medAudioStatus');
@@ -1478,7 +1480,18 @@ function toggleMed() {
     if (medMode === 'breath') breathCycle();
     medInt = setInterval(() => { medRem--; updTimer(); if (medRem <= 0) completeMed(); }, 1000);
     rotGuidance(); gInt = setInterval(rotGuidance, 12000);
-  } else { stopMed(); }
+  } else { pauseMed(); }
+}
+
+function pauseMed() {
+  medOn = false;
+  clearInterval(medInt);
+  clearInterval(gInt);
+  clearTimeout(bTO);
+  medAudio.pause();
+  document.getElementById('medGo').textContent = '▶';
+  document.getElementById('bc').classList.remove('inhale');
+  document.getElementById('bw').textContent = 'Paused';
 }
 
 async function completeMed() {
