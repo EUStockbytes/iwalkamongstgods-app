@@ -1458,6 +1458,7 @@ function updTimer() { const m = Math.floor(medRem/60).toString().padStart(2,'0')
 
 function toggleMed() {
   if (!medOn) {
+    stopAllAudioExcept('meditation');
     medOn = true; document.getElementById('medGo').textContent = '⏸';
 
     const audioSrc = getMeditationAudioSrc();
@@ -1549,6 +1550,34 @@ let mCur = 0, mPlaying = false, mPInt = null, mPv = 0;
 let mAudio = new Audio();
 
 let affAudio = new Audio();
+
+function stopAllAudioExcept(except) {
+  if (except !== 'meditation') {
+    medAudio.pause();
+    medAudio.currentTime = 0;
+    if (medOn) stopMed();
+  }
+
+  if (except !== 'music') {
+    mAudio.pause();
+    mSetPlayingUI(false);
+  }
+
+  if (except !== 'affirmation') {
+    affAudio.pause();
+    affPlaying = false;
+    const affBtn = document.getElementById('affPlayBtn');
+    if (affBtn) affBtn.textContent = '▶';
+  }
+
+  if (except !== 'nature') {
+    clearInterval(natureTimer);
+    natureAudio.pause();
+    natureAudio.currentTime = 0;
+    document.querySelectorAll('.nature-listen').forEach(b => b.textContent = '▶ Play');
+    document.querySelectorAll('.nature-status').forEach(s => s.textContent = 'Ready');
+  }
+}
 let affCurrentDay = 1;
 let affPlaying = false;
 const AFFIRMATIONS_UPLOADED_TO = 300;
@@ -1618,6 +1647,7 @@ function affSelect(day){
   affPopulateDropdown();
 }
 function affTogglePlay(){
+  stopAllAudioExcept('affirmation');
   if(!affCanPlay(affCurrentDay)){
     showToast('Unlock Divine to play this affirmation ✦');
     scroll2('pricing');
@@ -1685,6 +1715,7 @@ function setNatureDuration(btn, minutes) {
 }
 
 function playNatureSession(name, subtitle, src, btn) {
+  stopAllAudioExcept('nature');
   const card = btn.closest('.nature-clean-card');
   const status = card.querySelector('.nature-status');
 
@@ -1774,6 +1805,7 @@ function mLoadTrack(i) {
 }
 
 function mPlayCurrent() {
+  stopAllAudioExcept('music');
   if (!canPlay(tracks[mCur])) {
     showToast('🔒 Unlock with Divine Membership');
     return;
