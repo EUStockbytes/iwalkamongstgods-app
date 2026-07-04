@@ -1438,6 +1438,14 @@ let gIdx = 0, gInt = null;
 
 function setMode(m, el) {
   if (medOn) return;
+
+  medAudio.pause();
+  medAudio.currentTime = 0;
+  medMins = 30;
+  medDur = 30 * 60;
+  medRem = medDur;
+  updTimer();
+
   medMode = m;
   document.querySelectorAll('.mmode').forEach(b => b.classList.remove('on'));
   el.classList.add('on');
