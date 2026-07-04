@@ -1435,7 +1435,6 @@ function getMeditationAudioSrc() {
 }
 const guidance = ["Peace begins with a single breath.","Still the mind. The divine speaks only in silence.","You are not your thoughts. You are the vast awareness behind them.","Breathe as the gods breathe — slowly, completely, with infinite purpose.","In this stillness, you meet yourself as you truly are: eternal and infinite.","Let every exhale dissolve all that does not serve your sacred ascension.","You have been shown the truth of existence. Rest completely in that knowing.","The same intelligence that sustains the cosmos sustains you in this moment.","You are loved beyond all measure by forces you cannot yet fully comprehend.","Every breath is a sacred act of communion with the divine."];
 let gIdx = 0, gInt = null;
-
 function setMode(m, el) {
   if (medOn) return;
 
@@ -1453,37 +1452,12 @@ function setMode(m, el) {
   const status = document.getElementById('medAudioStatus');
   if (m === 'breath') status.textContent = 'Breath mode selected — sit in stillness and follow the rhythm.';
   if (m === 'silence') status.textContent = 'Silence mode selected — no music, no voice, just presence.';
-  if (m === 'guided') {
-    status.textContent = 'Guided mode selected — Jeff’s 30-minute guided meditation.';
-    const btn30 = [...document.querySelectorAll('.mdur')].find(btn => btn.textContent.includes('30'));
-    if (btn30) setDur(30, btn30);
-    return;
-  }
-  document.getElementById('medLabel').textContent = `${medMins} Minute ${m} Session`;
+  if (m === 'guided') status.textContent = 'Guided mode selected — Jeff’s 30-minute guided meditation.';
+
+  const btn30 = [...document.querySelectorAll('.mdur')].find(btn => btn.textContent.includes('30'));
+  if (btn30) setDur(30, btn30);
+  else document.getElementById('medLabel').textContent = `30 Minute ${m} Session`;
 }
-function setDur(m, el) { if (medOn) return; medMins = m; medDur = m*60; medRem = medDur; updTimer(); document.querySelectorAll('.mdur').forEach(b => b.classList.remove('on')); el.classList.add('on'); document.getElementById('medLabel').textContent = `${m} Minute ${medMode} Session`; }
-function updTimer() { const m = Math.floor(medRem/60).toString().padStart(2,'0'); const s = (medRem%60).toString().padStart(2,'0'); document.getElementById('medTimer').textContent = `${m}:${s}`; }
-
-function toggleMed() {
-  if (!medOn) {
-    if (!medAudio.src || medAudio.currentTime === 0) stopAllAudioExcept('meditation');
-    medOn = true; document.getElementById('medGo').textContent = '⏸';
-
-    const audioSrc = getMeditationAudioSrc();
-    if (audioSrc) {
-      if (!medAudio.src || !medAudio.src.includes(audioSrc)) {
-        medAudio.pause();
-        medAudio.src = audioSrc;
-        medAudio.currentTime = 0;
-      }
-      medAudio.loop = true;
-      medAudio.play().catch(() => {
-        const status = document.getElementById('medAudioStatus');
-        if (status) status.textContent = medMode === 'guided'
-          ? 'Guided audio file not uploaded yet — silent timer continues.'
-          : 'Meditation audio not available yet — silent timer continues.';
-      });
-    }
 
     if (medMode === 'breath') breathCycle();
     medInt = setInterval(() => { medRem--; updTimer(); if (medRem <= 0) completeMed(); }, 1000);
