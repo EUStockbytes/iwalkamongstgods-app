@@ -1458,7 +1458,7 @@ function updTimer() { const m = Math.floor(medRem/60).toString().padStart(2,'0')
 
 function toggleMed() {
   if (!medOn) {
-    stopAllAudioExcept('meditation');
+    if (!medAudio.src || medAudio.currentTime === 0) stopAllAudioExcept('meditation');
     medOn = true; document.getElementById('medGo').textContent = '⏸';
 
     const audioSrc = getMeditationAudioSrc();
