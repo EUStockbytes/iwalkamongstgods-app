@@ -218,6 +218,8 @@ section{position:relative;z-index:1;}
 .jentry-date{font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;}
 .jentry-q{font-size:13px;color:var(--text-dim);font-style:italic;margin-bottom:6px;}
 .jentry-text{font-size:15px;color:var(--text);line-height:1.7;}
+.jentry-delete{float:right;background:none;border:none;color:var(--text-muted);font-family:'Cinzel',serif;font-size:8px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;}
+.jentry-delete:hover{color:var(--gold);}
 .journal-login-prompt{text-align:center;padding:48px;background:rgba(201,168,76,.03);border:1px solid rgba(201,168,76,.1);}
 .journal-login-prompt p{font-style:italic;color:var(--text-dim);font-size:17px;margin-bottom:20px;}
 
@@ -885,6 +887,7 @@ window.SUPABASE_ANON_KEY = "sb_publishable_Gq8E1qiQoHzaT8h86lX0ow_j9vAb1pN";
         </div>
       </div>
       <div class="journal-entries" id="jEntries"></div>
+      <button class="jpbtn" id="journalLoadMore" onclick="loadMoreJournalEntries()" style="display:none;margin:20px auto 0">Load More Journal Entries</button>
     </div>
   </div>
 </section>
@@ -1948,7 +1951,8 @@ async function saveEntry() {
   if (error) { console.error('Journal save error:', error); showToast('Error saving — ' + (error.message || 'please try again')); return; }
   document.getElementById('jTextarea').value = '';
   showToast('✦ Entry saved to your sacred journal');
-  prependJournalEntry({ date: new Date(), q: prompts[pIdx], text });
+  prependJournalEntry({ id: data.id, date: data.created_at || new Date(), q: prompts[pIdx], text });
+  journalOffset++;
   // Update count
   const cur = parseInt(document.getElementById('dStatJournal').textContent) || 0;
   document.getElementById('dStatJournal').textContent = cur + 1;
@@ -1958,21 +1962,56 @@ function prependJournalEntry(entry) {
   const el = document.getElementById('jEntries');
   const div = document.createElement('div');
   div.className = 'jentry';
-  div.innerHTML = `<div class="jentry-date">${new Date(entry.date).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}</div><div class="jentry-q">${entry.q}</div><div class="jentry-text">${entry.text}</div>`;
+  div.innerHTML = `${entry.id ? `<button class="jentry-delete" onclick="deleteJournalEntry('${entry.id}')">Delete</button>` : ''}<div class="jentry-date">${new Date(entry.date).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}</div><div class="jentry-q">${entry.q}</div><div class="jentry-text">${entry.text}</div>`;
   el.prepend(div);
 }
 
-async function loadJournalEntries() {
+const JOURNAL_PAGE_SIZE = 5;
+let journalOffset = 0;
+
+async function loadJournalEntries(append = false) {
   if (!currentUser) return;
-  const { data } = await sb.from('journal_entries').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false }).limit(5);
+  const start = append ? journalOffset : 0;
+  const end = start + JOURNAL_PAGE_SIZE; // Inclusive range fetches one extra row.
+  const { data } = await sb.from('journal_entries').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false }).range(start, end);
   if (!data) return;
+
+  const hasMore = data.length > JOURNAL_PAGE_SIZE;
+  const entries = hasMore ? data.slice(0, JOURNAL_PAGE_SIZE) : data;
   const el = document.getElementById('jEntries');
-  el.innerHTML = data.map(e => `
+  const html = entries.map(e => `
     <div class="jentry">
+      <button class="jentry-delete" onclick="deleteJournalEntry('${e.id}')">Delete</button>
       <div class="jentry-date">${new Date(e.created_at).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}</div>
       <div class="jentry-q">${e.prompt}</div>
       <div class="jentry-text">${e.content}</div>
     </div>`).join('');
+
+  if (append) el.insertAdjacentHTML('beforeend', html);
+  else el.innerHTML = html;
+
+  journalOffset = start + entries.length;
+  document.getElementById('journalLoadMore').style.display = hasMore ? 'block' : 'none';
+}
+
+function loadMoreJournalEntries() {
+  loadJournalEntries(true);
+}
+
+async function deleteJournalEntry(id) {
+  if (!currentUser || !window.confirm('Delete this journal entry? This cannot be undone.')) return;
+
+  const { error } = await sb.from('journal_entries').delete().eq('id', id).eq('user_id', currentUser.id);
+  if (error) {
+    console.error('Journal delete error:', error);
+    showToast('Error deleting — ' + (error.message || 'please try again'));
+    return;
+  }
+
+  const cur = parseInt(document.getElementById('dStatJournal').textContent) || 0;
+  document.getElementById('dStatJournal').textContent = Math.max(0, cur - 1);
+  showToast('✦ Journal entry deleted');
+  await loadJournalEntries();
 }
 
 // ═══════════════════════════════════════════
