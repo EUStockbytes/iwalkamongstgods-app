@@ -662,7 +662,7 @@ window.SUPABASE_ANON_KEY = "sb_publishable_Gq8E1qiQoHzaT8h86lX0ow_j9vAb1pN";
     <div class="med-modes">
       <button class="mmode on" onclick="setMode('breath',this)">Breath</button>
       <button class="mmode" onclick="setMode('silence',this)">Silence</button>
-      <button class="mmode" onclick="setMode('guided',this)">Guided</button>
+      <button class="mmode" onclick="setMode('guided',this)">Manifestation</button>
     </div>
     <p class="med-audio-status" id="medAudioStatus">Breath mode selected — sit in stillness and follow the rhythm.</p>
     <div class="med-durations">
@@ -1469,7 +1469,7 @@ function setMode(m, el) {
   const status = document.getElementById('medAudioStatus');
   if (m === 'breath') status.textContent = 'Breath mode selected — sit in stillness and follow the rhythm.';
   if (m === 'silence') status.textContent = 'Silence mode selected — no music, no voice, just presence.';
-  if (m === 'guided') status.textContent = 'Guided mode selected — Jeff’s 30-minute guided meditation.';
+  if (m === 'guided') status.textContent = 'Manifestation Journey selected — Jeff’s 30-minute manifestation meditation.';
 
   const btn30 = [...document.querySelectorAll('.mdur')].find(btn => btn.textContent.includes('30'));
   if (btn30) setDur(30, btn30);
