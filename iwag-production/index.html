@@ -1616,7 +1616,7 @@ function stopAllAudioExcept(except) {
 }
 let affCurrentDay = 1;
 let affPlaying = false;
-const AFFIRMATIONS_UPLOADED_TO = 300;
+const AFFIRMATIONS_UPLOADED_TO = 365;
 
 const AFFIRMATION_JOURNEY_TOTAL = 365;
 
@@ -1639,7 +1639,10 @@ function updateAffirmationProgress(){
 
 
 function affPad(n){ return String(n).padStart(3,'0'); }
-function affBatch(day){ return Math.ceil(day / 30); }
+function affBatch(day){
+    if (day >= 301 && day <= 365) return 11;
+    return Math.ceil(day / 30);
+}
 function affSrc(day){
   const batch = String(affBatch(day)).padStart(2,'0');
   const filename = day <= 30
