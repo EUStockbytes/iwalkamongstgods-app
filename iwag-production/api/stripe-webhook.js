@@ -75,7 +75,6 @@ module.exports = async function handler(req, res) {
     switch (event.type) {
       case 'customer.subscription.created':
       case 'customer.subscription.updated':
-      case 'customer.subscription.deleted':
         await updateProfileFromSubscription(event.data.object);
         break;
 
