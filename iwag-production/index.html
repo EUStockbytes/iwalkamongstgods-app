@@ -934,7 +934,7 @@ window.SUPABASE_ANON_KEY = "sb_publishable_Gq8E1qiQoHzaT8h86lX0ow_j9vAb1pN";
         <li>Community access</li>
         <li>Weekly new content</li>
       </ul>
-      <button class="pplan-btn pplan-btn-gold" onclick="startCheckout('monthly')">✦ Join Divine</button>
+      <button class="pplan-btn pplan-btn-gold" data-checkout-plan="monthly" onclick="startCheckout('monthly')">✦ Join Divine</button>
     </div>
     <div class="pplan">
       <div class="pplan-name">Annual Divine</div>
@@ -951,7 +951,7 @@ window.SUPABASE_ANON_KEY = "sb_publishable_Gq8E1qiQoHzaT8h86lX0ow_j9vAb1pN";
         <li>Direct creator access</li>
         <li>Annual sacred ceremony</li>
       </ul>
-      <button class="pplan-btn pplan-btn-ghost" onclick="startCheckout('annual')">Join Annual</button>
+      <button class="pplan-btn pplan-btn-ghost" data-checkout-plan="annual" onclick="startCheckout('annual')">Join Annual</button>
     </div>
   </div>
 </section>
@@ -1068,8 +1068,8 @@ window.SUPABASE_ANON_KEY = "sb_publishable_Gq8E1qiQoHzaT8h86lX0ow_j9vAb1pN";
         <ul class="footer-links">
           <li><a onclick="scroll2('pricing')">Pricing</a></li>
           <li><a onclick="window.location.href='login.html'">Sign In</a></li>
-          <li><a onclick="startCheckout('monthly')">Join Divine</a></li>
-          <li><a onclick="startCheckout('annual')">Annual Plan</a></li>
+          <li><a data-checkout-plan="monthly" onclick="startCheckout('monthly')">Join Divine</a></li>
+          <li><a data-checkout-plan="annual" onclick="startCheckout('annual')">Annual Plan</a></li>
         </ul>
       </div>
       <div>
@@ -1106,6 +1106,7 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 let currentUser = null;
 let currentProfile = null;
+let checkoutActivationPending = new URLSearchParams(location.search).get('checkout') === 'success';
 
 // Stars
 const sf=document.getElementById('stars');
@@ -1119,14 +1120,34 @@ async function startCheckout(plan){
     return;
   }
 
+  if (isPaid()) {
+    showToast('Your IWAG membership is already active ✦');
+    return;
+  }
+
+  if (checkoutActivationPending) {
+    showToast('Your membership is still activating. Please wait a moment.');
+    return;
+  }
+
   try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session?.access_token) {
+      showToast('Please sign in again before starting Checkout.');
+      location.href = '/login.html';
+      return;
+    }
+
     const checkoutEndpoint = new URLSearchParams(location.search).get('stripe') === 'test'
       ? '/api/create-checkout-session-test'
       : '/api/create-checkout-session';
 
     const res = await fetch(checkoutEndpoint, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session.access_token}`
+      },
       body: JSON.stringify({
         plan,
         email: currentProfile.email || currentUser.email,
@@ -1135,6 +1156,13 @@ async function startCheckout(plan){
     });
 
     const data = await res.json();
+
+    if (res.status === 409 && data.code === 'subscription_active') {
+      showToast(data.error, 6000);
+      await loadProfile();
+      updateUI();
+      return;
+    }
 
     if (!res.ok || !data.url) {
       throw new Error(data.error || 'Checkout failed');
@@ -1171,6 +1199,10 @@ async function initAuth() {
   updateUI();
   hideLoader();
 
+  if (session && checkoutActivationPending) {
+    pollForMembershipActivation();
+  }
+
   // Listen for auth changes
   sb.auth.onAuthStateChange(async (event, session) => {
     if (session) {
@@ -1188,7 +1220,11 @@ async function loadProfile() {
   if (!currentUser) return;
   const { data } = await sb.auth.getUser();
   if (!data?.user) return;
-  const { data: profile } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
+  const { data: profile, error } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
+  if (error) {
+    console.error('Profile load failed:', error);
+    return null;
+  }
   currentProfile = profile; updateAffirmationProgress();
   if (profile) {
     // Update dashboard stats
@@ -1199,6 +1235,32 @@ async function loadProfile() {
   // Load journal count
   const { count } = await sb.from('journal_entries').select('*', {count:'exact',head:true}).eq('user_id', currentUser.id);
   document.getElementById('dStatJournal').textContent = count || 0;
+  return profile;
+}
+
+async function pollForMembershipActivation() {
+  showToast('Payment received. Activating your membership…', 5000);
+
+  for (let attempt = 0; attempt < 8; attempt++) {
+    if (attempt > 0) await new Promise(resolve => setTimeout(resolve, 2000));
+    await loadProfile();
+
+    if (isPaid()) {
+      checkoutActivationPending = false;
+      updateUI();
+      showToast('✦ Your IWAG membership is active', 6000);
+      const cleanUrl = new URL(location.href);
+      cleanUrl.searchParams.delete('checkout');
+      cleanUrl.searchParams.delete('session_id');
+      history.replaceState({}, '', cleanUrl.pathname + cleanUrl.search + cleanUrl.hash);
+      return;
+    }
+
+    updateUI();
+  }
+
+  updateUI();
+  showToast('Your payment succeeded, but activation is taking longer than expected. Please refresh shortly or contact support.', 10000);
 }
 
 function updateUI() {
@@ -1212,7 +1274,9 @@ function updateUI() {
   document.getElementById('navLoggedIn').style.display = loggedIn ? 'flex' : 'none';
   if (loggedIn) {
     document.getElementById('navAvatar').textContent = initial;
-    document.getElementById('navPlan').textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
+    document.getElementById('navPlan').textContent = checkoutActivationPending && plan === 'free'
+      ? 'Activating…'
+      : plan.charAt(0).toUpperCase() + plan.slice(1);
   }
 
   // Dashboard bar
@@ -1220,7 +1284,7 @@ function updateUI() {
   dashBar.style.display = loggedIn ? 'block' : 'none';
   if (loggedIn) {
     document.getElementById('dashWelcome').textContent = `✦ Welcome back, ${name}`;
-    document.getElementById('dashUpgradeBtn').style.display = plan === 'free' ? 'block' : 'none';
+    document.getElementById('dashUpgradeBtn').style.display = plan === 'free' && !checkoutActivationPending ? 'block' : 'none';
     // Adjust hero margin
     document.querySelector('.hero').style.paddingTop = '40px';
   }
@@ -1239,6 +1303,18 @@ function updateUI() {
 
   // AI counter
   updateAffirmationCounter();
+
+  const paid = plan === 'divine' || plan === 'annual';
+  document.querySelectorAll('[data-checkout-plan]').forEach(button => {
+    if (!button.dataset.defaultLabel) button.dataset.defaultLabel = button.textContent;
+    button.disabled = paid || checkoutActivationPending;
+    button.setAttribute('aria-disabled', String(paid || checkoutActivationPending));
+    button.textContent = paid
+      ? 'Membership Active'
+      : checkoutActivationPending
+        ? 'Activating Membership…'
+        : button.dataset.defaultLabel;
+  });
 }
 
 async function signOut() {
