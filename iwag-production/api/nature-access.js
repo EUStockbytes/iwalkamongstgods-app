@@ -58,7 +58,9 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({
         entitled: true,
         plan: entitlement.plan,
-        paidThrough: new Date(entitlement.periodEnd * 1000).toISOString()
+        paidThrough: entitlement.periodEnd
+          ? new Date(entitlement.periodEnd * 1000).toISOString()
+          : null
       });
     }
 

@@ -58,6 +58,24 @@ function chooseEntitlement(subscriptions, priceIds, nowSeconds = Math.floor(Date
     .sort((a, b) => b.periodEnd - a.periodEnd)[0] || null;
 }
 
+function assessAdminEntitlement(user, nowSeconds = Math.floor(Date.now() / 1000)) {
+  const grant = user?.app_metadata?.iwag_manual_entitlement;
+  if (!grant || grant.status !== 'active' || grant.nature_access !== true ||
+      (grant.plan !== 'divine' && grant.plan !== 'annual')) {
+    return null;
+  }
+  let periodEnd = null;
+  if (grant.expires_at) {
+    periodEnd = Math.floor(new Date(grant.expires_at).getTime() / 1000);
+    if (!Number.isFinite(periodEnd) || periodEnd <= nowSeconds) return null;
+  }
+  return {
+    plan: grant.plan,
+    periodEnd,
+    subscriptionId: 'admin-grant'
+  };
+}
+
 async function loadProfile(supabase, userId) {
   const { data, error } = await supabase
     .from('profiles')
@@ -145,6 +163,8 @@ async function collectVerifiedSubscriptions(stripe, profile, userEmail) {
 }
 
 async function verifiedEntitlement({ stripe, supabase, user, priceIds, nowSeconds }) {
+  const adminEntitlement = assessAdminEntitlement(user, nowSeconds);
+  if (adminEntitlement) return adminEntitlement;
   const profile = await loadProfile(supabase, user.id);
   if (!profile) return null;
   const subscriptions = await collectVerifiedSubscriptions(stripe, profile, user.email);
@@ -167,7 +187,10 @@ function issuePlaybackToken({ userId, media, durationMinutes, periodEnd, secret,
     throw new Error('Invalid Nature Sounds playback request');
   }
   const requestedExpiry = nowSeconds + (duration * 60) + TOKEN_GRACE_SECONDS;
-  const expiry = Math.min(requestedExpiry, Number(periodEnd || 0));
+  const verifiedPeriodEnd = Number(periodEnd);
+  const expiry = Number.isFinite(verifiedPeriodEnd) && verifiedPeriodEnd > 0
+    ? Math.min(requestedExpiry, verifiedPeriodEnd)
+    : requestedExpiry;
   if (expiry <= nowSeconds) throw new Error('Paid-through period has expired');
   const encodedPayload = Buffer.from(JSON.stringify({
     v: TOKEN_VERSION,
@@ -201,6 +224,7 @@ function verifyPlaybackToken({ token, media, secret, nowSeconds = Math.floor(Dat
 module.exports = {
   ALLOWED_DURATIONS,
   PREMIUM_MEDIA,
+  assessAdminEntitlement,
   assessSubscription,
   chooseEntitlement,
   issuePlaybackToken,

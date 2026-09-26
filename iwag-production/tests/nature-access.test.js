@@ -4,6 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const {
+  assessAdminEntitlement,
   assessSubscription,
   issuePlaybackToken,
   normalizeMedia,
@@ -55,6 +56,47 @@ test('active Divine and Annual subscriptions with paid time remaining are entitl
     items: { data: [{ price: { id: 'price_annual' }, current_period_end: NOW + 3600 }] }
   });
   assert.equal(assessSubscription(annual, PRICE_IDS, NOW).plan, 'annual');
+});
+
+test('protected admin-granted Annual entitlement unlocks Nature Sounds', async () => {
+  const user = {
+    id: 'admin-owner',
+    app_metadata: {
+      iwag_manual_entitlement: {
+        status: 'active',
+        plan: 'annual',
+        nature_access: true,
+        expires_at: null
+      }
+    }
+  };
+  const expected = {
+    plan: 'annual',
+    periodEnd: null,
+    subscriptionId: 'admin-grant'
+  };
+  assert.deepEqual(assessAdminEntitlement(user, NOW), expected);
+  assert.deepEqual(await verifiedEntitlement({
+    stripe: null,
+    supabase: null,
+    user,
+    priceIds: PRICE_IDS,
+    nowSeconds: NOW
+  }), expected);
+  const token = issuePlaybackToken({
+    userId: user.id,
+    media: 'gentle-rain/gentle-rain-01.mp3',
+    durationMinutes: 10,
+    periodEnd: expected.periodEnd,
+    secret: 'test-secret',
+    nowSeconds: NOW
+  });
+  assert.ok(verifyPlaybackToken({
+    token,
+    media: 'gentle-rain/gentle-rain-01.mp3',
+    secret: 'test-secret',
+    nowSeconds: NOW
+  }));
 });
 
 test('cancellation at period end retains access until the paid-through time', () => {
