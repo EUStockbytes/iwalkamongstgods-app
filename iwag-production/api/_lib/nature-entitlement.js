@@ -83,6 +83,17 @@ function subscriptionMatchesUser(subscription, profileId, userEmail, trustedCust
     (customerId && trustedCustomerIds.has(customerId));
 }
 
+function subscriptionMatchesStoredProfile(subscription, profile) {
+  if (!subscription?.id || !profile?.stripe_subscription_id || !profile?.stripe_customer_id) {
+    return false;
+  }
+  const customerId = typeof subscription.customer === 'string'
+    ? subscription.customer
+    : subscription.customer?.id;
+  return subscription.id === profile.stripe_subscription_id &&
+    customerId === profile.stripe_customer_id;
+}
+
 async function collectVerifiedSubscriptions(stripe, profile, userEmail) {
   const subscriptions = new Map();
   const trustedCustomerIds = new Set();
@@ -108,7 +119,8 @@ async function collectVerifiedSubscriptions(stripe, profile, userEmail) {
   if (profile.stripe_subscription_id) {
     try {
       const subscription = await stripe.subscriptions.retrieve(profile.stripe_subscription_id);
-      if (subscriptionMatchesUser(subscription, profile.id, userEmail, trustedCustomerIds)) {
+      if (subscriptionMatchesUser(subscription, profile.id, userEmail, trustedCustomerIds) ||
+          subscriptionMatchesStoredProfile(subscription, profile)) {
         subscriptions.set(subscription.id, subscription);
       }
     } catch (error) {
@@ -194,6 +206,7 @@ module.exports = {
   issuePlaybackToken,
   normalizeMedia,
   subscriptionMatchesUser,
+  subscriptionMatchesStoredProfile,
   verifiedEntitlement,
   verifyPlaybackToken
 };

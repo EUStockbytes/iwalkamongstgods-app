@@ -7,7 +7,9 @@ const {
   assessSubscription,
   issuePlaybackToken,
   normalizeMedia,
+  subscriptionMatchesStoredProfile,
   subscriptionMatchesUser,
+  verifiedEntitlement,
   verifyPlaybackToken
 } = require('../api/_lib/nature-entitlement');
 const { parseRange } = require('../api/nature-audio');
@@ -86,6 +88,67 @@ test('stored Stripe IDs cannot grant another user access', () => {
     new Set()
   ), true);
   assert.equal(subscriptionMatchesUser(candidate, 'user-1', 'one@example.com', new Set(['cus_other'])), true);
+});
+
+test('production-shaped Annual profile resolves through its verified Stripe pair', async () => {
+  const productionProfile = {
+    id: '040fe874-8bfd-46f2-9433-e1e7a52ce8a3',
+    email: 'eustockbytes@gmail.com',
+    plan: 'annual',
+    stripe_customer_id: 'cus_production_annual',
+    stripe_subscription_id: 'sub_production_annual',
+    subscription_status: 'active',
+    subscription_current_period_end: null
+  };
+  const annualSubscription = subscription({
+    id: 'sub_production_annual',
+    customer: 'cus_production_annual',
+    metadata: {},
+    items: {
+      data: [{ price: { id: 'price_annual' }, current_period_end: NOW + 86400 }]
+    }
+  });
+  const supabase = {
+    from() {
+      return {
+        select() { return this; },
+        eq() { return this; },
+        limit: async () => ({ data: [productionProfile], error: null })
+      };
+    }
+  };
+  const stripe = {
+    customers: {
+      list: async function* () {},
+      retrieve: async () => ({ id: 'cus_production_annual', email: null, metadata: {} })
+    },
+    subscriptions: {
+      retrieve: async () => annualSubscription,
+      list: async function* () {}
+    }
+  };
+
+  assert.equal(subscriptionMatchesStoredProfile(annualSubscription, productionProfile), true);
+  assert.equal(subscriptionMatchesStoredProfile(
+    { ...annualSubscription, customer: 'cus_someone_else' },
+    productionProfile
+  ), false);
+  assert.equal(subscriptionMatchesStoredProfile(
+    { ...annualSubscription, id: 'sub_someone_else' },
+    productionProfile
+  ), false);
+  const entitlement = await verifiedEntitlement({
+    stripe,
+    supabase,
+    user: { id: productionProfile.id, email: productionProfile.email },
+    priceIds: PRICE_IDS,
+    nowSeconds: NOW
+  });
+  assert.deepEqual(entitlement, {
+    plan: 'annual',
+    periodEnd: NOW + 86400,
+    subscriptionId: 'sub_production_annual'
+  });
 });
 
 test('playback tokens are track-bound, expire, and reject tampering', () => {
