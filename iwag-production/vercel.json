@@ -26,7 +26,31 @@
       "use": "@vercel/static"
     },
     {
-      "src": "Content/**",
+      "src": "Content/affirmations/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "Content/breathwork/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "Content/healing-frequencies/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "Content/meditation/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "Content/music-meditations/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "Content/oracle/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "Content/nature/ocean-waves/**",
       "use": "@vercel/static"
     },
     {

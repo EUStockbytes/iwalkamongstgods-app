@@ -159,6 +159,7 @@ test('catalog markup exposes one free card and locks all nine premium cards', ()
 test('routing and service worker protect every premium folder but not Ocean Waves', () => {
   const root = path.resolve(__dirname, '..');
   const vercel = fs.readFileSync(path.join(root, 'vercel.json'), 'utf8');
+  const vercelConfig = JSON.parse(vercel);
   const worker = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
   const folders = [
     'gentle-rain', 'mountain-river', 'forest-birds', 'wind-through-trees',
@@ -169,7 +170,19 @@ test('routing and service worker protect every premium folder but not Ocean Wave
     assert.ok(vercel.includes(folder), `Vercel route missing ${folder}`);
     assert.ok(worker.includes(`/Content/nature/${folder}/`), `service worker rule missing ${folder}`);
   }
-  const protectedRoute = JSON.parse(vercel).routes[0].src;
+  const protectedRoute = vercelConfig.routes[0].src;
   assert.equal(protectedRoute.includes('ocean-waves'), false);
+  const staticBuilds = vercelConfig.builds
+    .filter(build => build.use === '@vercel/static')
+    .map(build => build.src);
+  assert.equal(staticBuilds.includes('Content/**'), false);
+  assert.ok(staticBuilds.includes('Content/nature/ocean-waves/**'));
+  for (const folder of folders) {
+    assert.equal(
+      staticBuilds.some(source => source.startsWith(`Content/nature/${folder}/`)),
+      false,
+      `premium folder must not be emitted as a static asset: ${folder}`
+    );
+  }
   assert.match(worker, /url\.pathname\.startsWith\('\/api\/nature-'\)/);
 });
