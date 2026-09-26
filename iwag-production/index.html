@@ -380,6 +380,7 @@ label.aff-sub{display:block;font-family:'Cinzel',serif;font-style:normal;font-si
   gap: 18px;
 }
 .nature-clean-card {
+  position: relative;
   background: var(--card);
   border: 1px solid rgba(201,168,76,.16);
   padding: 28px 22px;
@@ -457,6 +458,28 @@ label.aff-sub{display:block;font-family:'Cinzel',serif;font-style:normal;font-si
   background: rgba(201,168,76,.06);
   padding: 8px 12px;
   cursor: pointer;
+}
+.nature-listen.nature-locked {
+  color: var(--text-dim);
+  border-color: rgba(255,255,255,.14);
+  background: rgba(255,255,255,.035);
+}
+.nature-listen:disabled {
+  cursor: wait;
+  opacity: .72;
+}
+.nature-clean-card .nature-access-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 7px;
+  color: var(--gold);
+  border: 1px solid rgba(201,168,76,.3);
+  background: rgba(8,6,18,.88);
+  font-family: 'Cinzel', serif;
+  font-size: 8px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
 }
 
 .nature-duration-row {
@@ -741,7 +764,7 @@ window.SUPABASE_ANON_KEY = "sb_publishable_Gq8E1qiQoHzaT8h86lX0ow_j9vAb1pN";
   <p class="s-desc">Immersive natural sound environments for relaxation, meditation, mindfulness, concentration and sleep support.</p>
 
   <div class="nature-clean-grid">
-    <article class="nature-clean-card nature-available" id="nature-ocean-waves">
+    <article class="nature-clean-card nature-available" id="nature-ocean-waves" data-nature-free="true">
       <h3>Ocean Waves</h3>
       <p>Rolling coastal ambience for deep calm and sleep support.</p>
       <div class="nature-duration-row">
@@ -752,7 +775,7 @@ window.SUPABASE_ANON_KEY = "sb_publishable_Gq8E1qiQoHzaT8h86lX0ow_j9vAb1pN";
       <button class="nature-listen" type="button" onclick="playNatureSession('Ocean Waves','Rolling coastal ambience for deep calm and sleep support.','/Content/nature/ocean-waves/ocean-waves-01.mp3', this)">▶ Play</button>
       <div class="nature-status">Ready</div>
     </article>
-    <article class="nature-clean-card nature-available">
+    <article class="nature-clean-card nature-available" data-nature-premium="true">
       <h3>Gentle Rain</h3>
       <p>Soft rainfall for relaxation, focus and evening reflection.</p>
       <div class="nature-duration-row">
@@ -763,7 +786,7 @@ window.SUPABASE_ANON_KEY = "sb_publishable_Gq8E1qiQoHzaT8h86lX0ow_j9vAb1pN";
       <button class="nature-listen" type="button" onclick="playNatureSession('Gentle Rain','Soft rainfall for relaxation, focus and evening reflection.','/Content/nature/gentle-rain/gentle-rain-01.mp3', this)">▶ Play</button>
       <div class="nature-status">Ready</div>
     </article>
-    <article class="nature-clean-card nature-available">
+    <article class="nature-clean-card nature-available" data-nature-premium="true">
       <h3>Mountain River</h3>
       <p>Flowing water and fresh mountain stillness.</p>
       <div class="nature-duration-row">
@@ -774,7 +797,7 @@ window.SUPABASE_ANON_KEY = "sb_publishable_Gq8E1qiQoHzaT8h86lX0ow_j9vAb1pN";
       <button class="nature-listen" type="button" onclick="playNatureSession('Mountain River','Flowing water and fresh mountain stillness.','/Content/nature/mountain-river/mountain-river-01.mp3', this)">▶ Play</button>
       <div class="nature-status">Ready</div>
     </article>
-    <article class="nature-clean-card nature-available">
+    <article class="nature-clean-card nature-available" data-nature-premium="true">
       <h3>Forest Birds</h3>
       <p>Morning forest atmosphere with peaceful natural life.</p>
       <div class="nature-duration-row">
@@ -785,7 +808,7 @@ window.SUPABASE_ANON_KEY = "sb_publishable_Gq8E1qiQoHzaT8h86lX0ow_j9vAb1pN";
       <button class="nature-listen" type="button" onclick="playNatureSession('Forest Birds','Morning forest atmosphere with peaceful natural life.','/Content/nature/forest-birds/forest-birds-01.mp3', this)">▶ Play</button>
       <div class="nature-status">Ready</div>
     </article>
-    <article class="nature-clean-card nature-available">
+    <article class="nature-clean-card nature-available" data-nature-premium="true">
       <h3>Wind Through Trees</h3>
       <p>Gentle wind textures for mindful breathing and rest.</p>
       <div class="nature-duration-row">
@@ -796,7 +819,7 @@ window.SUPABASE_ANON_KEY = "sb_publishable_Gq8E1qiQoHzaT8h86lX0ow_j9vAb1pN";
       <button class="nature-listen" type="button" onclick="playNatureSession('Wind Through Trees','Gentle wind textures for mindful breathing and rest.','/Content/nature/wind-through-trees/wind-through-trees-01.mp3', this)">▶ Play</button>
       <div class="nature-status">Ready</div>
     </article>
-    <article class="nature-clean-card nature-available">
+    <article class="nature-clean-card nature-available" data-nature-premium="true">
       <h3>Gentle Thunderstorm</h3>
       <p>Distant thunder and soft rain for grounding and sleep.</p>
       <div class="nature-duration-row">
@@ -807,7 +830,7 @@ window.SUPABASE_ANON_KEY = "sb_publishable_Gq8E1qiQoHzaT8h86lX0ow_j9vAb1pN";
       <button class="nature-listen" type="button" onclick="playNatureSession('Gentle Thunderstorm','Distant thunder and soft rain for grounding and sleep.','/Content/nature/gentle-thunderstorm/gentle-thunderstorm-01.mp3', this)">▶ Play</button>
       <div class="nature-status">Ready</div>
     </article>
-    <article class="nature-clean-card nature-available">
+    <article class="nature-clean-card nature-available" data-nature-premium="true">
       <h3>Fireplace & Rain</h3>
       <p>Warm fire ambience blended with calming rainfall.</p>
       <div class="nature-duration-row">
@@ -818,7 +841,7 @@ window.SUPABASE_ANON_KEY = "sb_publishable_Gq8E1qiQoHzaT8h86lX0ow_j9vAb1pN";
       <button class="nature-listen" type="button" onclick="playNatureSession('Fireplace & Rain','Warm fire ambience blended with calming rainfall.','/Content/nature/fireplace-rain/fireplace-rain-01.mp3', this)">▶ Play</button>
       <div class="nature-status">Ready</div>
     </article>
-    <article class="nature-clean-card nature-available">
+    <article class="nature-clean-card nature-available" data-nature-premium="true">
       <h3>Meadow Breeze</h3>
       <p>Open air, soft movement and quiet natural space.</p>
       <div class="nature-duration-row">
@@ -829,7 +852,7 @@ window.SUPABASE_ANON_KEY = "sb_publishable_Gq8E1qiQoHzaT8h86lX0ow_j9vAb1pN";
       <button class="nature-listen" type="button" onclick="playNatureSession('Meadow Breeze','Open air, soft movement and quiet natural space.','/Content/nature/meadow-breeze/meadow-breeze-01.mp3', this)">▶ Play</button>
       <div class="nature-status">Ready</div>
     </article>
-    <article class="nature-clean-card nature-available">
+    <article class="nature-clean-card nature-available" data-nature-premium="true">
       <h3>Waterfall</h3>
       <p>Constant flowing water for peaceful sound masking.</p>
       <div class="nature-duration-row">
@@ -840,7 +863,7 @@ window.SUPABASE_ANON_KEY = "sb_publishable_Gq8E1qiQoHzaT8h86lX0ow_j9vAb1pN";
       <button class="nature-listen" type="button" onclick="playNatureSession('Waterfall','Constant flowing water for peaceful sound masking.','/Content/nature/waterfall/waterfall-01.mp3', this)">▶ Play</button>
       <div class="nature-status">Ready</div>
     </article>
-    <article class="nature-clean-card nature-available">
+    <article class="nature-clean-card nature-available" data-nature-premium="true">
       <h3>Summer Night Forest</h3>
       <p>Night insects, soft air and peaceful darkness.</p>
       <div class="nature-duration-row">
@@ -1196,7 +1219,9 @@ async function initAuth() {
     currentUser = session.user;
     await loadProfile();
   }
+  natureAccessState = session ? 'checking' : 'anonymous';
   updateUI();
+  await refreshNatureAccess();
   hideLoader();
 
   if (session && checkoutActivationPending) {
@@ -1212,7 +1237,9 @@ async function initAuth() {
       currentUser = null;
       currentProfile = null;
     }
+    natureAccessState = session ? 'checking' : 'anonymous';
     updateUI();
+    await refreshNatureAccess();
   });
 }
 
@@ -1248,6 +1275,7 @@ async function pollForMembershipActivation() {
     if (isPaid()) {
       checkoutActivationPending = false;
       updateUI();
+      await refreshNatureAccess();
       showToast('✦ Your IWAG membership is active', 6000);
       const cleanUrl = new URL(location.href);
       cleanUrl.searchParams.delete('checkout');
@@ -1315,12 +1343,15 @@ function updateUI() {
         ? 'Activating Membership…'
         : button.dataset.defaultLabel;
   });
+
+  updateNatureAccessUI();
 }
 
 async function signOut() {
   await sb.auth.signOut();
   currentUser = null;
   currentProfile = null;
+  natureAccessState = 'anonymous';
   showToast('Until next time, divine one ✦');
   updateUI();
 }
@@ -1686,8 +1717,10 @@ function stopAllAudioExcept(except) {
     clearInterval(natureTimer);
     natureAudio.pause();
     natureAudio.currentTime = 0;
-    document.querySelectorAll('.nature-listen').forEach(b => b.textContent = '▶ Play');
+    natureActiveButton = null;
+    natureActivePremium = false;
     document.querySelectorAll('.nature-status').forEach(s => s.textContent = 'Ready');
+    updateNatureAccessUI();
   }
 }
 let affCurrentDay = 1;
@@ -1818,6 +1851,118 @@ let natureTimer = null;
 let natureRemaining = 0;
 let natureSelectedMinutes = 10;
 let natureActiveButton = null;
+let natureActivePremium = false;
+let natureAccessState = 'anonymous';
+let natureAccessRequestId = 0;
+
+async function refreshNatureAccess() {
+  const requestId = ++natureAccessRequestId;
+  if (!currentUser) {
+    natureAccessState = 'anonymous';
+    updateNatureAccessUI();
+    return;
+  }
+
+  natureAccessState = 'checking';
+  updateNatureAccessUI();
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session?.access_token) throw new Error('No active session');
+    const response = await fetch('/api/nature-access', {
+      headers: { 'Authorization': `Bearer ${session.access_token}` },
+      cache: 'no-store'
+    });
+    const result = await response.json();
+    if (requestId !== natureAccessRequestId) return;
+    natureAccessState = response.ok && result.entitled ? 'entitled' : 'not-entitled';
+  } catch (error) {
+    console.error('Nature access check failed:', error);
+    if (requestId !== natureAccessRequestId) return;
+    natureAccessState = 'not-entitled';
+  }
+  updateNatureAccessUI();
+}
+
+function stopPremiumNaturePlayback() {
+  if (!natureActivePremium) return;
+  clearInterval(natureTimer);
+  natureAudio.pause();
+  natureAudio.currentTime = 0;
+  natureActiveButton = null;
+  natureActivePremium = false;
+}
+
+function updateNatureAccessUI() {
+  document.querySelectorAll('.nature-clean-card').forEach(card => {
+    const button = card.querySelector('.nature-listen');
+    if (!button) return;
+    let badge = card.querySelector('.nature-access-badge');
+    if (!badge) {
+      badge = document.createElement('span');
+      badge.className = 'nature-access-badge';
+      card.appendChild(badge);
+    }
+
+    if (card.dataset.natureFree === 'true') {
+      badge.textContent = 'Free';
+      if (button !== natureActiveButton) button.textContent = '▶ Play';
+      button.disabled = false;
+      button.classList.remove('nature-locked');
+      return;
+    }
+
+    if (natureAccessState === 'entitled') {
+      badge.textContent = 'Member';
+      if (button !== natureActiveButton) button.textContent = '▶ Play';
+      button.disabled = false;
+      button.classList.remove('nature-locked');
+    } else if (natureAccessState === 'checking') {
+      badge.textContent = 'Checking';
+      button.textContent = 'Checking access…';
+      button.disabled = true;
+      button.classList.add('nature-locked');
+    } else {
+      badge.textContent = '🔒 Premium';
+      button.textContent = currentUser ? '🔒 View Memberships' : '🔒 Sign In';
+      button.disabled = false;
+      button.classList.add('nature-locked');
+    }
+  });
+
+  if (natureAccessState !== 'entitled') stopPremiumNaturePlayback();
+}
+
+function handleLockedNatureTrack() {
+  if (!currentUser) {
+    showToast('Please sign in to play premium Nature Sounds ✦');
+    window.location.href = '/login.html';
+    return;
+  }
+  showToast('Choose Divine or Annual membership to unlock this sound ✦', 5000);
+  scroll2('pricing');
+}
+
+async function requestNaturePlaybackUrl(src, durationMinutes) {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session?.access_token) throw new Error('signin_required');
+  const response = await fetch('/api/nature-access', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${session.access_token}`
+    },
+    cache: 'no-store',
+    body: JSON.stringify({ media: src, durationMinutes })
+  });
+  if (!response.ok) {
+    const error = new Error(response.status === 401 ? 'signin_required' : 'membership_required');
+    error.status = response.status;
+    throw error;
+  }
+  const result = await response.json();
+  if (!result.playbackUrl) throw new Error('playback_unavailable');
+  return result.playbackUrl;
+}
 
 function setNatureDuration(btn, minutes) {
   const card = btn.closest('.nature-clean-card');
@@ -1829,46 +1974,14 @@ function setNatureDuration(btn, minutes) {
   if (status) status.textContent = `${minutes} minute session selected`;
 }
 
-function playNatureSession(name, subtitle, src, btn) {
-  stopAllAudioExcept('nature');
-  const card = btn.closest('.nature-clean-card');
-  const status = card.querySelector('.nature-status');
-
-  if (natureActiveButton === btn && !natureAudio.paused) {
-    natureAudio.pause();
-    clearInterval(natureTimer);
-    btn.textContent = '▶ Play';
-    if (status) status.textContent = 'Paused';
-    return;
-  }
-
+function startNatureTimer(name, status, btn) {
   clearInterval(natureTimer);
-  natureAudio.pause();
-
-  natureAudio = new Audio(src);
-  natureAudio.loop = true;
-  const selectedMinutes = Number(card.dataset.natureMinutes || natureSelectedMinutes || 10);
-  natureRemaining = selectedMinutes * 60;
-  natureActiveButton = btn;
-
-  document.querySelectorAll('.nature-status').forEach(s => s.textContent = 'Ready');
-  document.querySelectorAll('.nature-listen').forEach(b => b.textContent = '▶ Play');
-
-  btn.textContent = '⏸ Pause';
-
   const update = () => {
     const mins = Math.floor(natureRemaining / 60);
     const secs = String(natureRemaining % 60).padStart(2, '0');
     if (status) status.textContent = `${name} playing — ${mins}:${secs} remaining`;
   };
-
   update();
-
-  natureAudio.play().catch(() => {
-    btn.textContent = '▶ Play';
-    if (status) status.textContent = 'Tap play again if audio does not start.';
-  });
-
   natureTimer = setInterval(() => {
     natureRemaining--;
     update();
@@ -1876,10 +1989,95 @@ function playNatureSession(name, subtitle, src, btn) {
       clearInterval(natureTimer);
       natureAudio.pause();
       natureAudio.currentTime = 0;
+      natureActiveButton = null;
+      natureActivePremium = false;
       btn.textContent = '▶ Play';
       if (status) status.textContent = 'Session complete';
+      updateNatureAccessUI();
     }
   }, 1000);
+}
+
+async function playNatureSession(name, subtitle, src, btn) {
+  stopAllAudioExcept('nature');
+  const card = btn.closest('.nature-clean-card');
+  const status = card.querySelector('.nature-status');
+  const premium = card.dataset.naturePremium === 'true';
+
+  if (natureActiveButton === btn) {
+    if (!natureAudio.paused) {
+      natureAudio.pause();
+      clearInterval(natureTimer);
+      btn.textContent = '▶ Resume';
+      if (status) status.textContent = 'Paused';
+      return;
+    }
+    try {
+      await natureAudio.play();
+      btn.textContent = '⏸ Pause';
+      startNatureTimer(name, status, btn);
+    } catch {
+      if (status) status.textContent = 'Playback could not resume. Please try again.';
+    }
+    return;
+  }
+
+  if (premium && natureAccessState !== 'entitled') {
+    handleLockedNatureTrack();
+    return;
+  }
+
+  clearInterval(natureTimer);
+  natureAudio.pause();
+  const selectedMinutes = Number(card.dataset.natureMinutes || natureSelectedMinutes || 10);
+  let playbackSrc = src;
+  if (premium) {
+    btn.disabled = true;
+    btn.textContent = 'Verifying access…';
+    if (status) status.textContent = 'Verifying your membership…';
+    try {
+      playbackSrc = await requestNaturePlaybackUrl(src, selectedMinutes);
+    } catch (error) {
+      natureAccessState = error.status === 401 ? 'anonymous' : 'not-entitled';
+      updateNatureAccessUI();
+      handleLockedNatureTrack();
+      return;
+    }
+  }
+
+  natureAudio = new Audio(playbackSrc);
+  natureAudio.loop = true;
+  natureRemaining = selectedMinutes * 60;
+  natureActiveButton = btn;
+  natureActivePremium = premium;
+
+  document.querySelectorAll('.nature-status').forEach(s => s.textContent = 'Ready');
+  document.querySelectorAll('.nature-listen').forEach(b => {
+    b.disabled = false;
+    if (b !== btn) b.textContent = '▶ Play';
+  });
+  updateNatureAccessUI();
+
+  btn.textContent = '⏸ Pause';
+
+  try {
+    await natureAudio.play();
+  } catch {
+    natureActiveButton = null;
+    natureActivePremium = false;
+    btn.textContent = '▶ Play';
+    if (status) status.textContent = 'Tap play again if audio does not start.';
+    updateNatureAccessUI();
+    return;
+  }
+  natureAudio.addEventListener('error', () => {
+    clearInterval(natureTimer);
+    natureActiveButton = null;
+    natureActivePremium = false;
+    if (status) status.textContent = 'Playback access expired. Please try again.';
+    updateNatureAccessUI();
+  }, { once: true });
+  startNatureTimer(name, status, btn);
 }
 
 function mRenderList() {

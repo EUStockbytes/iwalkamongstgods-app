@@ -40,6 +40,18 @@
   ],
   "routes": [
     {
+      "src": "/Content/nature/(gentle-rain|mountain-river|forest-birds|wind-through-trees|gentle-thunderstorm|fireplace-rain|meadow-breeze|waterfall|summer-night-forest)/(.*\\.mp3)",
+      "dest": "/api/nature-audio.js?media=$1/$2"
+    },
+    {
+      "src": "/api/nature-access",
+      "dest": "/api/nature-access.js"
+    },
+    {
+      "src": "/api/nature-audio",
+      "dest": "/api/nature-audio.js"
+    },
+    {
       "src": "/api/create-checkout-session-test",
       "dest": "/api/create-checkout-session-test.js"
     },
