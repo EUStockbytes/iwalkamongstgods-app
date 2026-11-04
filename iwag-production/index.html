@@ -1916,9 +1916,14 @@ function updateNatureAccessUI() {
       button.classList.remove('nature-locked');
     } else if (natureAccessState === 'checking') {
       badge.textContent = 'Checking';
-      button.textContent = 'Checking access…';
-      button.disabled = true;
-      button.classList.add('nature-locked');
+      if (button !== natureActiveButton) {
+        button.textContent = 'Checking access…';
+        button.disabled = true;
+        button.classList.add('nature-locked');
+      } else {
+        button.disabled = false;
+        button.classList.remove('nature-locked');
+      }
     } else {
       badge.textContent = '🔒 Premium';
       button.textContent = currentUser ? '🔒 View Memberships' : '🔒 Sign In';
