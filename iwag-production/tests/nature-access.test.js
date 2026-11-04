@@ -234,6 +234,24 @@ test('audio ranges stay below the Vercel response limit', () => {
   assert.equal(parseRange('bytes=10000000-', 10_000_000), null);
 });
 
+test('sequential media chunks cover the entire Gentle Rain file without repeating bytes', () => {
+  const size = 16_979_712; // observed production Content-Range total
+  const chunkSize = 4 * 1024 * 1024;
+  let start = 0;
+  let count = 0;
+  while (start < size) {
+    const chunk = parseRange(`bytes=${start}-`, size);
+    assert.ok(chunk, `expected range at ${start}`);
+    assert.equal(chunk.start, start, 'next response must start where previous ended');
+    assert.equal(chunk.end, Math.min(size - 1, start + chunkSize - 1));
+    start = chunk.end + 1;
+    count++;
+  }
+  assert.equal(start, size);
+  assert.equal(count, 5);
+  assert.deepEqual(parseRange('bytes=4194304-', size), { start: 4194304, end: 8388607 });
+});
+
 test('logged-out API and direct premium media requests fail closed', async () => {
   const accessResponse = mockResponse();
   await natureAccessHandler({ method: 'GET', headers: {} }, accessResponse);
