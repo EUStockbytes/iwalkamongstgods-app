@@ -2150,10 +2150,19 @@ async function playNatureSession(name, subtitle, src, btn) {
     if (status) status.textContent = 'Audio interrupted — reconnecting…';
     const resumeAt = Number.isFinite(activeAudio.currentTime) ? activeAudio.currentTime : 0;
     try {
-      const recoveredSrc = premium
+      const authorisedRecoveryUrl = premium
         ? await requestNaturePlaybackUrl(src, selectedMinutes)
         : src;
-      if (natureAudio !== activeAudio || natureActiveButton !== btn) return;
+      const recoveredSrc = premium
+        ? await loadProtectedNatureAudio(authorisedRecoveryUrl, () =>
+            natureAudio === activeAudio && natureActiveButton === btn)
+        : authorisedRecoveryUrl;
+      if (natureAudio !== activeAudio || natureActiveButton !== btn) {
+        if (premium) URL.revokeObjectURL(recoveredSrc);
+        return;
+      }
+      if (natureObjectUrl) URL.revokeObjectURL(natureObjectUrl);
+      natureObjectUrl = premium ? recoveredSrc : null;
       const replacementAudio = new Audio(recoveredSrc);
       replacementAudio.loop = true;
       natureAudio = replacementAudio;
