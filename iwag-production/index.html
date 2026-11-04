@@ -5,6 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="I Walk Amongst Gods — Guided Meditation, Divine Guidance, Daily Affirmations, Healing Music & Spiritual Reflection">
 <title>I Walk Amongst Gods — Divine Wellness Portal</title>
+<script>
+// Preview-only indicator: never shown on the production hostname.
+if (location.hostname.includes('robs-projects-08189a13.vercel.app')) {
+  window.addEventListener('DOMContentLoaded', () => {
+    const marker = document.createElement('div');
+    marker.id = 'iwag-preview-marker';
+    marker.textContent = 'IWAG TEST PREVIEW — NOT PRODUCTION';
+    marker.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:100000;background:#cdaa5d;color:#08182e;text-align:center;padding:8px;font:bold 12px Arial,sans-serif;pointer-events:none';
+    document.body.appendChild(marker);
+  });
+}
+</script>
 <link rel="manifest" href="manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -1916,9 +1928,14 @@ function updateNatureAccessUI() {
       button.classList.remove('nature-locked');
     } else if (natureAccessState === 'checking') {
       badge.textContent = 'Checking';
-      button.textContent = 'Checking access…';
-      button.disabled = true;
-      button.classList.add('nature-locked');
+      if (button !== natureActiveButton) {
+        button.textContent = 'Checking access…';
+        button.disabled = true;
+        button.classList.add('nature-locked');
+      } else {
+        button.disabled = false;
+        button.classList.remove('nature-locked');
+      }
     } else {
       badge.textContent = '🔒 Premium';
       button.textContent = currentUser ? '🔒 View Memberships' : '🔒 Sign In';
@@ -1927,7 +1944,9 @@ function updateNatureAccessUI() {
     }
   });
 
-  if (natureAccessState !== 'entitled') stopPremiumNaturePlayback();
+  // A routine entitlement refresh is not a revocation. Existing signed media
+  // sessions must continue while checking; stop only on a confirmed denial.
+  if (natureAccessState !== 'entitled' && natureAccessState !== 'checking') stopPremiumNaturePlayback();
 }
 
 function handleLockedNatureTrack() {
@@ -1960,6 +1979,41 @@ async function requestNaturePlaybackUrl(src, durationMinutes) {
   const result = await response.json();
   if (!result.playbackUrl) throw new Error('playback_unavailable');
   return result.playbackUrl;
+}
+
+// Assemble the complete authorised MP3 before playback. Native audio range
+// streaming has proved unreliable through the protected serverless endpoint.
+// The recording is kept in memory only, never put into an offline cache.
+let natureObjectUrl = null;
+let natureLoadId = 0;
+async function loadProtectedNatureAudio(url, isCurrent) {
+  const head = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+  if (!head.ok) throw new Error('media_head_failed');
+  const match = /^bytes 0-[0-9]+\/([0-9]+)$/.exec(head.headers.get('Content-Range') || '');
+  const total = match ? Number(match[1]) : NaN;
+  if (!Number.isSafeInteger(total) || total < 1 || total > 100 * 1024 * 1024) {
+    throw new Error('invalid_media_size');
+  }
+  const parts = [];
+  const step = 4 * 1024 * 1024;
+  for (let start = 0; start < total; start += step) {
+    if (!isCurrent()) throw new Error('media_load_cancelled');
+    const end = Math.min(total - 1, start + step - 1);
+    const response = await fetch(url, {
+      headers: { Range: `bytes=${start}-${end}` },
+      cache: 'no-store'
+    });
+    const expectedRange = `bytes ${start}-${end}/${total}`;
+    if (response.status !== 206 ||
+        response.headers.get('Content-Range') !== expectedRange) {
+      throw new Error('invalid_media_range');
+    }
+    const bytes = await response.arrayBuffer();
+    if (bytes.byteLength !== end - start + 1) throw new Error('short_media_range');
+    parts.push(bytes);
+  }
+  if (!isCurrent()) throw new Error('media_load_cancelled');
+  return URL.createObjectURL(new Blob(parts, { type: 'audio/mpeg' }));
 }
 
 function setNatureDuration(btn, minutes) {
@@ -2027,6 +2081,11 @@ async function playNatureSession(name, subtitle, src, btn) {
 
   clearInterval(natureTimer);
   natureAudio.pause();
+  const loadId = ++natureLoadId;
+  if (natureObjectUrl) {
+    URL.revokeObjectURL(natureObjectUrl);
+    natureObjectUrl = null;
+  }
   const selectedMinutes = Number(card.dataset.natureMinutes || natureSelectedMinutes || 10);
   let playbackSrc = src;
   if (premium) {
@@ -2034,11 +2093,25 @@ async function playNatureSession(name, subtitle, src, btn) {
     btn.textContent = 'Verifying access…';
     if (status) status.textContent = 'Verifying your membership…';
     try {
-      playbackSrc = await requestNaturePlaybackUrl(src, selectedMinutes);
+      const authorisedUrl = await requestNaturePlaybackUrl(src, selectedMinutes);
+      if (status) status.textContent = 'Loading full recording securely…';
+      playbackSrc = await loadProtectedNatureAudio(authorisedUrl, () => loadId === natureLoadId);
+      if (loadId !== natureLoadId) {
+        URL.revokeObjectURL(playbackSrc);
+        return;
+      }
+      natureObjectUrl = playbackSrc;
     } catch (error) {
-      natureAccessState = error.status === 401 ? 'anonymous' : 'not-entitled';
-      updateNatureAccessUI();
-      handleLockedNatureTrack();
+      if (loadId !== natureLoadId) return;
+      btn.disabled = false;
+      btn.textContent = '▶ Play';
+      if (error.status === 401 || error.status === 403) {
+        natureAccessState = 'not-entitled';
+        updateNatureAccessUI();
+        handleLockedNatureTrack();
+      } else if (status) {
+        status.textContent = 'Audio could not load. Please try again.';
+      }
       return;
     }
   }
@@ -2068,12 +2141,60 @@ async function playNatureSession(name, subtitle, src, btn) {
     updateNatureAccessUI();
     return;
   }
-  natureAudio.addEventListener('error', () => {
+  // One bounded recovery attempt for transient media streaming failures.
+  // Always re-authorize premium media server-side; never reuse an expired token.
+  const activeAudio = natureAudio;
+  activeAudio.addEventListener('error', async () => {
+    if (natureAudio !== activeAudio || natureActiveButton !== btn) return;
     clearInterval(natureTimer);
-    natureActiveButton = null;
-    natureActivePremium = false;
-    if (status) status.textContent = 'Playback access expired. Please try again.';
-    updateNatureAccessUI();
+    if (status) status.textContent = 'Audio interrupted — reconnecting…';
+    const resumeAt = Number.isFinite(activeAudio.currentTime) ? activeAudio.currentTime : 0;
+    try {
+      const authorisedRecoveryUrl = premium
+        ? await requestNaturePlaybackUrl(src, selectedMinutes)
+        : src;
+      const recoveredSrc = premium
+        ? await loadProtectedNatureAudio(authorisedRecoveryUrl, () =>
+            natureAudio === activeAudio && natureActiveButton === btn)
+        : authorisedRecoveryUrl;
+      if (natureAudio !== activeAudio || natureActiveButton !== btn) {
+        if (premium) URL.revokeObjectURL(recoveredSrc);
+        return;
+      }
+      if (natureObjectUrl) URL.revokeObjectURL(natureObjectUrl);
+      natureObjectUrl = premium ? recoveredSrc : null;
+      const replacementAudio = new Audio(recoveredSrc);
+      replacementAudio.loop = true;
+      natureAudio = replacementAudio;
+      replacementAudio.addEventListener('loadedmetadata', () => {
+        if (Number.isFinite(replacementAudio.duration) && resumeAt < replacementAudio.duration - 1) {
+          try { replacementAudio.currentTime = resumeAt; } catch {}
+        }
+      }, { once: true });
+      replacementAudio.addEventListener('error', () => {
+        if (natureAudio !== replacementAudio) return;
+        clearInterval(natureTimer);
+        natureActiveButton = null;
+        natureActivePremium = false;
+        btn.textContent = '▶ Play';
+        if (status) status.textContent = 'Audio interrupted. Please press Play again.';
+        updateNatureAccessUI();
+      }, { once: true });
+      await replacementAudio.play();
+      if (natureAudio !== replacementAudio || natureActiveButton !== btn) {
+        replacementAudio.pause();
+        return;
+      }
+      btn.textContent = '⏸ Pause';
+      startNatureTimer(name, status, btn);
+    } catch (error) {
+      if (natureAudio !== activeAudio || natureActiveButton !== btn) return;
+      natureActiveButton = null;
+      natureActivePremium = false;
+      btn.textContent = '▶ Play';
+      if (status) status.textContent = 'Audio interrupted. Please press Play again.';
+      updateNatureAccessUI();
+    }
   }, { once: true });
   startNatureTimer(name, status, btn);
 }

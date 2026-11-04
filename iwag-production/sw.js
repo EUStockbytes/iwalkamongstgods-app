@@ -1,6 +1,6 @@
 // ── I WALK AMONGST GODS — Service Worker ──
 // Version — update this to bust cache on new deployments
-const CACHE_NAME = 'iwag-v1.1.0';
+const CACHE_NAME = 'iwag-v1.1.1';
 const OFFLINE_URL = '/index.html';
 const PREMIUM_NATURE_PREFIXES = [
   '/Content/nature/gentle-rain/',
@@ -70,7 +70,9 @@ self.addEventListener('fetch', event => {
     (PREMIUM_NATURE_PREFIXES.some(prefix => url.pathname.startsWith(prefix)) ||
       url.pathname.startsWith('/api/nature-'))
   ) {
-    event.respondWith(fetch(request, { cache: 'no-store' }));
+    // Let the browser handle protected media byte-range requests directly.
+    // The origin still verifies signed tokens and returns private, no-store responses.
+    // Intercepting these requests can interfere with native media streaming.
     return;
   }
 

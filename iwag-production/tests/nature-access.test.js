@@ -234,6 +234,83 @@ test('audio ranges stay below the Vercel response limit', () => {
   assert.equal(parseRange('bytes=10000000-', 10_000_000), null);
 });
 
+test('protected Nature loader reconstructs all byte ranges and validates integrity', async () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  const begin = html.indexOf('let natureObjectUrl = null;');
+  const end = html.indexOf('function setNatureDuration(', begin);
+  assert.ok(begin > 0 && end > begin, 'loader source must exist');
+  const loaderSource = html.slice(begin, end);
+  const total = (4 * 1024 * 1024 * 2) + 137;
+  const steps = [];
+  let recording = null;
+  const fakeFetch = async (_url, opts) => {
+    if (opts.method === 'HEAD') {
+      return { ok: true, headers: { get: () => `bytes 0-4194303/${total}` } };
+    }
+    const match = /^bytes=([0-9]+)-([0-9]+)$/.exec(opts.headers.Range);
+    assert.ok(match);
+    const start = Number(match[1]);
+    const end = Number(match[2]);
+    steps.push([start, end]);
+    const data = new Uint8Array(end - start + 1);
+    data.fill(steps.length);
+    return {
+      status: 206,
+      headers: { get: () => `bytes ${start}-${end}/${total}` },
+      arrayBuffer: async () => data.buffer
+    };
+  };
+  const context = vm.createContext({
+    fetch: fakeFetch,
+    Blob,
+    URL: { createObjectURL(blob) { recording = blob; return 'blob:mock'; } }
+  });
+  vm.runInContext(loaderSource, context);
+  const loader = vm.runInContext('loadProtectedNatureAudio', context);
+  assert.equal(await loader('https://example.test/protected', () => true), 'blob:mock');
+  assert.equal(recording.size, total);
+  assert.equal(recording.type, 'audio/mpeg');
+  assert.deepEqual(steps, [
+    [0, 4194303], [4194304, 8388607], [8388608, total - 1]
+  ]);
+  const bytes = new Uint8Array(await recording.arrayBuffer());
+  assert.equal(bytes[0], 1);
+  assert.equal(bytes[4194303], 1);
+  assert.equal(bytes[4194304], 2);
+  assert.equal(bytes[8388607], 2);
+  assert.equal(bytes[8388608], 3);
+  assert.equal(bytes[total - 1], 3);
+});
+
+test('premium player assembles protected range responses into one complete recording', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  assert.match(html, /async function loadProtectedNatureAudio\(url, isCurrent\)/);
+  assert.match(html, /response\.status !== 206/);
+  assert.match(html, /response\.headers\.get\('Content-Range'\) !== expectedRange/);
+  assert.match(html, /new Blob\(parts, \{ type: 'audio\/mpeg' \}\)/);
+  assert.match(html, /URL\.createObjectURL/);
+  assert.match(html, /URL\.revokeObjectURL/);
+  assert.match(html, /playbackSrc = await loadProtectedNatureAudio/);
+});
+
+test('sequential media chunks cover the entire Gentle Rain file without repeating bytes', () => {
+  const size = 16_979_712; // observed production Content-Range total
+  const chunkSize = 4 * 1024 * 1024;
+  let start = 0;
+  let count = 0;
+  while (start < size) {
+    const chunk = parseRange(`bytes=${start}-`, size);
+    assert.ok(chunk, `expected range at ${start}`);
+    assert.equal(chunk.start, start, 'next response must start where previous ended');
+    assert.equal(chunk.end, Math.min(size - 1, start + chunkSize - 1));
+    start = chunk.end + 1;
+    count++;
+  }
+  assert.equal(start, size);
+  assert.equal(count, 5);
+  assert.deepEqual(parseRange('bytes=4194304-', size), { start: 4194304, end: 8388607 });
+});
+
 test('logged-out API and direct premium media requests fail closed', async () => {
   const accessResponse = mockResponse();
   await natureAccessHandler({ method: 'GET', headers: {} }, accessResponse);
@@ -259,6 +336,12 @@ test('catalog markup exposes one free card and locks all nine premium cards', ()
 
   const inlineScripts = [...html.matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/gi)];
   for (const [, source] of inlineScripts) new vm.Script(source);
+});
+
+test('routine entitlement refresh does not interrupt protected audio', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  assert.match(html, /natureAccessState !== 'entitled' && natureAccessState !== 'checking'\) stopPremiumNaturePlayback\(\)/);
+  assert.match(html, /natureAccessState = response\.ok && result\.entitled \? 'entitled' : 'not-entitled'/);
 });
 
 test('routing and service worker protect every premium folder but not Ocean Waves', () => {
