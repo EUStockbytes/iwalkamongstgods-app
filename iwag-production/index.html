@@ -1927,7 +1927,9 @@ function updateNatureAccessUI() {
     }
   });
 
-  if (natureAccessState !== 'entitled') stopPremiumNaturePlayback();
+  // A routine entitlement refresh is not a revocation. Existing signed media
+  // sessions must continue while checking; stop only on a confirmed denial.
+  if (natureAccessState !== 'entitled' && natureAccessState !== 'checking') stopPremiumNaturePlayback();
 }
 
 function handleLockedNatureTrack() {
