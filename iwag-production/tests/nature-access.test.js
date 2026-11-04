@@ -279,6 +279,12 @@ test('catalog markup exposes one free card and locks all nine premium cards', ()
   for (const [, source] of inlineScripts) new vm.Script(source);
 });
 
+test('routine entitlement refresh does not interrupt protected audio', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  assert.match(html, /natureAccessState !== 'entitled' && natureAccessState !== 'checking'\) stopPremiumNaturePlayback\(\)/);
+  assert.match(html, /natureAccessState = response\.ok && result\.entitled \? 'entitled' : 'not-entitled'/);
+});
+
 test('routing and service worker protect every premium folder but not Ocean Waves', () => {
   const root = path.resolve(__dirname, '..');
   const vercel = fs.readFileSync(path.join(root, 'vercel.json'), 'utf8');
