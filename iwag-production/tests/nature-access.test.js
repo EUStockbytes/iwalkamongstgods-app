@@ -247,7 +247,7 @@ test('protected Nature loader reconstructs all byte ranges and validates integri
     if (opts.method === 'HEAD') {
       return { ok: true, headers: { get: () => `bytes 0-4194303/${total}` } };
     }
-    const match = /^bytes=(\\d+)-(\\d+)$/.exec(opts.headers.Range);
+    const match = /^bytes=([0-9]+)-([0-9]+)$/.exec(opts.headers.Range);
     assert.ok(match);
     const start = Number(match[1]);
     const end = Number(match[2]);
