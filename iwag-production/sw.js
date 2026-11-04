@@ -1,7 +1,18 @@
 // ── I WALK AMONGST GODS — Service Worker ──
 // Version — update this to bust cache on new deployments
-const CACHE_NAME = 'iwag-v1.0.0';
+const CACHE_NAME = 'iwag-v1.1.0';
 const OFFLINE_URL = '/index.html';
+const PREMIUM_NATURE_PREFIXES = [
+  '/Content/nature/gentle-rain/',
+  '/Content/nature/mountain-river/',
+  '/Content/nature/forest-birds/',
+  '/Content/nature/wind-through-trees/',
+  '/Content/nature/gentle-thunderstorm/',
+  '/Content/nature/fireplace-rain/',
+  '/Content/nature/meadow-breeze/',
+  '/Content/nature/waterfall/',
+  '/Content/nature/summer-night-forest/'
+];
 
 // Files to cache immediately on install
 const PRECACHE_URLS = [
@@ -51,6 +62,17 @@ self.addEventListener('fetch', event => {
 
   // Skip non-GET requests
   if (request.method !== 'GET') return;
+
+  // Premium Nature Sounds and their entitlement API must never be served from
+  // a public or stale service-worker cache. Ocean Waves is intentionally free.
+  if (
+    url.origin === self.location.origin &&
+    (PREMIUM_NATURE_PREFIXES.some(prefix => url.pathname.startsWith(prefix)) ||
+      url.pathname.startsWith('/api/nature-'))
+  ) {
+    event.respondWith(fetch(request, { cache: 'no-store' }));
+    return;
+  }
 
   // Skip Stripe and OpenAI API calls — always go to network
   if (
