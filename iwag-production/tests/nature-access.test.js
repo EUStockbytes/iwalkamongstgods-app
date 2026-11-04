@@ -234,6 +234,17 @@ test('audio ranges stay below the Vercel response limit', () => {
   assert.equal(parseRange('bytes=10000000-', 10_000_000), null);
 });
 
+test('premium player assembles protected range responses into one complete recording', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  assert.match(html, /async function loadProtectedNatureAudio\(url, isCurrent\)/);
+  assert.match(html, /response\.status !== 206/);
+  assert.match(html, /response\.headers\.get\('Content-Range'\) !== expectedRange/);
+  assert.match(html, /new Blob\(parts, \{ type: 'audio\/mpeg' \}\)/);
+  assert.match(html, /URL\.createObjectURL/);
+  assert.match(html, /URL\.revokeObjectURL/);
+  assert.match(html, /playbackSrc = await loadProtectedNatureAudio/);
+});
+
 test('sequential media chunks cover the entire Gentle Rain file without repeating bytes', () => {
   const size = 16_979_712; // observed production Content-Range total
   const chunkSize = 4 * 1024 * 1024;
